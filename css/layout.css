@@ -30,7 +30,7 @@ body { overflow-x: hidden; }
 .topbar-timer .timer-clock { font-variant-numeric: tabular-nums; font-weight: 600; min-width: 64px; }
 .topbar-timer .timer-label { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--admin-text-secondary); font-size: 12px; }
 .icon-btn { position: relative; }
-.icon-btn .dot { position: absolute; top: 4px; right: 4px; min-width: 16px; height: 16px; border-radius: 8px; background: var(--admin-critical); color: #fff; font-size: 10px; display: grid; place-items: center; padding: 0 4px; }
+.icon-btn .dot { position: absolute; top: -3px; right: -3px; box-shadow: 0 0 0 2px var(--admin-surface); min-width: 16px; height: 16px; border-radius: 8px; background: var(--admin-critical); color: #fff; font-size: 10px; display: grid; place-items: center; padding: 0 4px; }
 .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--admin-surface-selected); color: var(--admin-text); display: inline-grid; place-items: center; font-size: 11px; font-weight: 600; flex: 0 0 auto; }
 .avatar-lg { width: 40px; height: 40px; font-size: 14px; }
 .sidebar-backdrop { display: none; }
@@ -75,3 +75,18 @@ body { overflow-x: hidden; }
 .progress-thin { height: 6px; border-radius: 3px; background: var(--admin-surface-selected); overflow: hidden; }
 .progress-thin > span { display: block; height: 100%; background: var(--admin-action); }
 
+
+/* Notifications dropdown */
+.notif-menu { width: 360px; max-width: calc(100vw - 24px); max-height: 70vh; overflow: auto; padding: 8px; }
+.notif-item { display: flex; gap: 10px; padding: 10px 12px; border-radius: 8px; color: var(--admin-text); text-decoration: none; cursor: pointer; }
+.notif-item:hover { background: var(--admin-surface-hover); }
+.notif-item.unread { background: rgba(37,99,235,.06); }
+.notif-item .ico { width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center; flex: 0 0 auto; background: var(--admin-surface-selected); }
+.notif-item .t { font-weight: 500; }
+.notif-item .b { font-size: 12px; color: var(--admin-text-secondary); }
+/* Clickable table rows, toast */
+.table tr.row-link { cursor: pointer; }
+.toast-stack { position: fixed; right: 16px; bottom: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
+.toast-msg { background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: 8px; font-size: 13px; box-shadow: var(--shadow-popover); }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: flex; gap: 10px; padding: 8px 0; align-items: baseline; }

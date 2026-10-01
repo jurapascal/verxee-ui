@@ -18,87 +18,47 @@
 <body>
 <nav class="admin-topbar" aria-label="Top bar">
   <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
-  <div class="brand me-3"><a href="#"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span class="hide-xs">Verxee UI</span></a></div>
+  <div class="brand me-3"><a href="#/dashboard"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span class="hide-xs">Verxee UI</span></a></div>
   <div class="d-flex align-items-center gap-2 ms-auto">
-    <button class="btn btn-ghost-secondary btn-sm icon-btn" aria-label="Notifications"><i class="ti ti-bell"></i><span class="dot">3</span></button>
+    <div class="dropdown">
+      <button class="btn btn-ghost-secondary btn-sm icon-btn" data-coreui-toggle="dropdown" aria-label="Notifications"><i class="ti ti-bell fs-5"></i><span class="dot" id="notifDot" hidden></span></button>
+      <div class="dropdown-menu dropdown-menu-end notif-menu">
+        <div class="d-flex align-items-center px-2 py-1"><strong>Notifications</strong>
+          <a class="ms-auto fs-sm" href="#" id="notifReadAll">Mark all read</a></div>
+        <div id="notifList"></div>
+      </div>
+    </div>
     <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
-    <span class="avatar">JD</span>
+    <div class="dropdown">
+      <button class="btn btn-ghost-secondary btn-sm d-flex align-items-center gap-2" data-coreui-toggle="dropdown" aria-label="Account"><span class="avatar">JD</span><span class="hide-xs">Jane Doe</span></button>
+      <div class="dropdown-menu dropdown-menu-end">
+        <a class="dropdown-item" href="#/settings"><i class="ti ti-user"></i> Profile</a>
+        <a class="dropdown-item" href="#/settings"><i class="ti ti-settings"></i> Settings</a>
+      </div>
+    </div>
   </div>
 </nav>
 
 <div class="sidebar sidebar-fixed" id="sidebar">
   <ul class="sidebar-nav" data-coreui="navigation">
-    <li class="nav-item"><a class="nav-link active" href="#" aria-current="page"><i class="nav-icon ti ti-layout-dashboard"></i> Dashboard</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon ti ti-shopping-cart"></i> Orders</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon ti ti-users"></i> Customers</a></li>
+    <li class="nav-item"><a class="nav-link" data-route="dashboard" href="#/dashboard"><i class="nav-icon ti ti-layout-dashboard"></i> Dashboard</a></li>
+    <li class="nav-item"><a class="nav-link" data-route="orders" href="#/orders"><i class="nav-icon ti ti-shopping-cart"></i> Orders</a></li>
+    <li class="nav-item"><a class="nav-link" data-route="customers" href="#/customers"><i class="nav-icon ti ti-users"></i> Customers</a></li>
     <li class="nav-title">Admin</li>
-    <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon ti ti-shield-lock"></i> Permissions</a></li>
-    <li class="nav-item"><a class="nav-link" href="#"><i class="nav-icon ti ti-history"></i> Audit log</a></li>
+    <li class="nav-item"><a class="nav-link" data-route="permissions" href="#/permissions"><i class="nav-icon ti ti-shield-lock"></i> Permissions</a></li>
+    <li class="nav-item"><a class="nav-link" data-route="audit" href="#/audit"><i class="nav-icon ti ti-history"></i> Audit log</a></li>
   </ul>
-  <div class="sidebar-footer border-top"><a class="nav-link fs-sm" href="#"><i class="ti ti-settings"></i> Settings</a></div>
+  <div class="sidebar-footer border-top"><a class="nav-link fs-sm" data-route="settings" href="#/settings"><i class="ti ti-settings"></i> Settings</a></div>
 </div>
 <div class="sidebar-backdrop" data-sidebar-toggle></div>
 
 <div class="admin-wrapper">
-  <main class="admin-content" id="main">
-    <div class="page-head">
-      <h1><i class="ti ti-layout-dashboard"></i>Dashboard</h1>
-      <div class="actions">
-        <button class="btn btn-outline-secondary btn-sm"><i class="ti ti-download"></i> Export</button>
-        <button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> New order</button>
-      </div>
-    </div>
-
-    <div class="grid-3 mb-4">
-      <div class="card kpi"><div class="kpi-label">Revenue</div><div class="kpi-value">128 450 Kč</div><div class="kpi-sub">+12 % vs. last month</div></div>
-      <div class="card kpi"><div class="kpi-label">Orders</div><div class="kpi-value">342</div><div class="kpi-sub">18 waiting for shipment</div></div>
-      <div class="card kpi"><div class="kpi-label">Conversion</div><div class="kpi-value">3.4 %</div><div class="kpi-sub">stable</div></div>
-    </div>
-
-    <div class="grid-2 mb-4">
-      <div class="card"><div class="card-body">
-        <h2 class="section-title">Buttons &amp; badges</h2>
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          <button class="btn btn-primary">Primary</button>
-          <button class="btn btn-outline-secondary">Secondary</button>
-          <button class="btn btn-ghost-secondary">Ghost</button>
-          <button class="btn btn-outline-danger">Delete</button>
-        </div>
-        <div class="d-flex flex-wrap gap-2">
-          <span class="status status--success">Paid</span>
-          <span class="status status--warning">Pending</span>
-          <span class="status status--critical">Failed</span>
-          <span class="status status--info">Shipped</span>
-          <span class="status status--pending">Review</span>
-          <span class="status status--neutral">Draft</span>
-        </div>
-      </div></div>
-      <div class="card"><div class="card-body">
-        <h2 class="section-title">Form</h2>
-        <label class="form-label" for="demo-name">Name</label>
-        <input id="demo-name" class="form-control" placeholder="Jane Doe">
-        <div class="form-hint">Shown on the invoice.</div>
-        <label class="form-label mt-3" for="demo-sel">Status</label>
-        <select id="demo-sel" class="form-select"><option>Open</option><option>Closed</option></select>
-      </div></div>
-    </div>
-
-    <div class="card">
-      <div class="table-responsive">
-        <table class="table table-hover mb-0">
-          <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th></tr></thead>
-          <tbody>
-            <tr><td><a href="#">#1042</a></td><td>Jane Doe</td><td>1 290 Kč</td><td><span class="status status--success">Paid</span></td></tr>
-            <tr><td><a href="#">#1041</a></td><td>John Smith</td><td>890 Kč</td><td><span class="status status--warning">Pending</span></td></tr>
-            <tr><td><a href="#">#1040</a></td><td>Eva Nováková</td><td>2 450 Kč</td><td><span class="status status--info">Shipped</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
+  <main class="admin-content" id="main"></main>
 </div>
+<div class="toast-stack" id="toasts"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.3.1/dist/js/coreui.bundle.min.js"></script>
 <script src="js/verxee-ui.js"></script>
+<script src="js/demo.js"></script>
 </body>
 </html>
