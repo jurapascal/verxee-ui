@@ -16,13 +16,14 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 | `css/components.css` | Badges, buttons (3 sizes / 5 variants), inputs, cards, tables, sidebar, topbar, dropdowns, popovers, modals, empty states, sticky save bar, switches, utilities, CoreUI overrides, print |
 | `css/layout.css` | Page patterns: auth screen, page header, KPI tiles, list rows, line tabs, form hints, thin progress |
 | `css/fonts.css` + `fonts/` | Self-hosted Inter (works offline, CSP-friendly) |
+| `vendor/` | CoreUI 5.3.1 + Tabler Icons 3.31, self-hosted |
 | `js/verxee-ui.js` | ~30 lines: persisted light/dark toggle + mobile sidebar |
 
 ## Quick start
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.3.1/dist/css/coreui.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="vendor/coreui/coreui.min.css">
+<link rel="stylesheet" href="vendor/tabler-icons/css/tabler-icons.min.css">
 <link rel="stylesheet" href="css/fonts.css">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/components.css">
@@ -30,7 +31,7 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 ```
 
 Load order matters: CoreUI first, then the Verxee UI files. Open `index.html` for a full working shell
-(topbar, sidebar, KPI tiles, form, table, badges). Icons are [Tabler Icons](https://tabler.io/icons).
+(topbar, sidebar, KPI tiles, form, table, badges). Icons are [Tabler Icons](https://tabler.io/icons). Everything (CoreUI, icons, Inter) is self-hosted in the repo — no CDN requests, so it is as fast as a static page gets.
 
 ## Theming
 
@@ -53,4 +54,4 @@ Status colours: `--admin-success / warning / critical / info / pending`. Badges:
 
 ## Credits & licence
 
-MIT — see [LICENSE](LICENSE). Bundles Inter (OFL 1.1, see `fonts/README.md`). Loads CoreUI (MIT) and Tabler Icons (MIT) from a CDN.
+MIT — see [LICENSE](LICENSE). Bundles Inter (OFL 1.1, see `fonts/README.md`). Bundles CoreUI 5.3.1 (MIT) and Tabler Icons 3.31 (MIT) in `vendor/`.
