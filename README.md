@@ -15,23 +15,28 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 | `css/tokens.css` | Colours (light + dark), status colours, shadows, font, spacing — all CSS variables (`--admin-*`) |
 | `css/components.css` | Badges, buttons (3 sizes / 5 variants), inputs, cards, tables, sidebar, topbar, dropdowns, popovers, modals, empty states, sticky save bar, switches, utilities, CoreUI overrides, print |
 | `css/layout.css` | Page patterns: auth screen, page header, KPI tiles, list rows, line tabs, form hints, thin progress |
+| `css/verxee-ui.css` | All of the above in one file (fonts + tokens + components + layout) |
 | `css/fonts.css` + `fonts/` | Self-hosted Inter (works offline, CSP-friendly) |
 | `vendor/` | CoreUI 5.3.1 + Tabler Icons 3.31, self-hosted |
 | `js/verxee-ui.js` | ~30 lines: persisted light/dark toggle + mobile sidebar |
 
 ## Quick start
 
+Straight from GitHub via [jsDelivr](https://www.jsdelivr.com/) — no download, no build:
+
 ```html
-<link rel="stylesheet" href="vendor/coreui/coreui.min.css">
-<link rel="stylesheet" href="vendor/tabler-icons/css/tabler-icons.min.css">
-<link rel="stylesheet" href="css/fonts.css">
-<link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/components.css">
-<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v1.0.0/vendor/coreui/coreui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v1.0.0/vendor/tabler-icons/css/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v1.0.0/css/verxee-ui.css">
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v1.0.0/vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v1.0.0/js/verxee-ui.js"></script>
 ```
 
-Load order matters: CoreUI first, then the Verxee UI files. Open `index.html` for a full working shell
-(topbar, sidebar, KPI tiles, form, table, badges). Icons are [Tabler Icons](https://tabler.io/icons). Everything (CoreUI, icons, Inter) is self-hosted in the repo — no CDN requests, so it is as fast as a static page gets.
+Set `<html data-coreui-theme="light">` and you are done. `css/verxee-ui.css` is fonts + tokens + components + layout in one file;
+pin a version tag (as above) so updates never surprise you, or use `@main` for the latest.
+
+Prefer self-hosting? Clone the repo and use the same files from `css/` and `vendor/` (load CoreUI first, then Verxee UI).
+Open `index.html` for a full working shell. Icons are [Tabler Icons](https://tabler.io/icons).
 
 ## Theming
 
