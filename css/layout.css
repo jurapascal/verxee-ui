@@ -87,7 +87,7 @@ body { overflow-x: hidden; }
 /* Clickable table rows, toast */
 .table tr.row-link { cursor: pointer; }
 .toast-stack { position: fixed; right: 16px; bottom: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
-.toast-msg { background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: 8px; font-size: 13px; box-shadow: var(--shadow-popover); }
+.toast-msg { background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; box-shadow: var(--shadow-popover); }
 .timeline { list-style: none; margin: 0; padding: 0; }
 .timeline li { display: flex; gap: 10px; padding: 8px 0; align-items: baseline; }
 
@@ -97,3 +97,16 @@ body { overflow-x: hidden; }
 .toast-msg--warning { border-left: 3px solid var(--admin-warning); }
 .toast-msg--critical { border-left: 3px solid var(--admin-critical); }
 .toast-msg--info { border-left: 3px solid var(--admin-info); }
+
+/* Modal (VerxeeUI.modal) — reuses the confirm overlay */
+.vx-modal-box { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-xl); box-shadow: 0 16px 48px rgba(0,0,0,.2); width: 100%; max-width: 520px; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }
+.vx-modal-box--sm { max-width: 380px; } .vx-modal-box--lg { max-width: 760px; }
+.vx-modal-head { display: flex; align-items: center; gap: 8px; padding: 16px 20px; border-bottom: 1px solid var(--admin-border-subtle); }
+.vx-modal-title { font-size: 15px; font-weight: 600; margin: 0; flex: 1; }
+.vx-modal-body { padding: 20px; overflow-y: auto; }
+.vx-modal-foot { display: flex; justify-content: flex-end; gap: 8px; padding: 12px 20px; border-top: 1px solid var(--admin-border-subtle); }
+.vx-field + .vx-field { margin-top: 12px; }
+/* Popover opened by VerxeeUI.popover */
+.vx-popover { width: 280px; padding: 12px 14px; }
+.vx-popover-title { font-weight: 600; margin-bottom: 4px; }
+.vx-popover-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }

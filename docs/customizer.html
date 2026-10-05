@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Customizer — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+  <script src="../dist/verxee-ui.min.js"></script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.1.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Customize</li><li class="nav-item"><a class="nav-link" href="configuration.html">Configuration</a></li><li class="nav-item"><a class="nav-link active" href="customizer.html">Customizer</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Customizer</h1>
+<p class="lead">Change the look of this very page live, then copy the config.</p>
+
+<div class="card mb-4"><div class="card-body">
+  <div class="form-row-inline">
+    <div><label class="form-label" for="cAccent">Accent</label><input id="cAccent" type="color" class="form-control" value="#2563eb" style="padding:3px"></div>
+    <div><label class="form-label" for="cRadius">Radius</label><select id="cRadius" class="form-select"><option value="sharp">sharp</option><option value="default" selected>default</option><option value="round">round</option></select></div>
+    <div><label class="form-label" for="cDensity">Density</label><select id="cDensity" class="form-select"><option>compact</option><option selected>default</option><option>comfortable</option></select></div>
+    <div><label class="form-label" for="cPos">Toast position</label><select id="cPos" class="form-select"><option>bottom-right</option><option>bottom-center</option><option>bottom-left</option><option>top-right</option><option>top-center</option><option>top-left</option></select></div>
+  </div>
+</div></div>
+
+<h2>Preview</h2>
+<div class="example"><div class="example-preview">
+  <button class="btn btn-primary">Primary</button><button class="btn btn-secondary">Secondary</button>
+  <button class="btn btn-outline-danger">Delete</button><button class="btn btn-primary btn-sm">Small</button>
+  <input class="form-control w-input-md" placeholder="Input">
+  <span class="status status--success">Paid</span>
+  <button class="btn btn-secondary" id="pToast">Toast</button>
+  <button class="btn btn-secondary" id="pConfirm">Confirm</button>
+  <button class="btn btn-secondary" id="pModal">Modal</button>
+  <button class="btn btn-secondary" data-vx-popover="Same radius, same accent." data-vx-popover-title="Popover">Popover</button>
+</div></div>
+
+<h2>Your config</h2>
+<pre><code id="cOut"></code></pre>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  function apply() {
+    var theme = { accent: $('cAccent').value, radius: $('cRadius').value, density: $('cDensity').value };
+    VerxeeUI.configure({ theme: theme, toast: { position: $('cPos').value } });
+    $('cOut').textContent = 'VerxeeUI.configure({\n  theme: { accent: \'' + theme.accent + '\', radius: \'' + theme.radius + '\', density: \'' + theme.density + '\' },\n  toast: { position: \'' + $('cPos').value + '\' }\n});';
+  }
+  ['cAccent', 'cRadius', 'cDensity', 'cPos'].forEach(function (id) { $(id).addEventListener('input', apply); });
+  $('pToast').onclick = function () { VerxeeUI.toast('Settings saved', { type: 'success' }); };
+  $('pConfirm').onclick = function () { VerxeeUI.confirm({ title: 'Delete order?', description: 'This cannot be undone.', variant: 'danger', confirmText: 'Delete' }); };
+  $('pModal').onclick = function () { VerxeeUI.modal({ title: 'New customer', fields: [{ name: 'name', label: 'Name' }, { name: 'email', label: 'E-mail', type: 'email' }] }); };
+  window.addEventListener('DOMContentLoaded', apply);
+})();
+</script>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+</body>
+</html>

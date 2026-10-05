@@ -27,11 +27,11 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 Straight from GitHub via [jsDelivr](https://www.jsdelivr.com/) — no download, no build:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/tabler-icons/css/tabler-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.css">
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.bundle.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/coreui/coreui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/tabler-icons/css/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/dist/verxee-ui.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/dist/verxee-ui.min.js"></script>
 ```
 
 Set `<html data-coreui-theme="light">` and you are done. `css/verxee-ui.css` is fonts + tokens + components + layout in one file;

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Config-driven app — Verxee UI</title>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+</head>
+<body>
+<main id="main">
+  <div class="page-head"><h1><i class="ti ti-layout-dashboard"></i>Dashboard</h1>
+    <div class="actions">
+      <button class="btn btn-secondary btn-sm" id="m">Open modal</button>
+      <button class="btn btn-secondary btn-sm" data-vx-popover="Popovers are configured the same way." data-vx-popover-title="Hint">Popover</button>
+      <button class="btn btn-outline-danger btn-sm" data-confirm="This cannot be undone." data-confirm-title="Delete everything?" data-confirm-ok="Delete">Delete</button>
+    </div></div>
+  <div class="card"><div class="card-body">The whole shell (topbar, sidebar, user menu, notifications) is generated from one config object.</div></div>
+</main>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+<script defer>
+addEventListener('DOMContentLoaded', function () {
+  VerxeeUI.app({
+    theme: { accent: '#7C3AED', radius: 'round', density: 'default' },
+    brand: { name: 'Acme Admin', icon: 'bolt', href: '#/dashboard' },
+    sidebar: [
+      { label: 'Dashboard', icon: 'layout-dashboard', href: '#/dashboard' },
+      { label: 'Orders', icon: 'shopping-cart', href: '#/orders', badge: 4 },
+      { label: 'Catalog', icon: 'tag', children: [
+        { label: 'Products', href: '#/products' }, { label: 'Categories', href: '#/categories' } ] },
+      { title: 'Admin' },
+      { label: 'Audit log', icon: 'history', href: '#/audit' }
+    ],
+    sidebarFooter: [{ label: 'Settings', icon: 'settings', href: '#/settings' }],
+    topbar: { right: [
+      { label: 'New order', icon: 'plus', variant: 'primary', size: 'sm', onClick: function () { VerxeeUI.toast('New order', { type: 'success' }); } },
+      { type: 'notifications', items: [{ icon: 'credit-card', title: 'Order #1042 paid', body: 'Jane Doe', unread: true }] },
+      'theme',
+      { type: 'user', name: 'Jane Doe', menu: [
+        { label: 'Profile', icon: 'user', href: '#/profile' }, { divider: true },
+        { label: 'Sign out', icon: 'logout', danger: true, confirm: { title: 'Sign out?', variant: 'info', confirmText: 'Sign out' } } ] }
+    ] }
+  });
+  document.getElementById('m').onclick = function () {
+    VerxeeUI.modal({ title: 'New customer', fields: [
+      { name: 'name', label: 'Name', required: true }, { name: 'email', label: 'E-mail', type: 'email' },
+      { name: 'plan', label: 'Plan', type: 'select', options: ['Free', 'Pro'] } ], okText: 'Create' })
+      .then(function (v) { if (v) VerxeeUI.toast('Created ' + v.name + ' (' + v.plan + ')', { type: 'success' }); });
+  };
+});
+</script>
+</body>
+</html>

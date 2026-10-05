@@ -10,23 +10,24 @@
   <link rel="stylesheet" href="../dist/verxee-ui.min.css">
   <link rel="stylesheet" href="docs.css">
   <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+  <script src="../dist/verxee-ui.min.js"></script>
 </head>
 <body>
 <a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
 <nav class="admin-topbar" aria-label="Top bar">
   <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
-  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.1.0</span></a></div>
   <div class="d-flex align-items-center gap-2 ms-auto">
     <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
     <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
     <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
   </div>
 </nav>
-<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link active" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Customize</li><li class="nav-item"><a class="nav-link" href="configuration.html">Configuration</a></li><li class="nav-item"><a class="nav-link" href="customizer.html">Customizer</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link active" href="javascript.html">JavaScript API</a></li></ul></div>
 <div class="sidebar-backdrop" data-sidebar-toggle></div>
 <div class="admin-wrapper"><main class="admin-content docs" id="main">
 <h1>JavaScript API</h1>
-<p class="lead">One global, <code>window.VerxeeUI</code>, no dependencies, ~5 KB minified. Load <code>dist/verxee-ui.min.js</code> (with <code>defer</code>).</p>
+<p class="lead">One global, <code>window.VerxeeUI</code>, no dependencies, ~12 KB minified. Load <code>dist/verxee-ui.min.js</code> (with <code>defer</code>).</p>
 
 <h2>Overview</h2>
 <table class="table"><thead><tr><th>API</th><th>Description</th></tr></thead><tbody>
@@ -37,14 +38,54 @@
 <tr><td><code>VerxeeUI.sidebar.open() · close() · toggle()</code></td><td>Mobile off-canvas sidebar (<code>#sidebar</code>)</td></tr>
 <tr><td><code>VerxeeUI.toast(message, { type, duration })</code></td><td>Shows a toast; returns <code>{ close, element }</code></td></tr>
 <tr><td><code>VerxeeUI.confirm({ title, description, confirmText, cancelText, variant })</code></td><td>Promise&lt;boolean&gt;</td></tr>
+<tr><td><code>VerxeeUI.modal({ title, text | html | content, size, fields, buttons })</code></td><td>Promise — see below</td></tr>
+<tr><td><code>VerxeeUI.popover(anchor, { title, text | html | content, actions, placement })</code></td><td>Returns <code>{ close, element }</code>; closes on outside click and Esc</td></tr>
+<tr><td><code>VerxeeUI.button(spec)</code></td><td>Returns a button element — <a href="configuration.html">spec</a></td></tr>
+<tr><td><code>VerxeeUI.app(config)</code></td><td>Builds topbar + sidebar from config — <a href="configuration.html">Configuration</a></td></tr>
+<tr><td><code>VerxeeUI.configure({ theme, toast, confirm, modal, buttons })</code></td><td>Look and defaults</td></tr>
 </tbody></table>
 <p>Details and live demos: <a href="feedback.html">Feedback</a> and <a href="theming.html">Theming</a>.</p>
+
+<h2>Modal</h2>
+<p>Plain dialog, or a form: pass <code>fields</code> and the promise resolves with the values.</p>
+<div class="example"><div class="example-preview"><button class="btn btn-secondary" id="jm1">Dialog</button>
+<button class="btn btn-secondary" id="jm2">Form</button>
+<button class="btn btn-secondary" id="jm3">Custom buttons</button>
+<script>
+document.getElementById('jm1').onclick = () => VerxeeUI.modal({ title: 'About', text: 'Plain text content.', buttons: [{ label: 'Close', variant: 'primary', value: true }] });
+document.getElementById('jm2').onclick = () => VerxeeUI.modal({ title: 'New customer', fields: [
+  { name: 'name', label: 'Name', required: true }, { name: 'plan', label: 'Plan', type: 'select', options: ['Free', 'Pro'] } ] })
+  .then(v => v && VerxeeUI.toast('Hello ' + v.name + ' (' + v.plan + ')'));
+document.getElementById('jm3').onclick = () => VerxeeUI.modal({ title: 'Unsaved changes', size: 'sm', text: 'Save before leaving?', buttons: [
+  { label: 'Discard', variant: 'danger', value: 'discard' }, { label: 'Cancel', variant: 'secondary', value: null }, { label: 'Save', variant: 'primary', value: 'save' } ] })
+  .then(v => VerxeeUI.toast('Chose: ' + v));
+</script></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" id="jm1"&gt;Dialog&lt;/button&gt;
+&lt;button class="btn btn-secondary" id="jm2"&gt;Form&lt;/button&gt;
+&lt;button class="btn btn-secondary" id="jm3"&gt;Custom buttons&lt;/button&gt;
+&lt;script&gt;
+document.getElementById('jm1').onclick = () =&gt; VerxeeUI.modal({ title: 'About', text: 'Plain text content.', buttons: [{ label: 'Close', variant: 'primary', value: true }] });
+document.getElementById('jm2').onclick = () =&gt; VerxeeUI.modal({ title: 'New customer', fields: [
+  { name: 'name', label: 'Name', required: true }, { name: 'plan', label: 'Plan', type: 'select', options: ['Free', 'Pro'] } ] })
+  .then(v =&gt; v &amp;&amp; VerxeeUI.toast('Hello ' + v.name + ' (' + v.plan + ')'));
+document.getElementById('jm3').onclick = () =&gt; VerxeeUI.modal({ title: 'Unsaved changes', size: 'sm', text: 'Save before leaving?', buttons: [
+  { label: 'Discard', variant: 'danger', value: 'discard' }, { label: 'Cancel', variant: 'secondary', value: null }, { label: 'Save', variant: 'primary', value: 'save' } ] })
+  .then(v =&gt; VerxeeUI.toast('Chose: ' + v));
+&lt;/script&gt;</code></pre></div>
+<p>Resolves with the pressed button's <code>value</code> (default buttons: OK = <code>true</code>, Cancel = <code>false</code>); closing with Esc, ✕ or the backdrop gives <code>null</code>. With <code>fields</code> OK gives <code>{ name: value }</code> and required fields are validated. A button's <code>onClick</code> may return <code>false</code> (or a Promise of it) to keep the dialog open. Options: <code>size</code> <code>sm | md | lg</code>, <code>closable</code>, <code>closeOnBackdrop</code>. Field types: any <code>input</code> type, <code>textarea</code>, <code>select</code> (with <code>options</code>).</p>
+
+<h2>Popover</h2>
+<div class="example"><div class="example-preview"><button class="btn btn-secondary" data-vx-popover="Short, contextual help." data-vx-popover-title="Declarative">Via attribute</button>
+<button class="btn btn-secondary" id="jp1">Via JavaScript</button>
+<script>document.getElementById('jp1').onclick = e => VerxeeUI.popover(e.currentTarget, { title: 'Archive?', text: 'You can restore it later.', actions: [{ label: 'Cancel', variant: 'secondary' }, { label: 'Archive', variant: 'primary', onClick: () => VerxeeUI.toast('Archived') }] });</script></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" data-vx-popover="Short, contextual help." data-vx-popover-title="Declarative"&gt;Via attribute&lt;/button&gt;
+&lt;button class="btn btn-secondary" id="jp1"&gt;Via JavaScript&lt;/button&gt;
+&lt;script&gt;document.getElementById('jp1').onclick = e =&gt; VerxeeUI.popover(e.currentTarget, { title: 'Archive?', text: 'You can restore it later.', actions: [{ label: 'Cancel', variant: 'secondary' }, { label: 'Archive', variant: 'primary', onClick: () =&gt; VerxeeUI.toast('Archived') }] });&lt;/script&gt;</code></pre></div>
 
 <h2>Declarative attributes</h2>
 <table class="table"><thead><tr><th>Attribute</th><th>Where</th><th>Does</th></tr></thead><tbody>
 <tr><td><code>data-theme-toggle</code></td><td>any element</td><td>Click toggles light/dark</td></tr>
 <tr><td><code>data-sidebar-toggle</code></td><td>menu button, <code>.sidebar-backdrop</code></td><td>Click toggles the mobile sidebar</td></tr>
 <tr><td><code>data-confirm="text"</code></td><td>button / link / submit</td><td>Asks first; action runs only on confirm</td></tr>
+<tr><td><code>data-vx-popover="text"</code></td><td>any element</td><td>Click opens a popover (<code>data-vx-popover-title</code> optional)</td></tr>
 <tr><td><code>data-confirm-title · -ok · -variant</code></td><td>with <code>data-confirm</code></td><td>Dialog title (then <code>data-confirm</code> becomes the description), confirm label, <code>danger | warning | info</code> (default <code>danger</code>)</td></tr>
 </tbody></table>
 
@@ -61,6 +102,5 @@
 
 </main></div>
 <script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
-<script defer src="../dist/verxee-ui.min.js"></script>
 </body>
 </html>

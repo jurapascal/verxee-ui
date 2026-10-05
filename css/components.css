@@ -13,7 +13,7 @@ a:hover { color: var(--admin-action-hover); }
 .status, .badge {
   display: inline-flex; align-items: center; gap: 4px;
   height: 22px; padding: 0 8px; font-size: 12px; font-weight: 500;
-  line-height: 1; border-radius: 6px; border: none;
+  line-height: 1; border-radius: var(--radius-sm); border: none;
   white-space: nowrap; text-transform: none; vertical-align: middle;
 }
 .status--success, .badge--success, .bg-green-lt, .bg-success-lt { background: rgba(16,185,129,.12) !important; color: #047857 !important; }
@@ -34,13 +34,13 @@ a:hover { color: var(--admin-action-hover); }
    ══════════════════════════════════════════ */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-  height: 34px; padding: 0 14px; font-size: 13px; font-weight: 500;
-  border-radius: 8px; border: 1px solid transparent;
+  height: var(--control-h); padding: 0 14px; font-size: 13px; font-weight: 500;
+  border-radius: var(--radius-md); border: 1px solid transparent;
   cursor: pointer; transition: all .12s ease; white-space: nowrap;
   text-decoration: none; line-height: 1; user-select: none;
 }
-.btn-sm, .btn--sm { height: 28px; padding: 0 10px; font-size: 12px; }
-.btn-lg, .btn--lg { height: 40px; padding: 0 18px; font-size: 14px; }
+.btn-sm, .btn--sm { height: var(--control-h-sm); padding: 0 10px; font-size: 12px; }
+.btn-lg, .btn--lg { height: var(--control-h-lg); padding: 0 18px; font-size: 14px; }
 .btn--icon { width: 34px; padding: 0; } .btn--icon.btn-sm, .btn--icon.btn--sm { width: 28px; } .btn--icon.btn-lg, .btn--icon.btn--lg { width: 40px; }
 
 .btn-primary, .btn--primary { background: var(--admin-action); color: var(--admin-action-text); box-shadow: 0 1px 2px rgba(37,99,235,.2); }
@@ -121,9 +121,9 @@ a:hover { color: var(--admin-action-hover); }
    INPUTS — 34px height (matches buttons)
    ══════════════════════════════════════════ */
 .form-control, .form-select {
-  height: 34px; padding: 0 12px; font-size: 13px;
+  height: var(--control-h); padding: 0 12px; font-size: 13px;
   background: var(--admin-surface); border: 1px solid var(--admin-border);
-  border-radius: 8px; color: var(--admin-text);
+  border-radius: var(--radius-md); color: var(--admin-text);
   transition: border-color .12s, box-shadow .12s; width: 100%;
 }
 .form-control:hover, .form-select:hover { border-color: var(--admin-border-strong); }
@@ -145,14 +145,14 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 .input-group > .form-control:focus { position: relative; z-index: 2; }
 .input-group > .form-control-color { flex: 0 0 auto; width: 46px; padding: 4px; cursor: pointer; }
 .form-label { display: block; font-size: 12px; font-weight: 500; color: var(--admin-text-secondary); margin-bottom: 6px; }
-.form-control-sm, .form-select-sm { height: 28px; padding: 0 8px; font-size: 12px; }
+.form-control-sm, .form-select-sm { height: var(--control-h-sm); padding: 0 8px; font-size: 12px; }
 .form-check-input { border-color: var(--admin-border); }
 .form-check-input:checked { background-color: var(--admin-accent); border-color: var(--admin-accent); }
 
 /* ══════════════════════════════════════════
    CARDS & SECTIONS — 12px radius, subtle shadow
    ══════════════════════════════════════════ */
-.card { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,.03); }
+.card { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-lg); box-shadow: 0 1px 3px rgba(0,0,0,.03); }
 .card-header { border-bottom: 1px solid var(--admin-border); padding: 16px 20px; background: transparent; }
 .card-header .card-title { font-size: 14px; font-weight: 600; margin: 0; }
 /* Popup/modal titles match card titles (unified, applies to every modal automatically) */
@@ -184,8 +184,8 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 /* ══════════════════════════════════════════
    SIDEBAR — 240px, same bg as page
    ══════════════════════════════════════════ */
-.sidebar { width: 240px; background: var(--admin-bg); border-right: 1px solid var(--admin-border) !important; }
-.sidebar-nav .nav-link { font-size: 13px; padding: 6px 12px; color: var(--admin-text); border-radius: 6px; height: 32px; display: flex; align-items: center; gap: 10px; margin: 1px 8px; transition: background .1s; }
+.sidebar { width: var(--sidebar-w); background: var(--admin-bg); border-right: 1px solid var(--admin-border) !important; }
+.sidebar-nav .nav-link { font-size: 13px; padding: 6px 12px; color: var(--admin-text); border-radius: var(--radius-sm); height: 32px; display: flex; align-items: center; gap: 10px; margin: 1px 8px; transition: background .1s; }
 .sidebar-nav .nav-link:hover { background: var(--admin-surface-hover); }
 .sidebar-nav .nav-link.active { background: var(--admin-surface-selected); font-weight: 500; }
 /* hide CoreUI's expand/collapse caret on group toggles — unnecessary */
@@ -214,7 +214,7 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 /* ══════════════════════════════════════════
    LAYOUT — max-width content
    ══════════════════════════════════════════ */
-.admin-wrapper { margin-left: 240px; padding-top: 48px; min-height: 100vh; }
+.admin-wrapper { margin-left: var(--sidebar-w); padding-top: 48px; min-height: 100vh; }
 .sidebar { top: 48px !important; height: calc(100vh - 48px) !important; }
 .admin-content { padding: var(--gap-section) 32px; max-width: 1400px; margin: 0 auto; width: 100%; }
 @media (max-width: 991.98px) { .admin-wrapper { margin-left: 0; } }
@@ -232,7 +232,7 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 /* ══════════════════════════════════════════
    STATS STRIP
    ══════════════════════════════════════════ */
-.stats-strip { display: flex; background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 12px; padding: 16px 0; margin-bottom: var(--gap-base); box-shadow: 0 1px 3px rgba(0,0,0,.03); }
+.stats-strip { display: flex; background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-lg); padding: 16px 0; margin-bottom: var(--gap-base); box-shadow: 0 1px 3px rgba(0,0,0,.03); }
 /* Icon sits in a circle on the left; label, value and sub keep their natural
    markup order. The icon lives inside .stat-label, so it's lifted out with
    absolute positioning — that keeps this layout in one place instead of
@@ -257,7 +257,7 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
    STICKY SAVE BAR
    ══════════════════════════════════════════ */
 .page-actions-bar {
-  position: fixed; left: 240px; right: 0; bottom: 0; z-index: 1030;
+  position: fixed; left: var(--sidebar-w); right: 0; bottom: 0; z-index: 1030;
   display: flex; align-items: center; gap: 10px;
   padding: 12px 24px; border-top: 1px solid var(--admin-border);
   background: rgba(255,255,255,.92); backdrop-filter: blur(8px);
@@ -272,8 +272,8 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 /* ══════════════════════════════════════════
    DROPDOWNS
    ══════════════════════════════════════════ */
-.dropdown-menu { border: 1px solid var(--admin-border); box-shadow: var(--shadow-popover); background: var(--admin-surface); border-radius: 10px; padding: 4px; color: var(--admin-text); }
-.dropdown-item { padding: 8px 12px; font-size: 13px; color: var(--admin-text) !important; border-radius: 6px; background: transparent; }
+.dropdown-menu { border: 1px solid var(--admin-border); box-shadow: var(--shadow-popover); background: var(--admin-surface); border-radius: var(--radius-lg); padding: 4px; color: var(--admin-text); }
+.dropdown-item { padding: 8px 12px; font-size: 13px; color: var(--admin-text) !important; border-radius: var(--radius-sm); background: transparent; }
 .dropdown-item:hover, .dropdown-item:focus { background: var(--admin-surface-hover) !important; color: var(--admin-text) !important; }
 /* Flyout submenu — hover opens to the right */
 .dropdown-submenu { position: relative; }
@@ -293,7 +293,7 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
    CONFIRM MODAL
    ══════════════════════════════════════════ */
 .admin-confirm-overlay { position: fixed; inset: 0; z-index: 99999; background: var(--admin-overlay); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; padding: 20px; }
-.admin-confirm-box { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 14px; box-shadow: 0 16px 48px rgba(0,0,0,.2); width: 100%; max-width: 380px; padding: 24px; text-align: center; }
+.admin-confirm-box { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-xl); box-shadow: 0 16px 48px rgba(0,0,0,.2); width: 100%; max-width: 380px; padding: 24px; text-align: center; }
 .admin-confirm-icon { width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 16px; }
 .admin-confirm-icon--warning { background: rgba(245,158,11,.1); color: #f59e0b; }
 .admin-confirm-icon--danger { background: rgba(239,68,68,.1); color: #ef4444; }
@@ -308,7 +308,7 @@ textarea.form-control { height: auto; min-height: 80px; padding: 10px 12px; line
 /* ══════════════════════════════════════════
    POPOVER
    ══════════════════════════════════════════ */
-.admin-popover { position: absolute; z-index: 1060; background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,.16), 0 2px 6px rgba(0,0,0,.08); padding: 12px 16px; min-width: 200px; max-width: 320px; font-size: 13px; }
+.admin-popover { position: absolute; z-index: 1060; background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-lg); box-shadow: 0 8px 28px rgba(0,0,0,.16), 0 2px 6px rgba(0,0,0,.08); padding: 12px 16px; min-width: 200px; max-width: 320px; font-size: 13px; }
 /* Lift the row holding an open popover above sibling (tinted) rows so nothing bleeds through */
 tr.popover-host { position: relative; z-index: 20; }
 /* Fixed-positioned popover (JS-placed + viewport-clamped) → no arrow, hard reset offsets */
@@ -435,7 +435,7 @@ body { background-color: var(--admin-bg) !important; color: var(--admin-text) !i
 
 /* CoreUI nav tabs */
 .nav-tabs .nav-link { color: var(--admin-text-secondary); border: none; }
-.nav-tabs .nav-link.active { color: var(--admin-text); background: var(--admin-surface-selected); border: none; border-radius: 6px; }
+.nav-tabs .nav-link.active { color: var(--admin-text); background: var(--admin-surface-selected); border: none; border-radius: var(--radius-sm); }
 .nav-tabs { border-bottom: 1px solid var(--admin-border); }
 
 /* CoreUI list-group */

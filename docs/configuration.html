@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Configuration — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+  <script src="../dist/verxee-ui.min.js"></script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.1.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Customize</li><li class="nav-item"><a class="nav-link active" href="configuration.html">Configuration</a></li><li class="nav-item"><a class="nav-link" href="customizer.html">Customizer</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Configuration</h1>
+<p class="lead">Describe your app in one object — sidebar, topbar, buttons, dialogs, look — and Verxee UI builds it. No markup to copy, nothing to rewire.</p>
+
+<h2>The shortest possible setup</h2>
+<p>Add a <code>&lt;main id="main"&gt;</code> with your page, then call <code>VerxeeUI.app()</code>. It wraps <code>#main</code> and creates the topbar, sidebar, mobile drawer and skip link.</p>
+<pre><code>VerxeeUI.app({
+  theme:   { accent: '#7C3AED', radius: 'round', density: 'comfortable' },
+  brand:   { name: 'Acme Admin', icon: 'bolt', href: '#/dashboard' },
+  sidebar: [
+    { label: 'Dashboard', icon: 'layout-dashboard', href: '#/dashboard' },
+    { label: 'Orders',    icon: 'shopping-cart',    href: '#/orders', badge: 4 },
+    { label: 'Catalog',   icon: 'tag', children: [
+      { label: 'Products',   href: '#/products' },
+      { label: 'Categories', href: '#/categories' } ] },
+    { title: 'Admin' },
+    { label: 'Audit log', icon: 'history', href: '#/audit' }
+  ],
+  sidebarFooter: [{ label: 'Settings', icon: 'settings', href: '#/settings' }],
+  topbar: { right: [
+    { label: 'New order', icon: 'plus', variant: 'primary', size: 'sm', onClick: () =&gt; openNewOrder() },
+    { type: 'notifications', items: [{ icon: 'credit-card', title: 'Order #1042 paid', unread: true }] },
+    'theme',
+    { type: 'user', name: 'Jane Doe', menu: [
+      { label: 'Profile', icon: 'user', href: '#/profile' },
+      { divider: true },
+      { label: 'Sign out', icon: 'logout', danger: true, confirm: { title: 'Sign out?' } } ] }
+  ] }
+});</code></pre>
+<p>See it running: <a href="../examples/app.html">examples/app.html</a>. Prefer no JavaScript at all? Put the same object as JSON in <code>&lt;script type="application/json" data-verxee-config&gt;…&lt;/script&gt;</code> (links, menus and badges work; callbacks need JS).</p>
+
+<h2>Sidebar items</h2>
+<table class="table"><thead><tr><th>Item</th><th>Shape</th></tr></thead><tbody>
+<tr><td>Link</td><td><code>{ label, icon, href, badge, active, onClick, confirm }</code> — <code>active</code> is detected from the URL/hash; set it only to force it</td></tr>
+<tr><td>Group</td><td><code>{ label, icon, children: [links] }</code> — opens automatically when a child is active</td></tr>
+<tr><td>Heading</td><td><code>{ title: 'Admin' }</code></td></tr>
+<tr><td>Divider</td><td><code>{ divider: true }</code></td></tr>
+</tbody></table>
+<p>Change it later: <code>const shell = VerxeeUI.app(…); shell.setSidebar(newItems)</code> — e.g. after loading the user's permissions, so people only see what they may use.</p>
+
+<h2>Topbar items</h2>
+<p><code>topbar.left</code> (after the brand) and <code>topbar.right</code> accept these:</p>
+<table class="table"><thead><tr><th>Item</th><th>Result</th></tr></thead><tbody>
+<tr><td><code>'theme'</code></td><td>Light/dark toggle</td></tr>
+<tr><td><code>{ type: 'notifications', items, title, emptyText }</code></td><td>Bell with unread counter and dropdown. Item: <code>{ icon, title, body, href, unread }</code></td></tr>
+<tr><td><code>{ type: 'user', name, initials, menu }</code></td><td>Avatar + dropdown menu</td></tr>
+<tr><td><code>{ type: 'menu', label, icon, items, align }</code></td><td>Any dropdown. Items: <code>{ label, icon, href, onClick, confirm, danger }</code> or <code>{ divider: true }</code></td></tr>
+<tr><td><code>{ type: 'html', html }</code></td><td>Your own (trusted) markup</td></tr>
+<tr><td><code>{ label, icon, variant, size, href, onClick, … }</code></td><td>A button — see below</td></tr>
+</tbody></table>
+<p>Replace it later with <code>shell.setTopbar({ right: [...] })</code>.</p>
+
+<h2>Buttons (actions)</h2>
+<p>Every button in the config — and <code>VerxeeUI.button(spec)</code> anywhere — uses the same spec:</p>
+<table class="table"><thead><tr><th>Key</th><th></th></tr></thead><tbody>
+<tr><td><code>label</code>, <code>icon</code>, <code>title</code></td><td>Text, Tabler icon name (<code>'plus'</code>), tooltip/aria-label. No <code>label</code> → icon-only button</td></tr>
+<tr><td><code>variant</code></td><td><code>primary · secondary · ghost · danger · ghost-danger · warning · link</code></td></tr>
+<tr><td><code>size</code></td><td><code>'sm'</code> or <code>'lg'</code></td></tr>
+<tr><td><code>href</code> / <code>onClick(event, spec)</code></td><td>Link or handler</td></tr>
+<tr><td><code>confirm</code></td><td>Confirm options (<code>{ title, description, variant, … }</code>) — asks first, runs the action only on OK</td></tr>
+<tr><td><code>badge</code>, <code>disabled</code>, <code>className</code>, <code>id</code></td><td></td></tr>
+</tbody></table>
+<div class="example"><div class="example-preview"><div id="btnDemo" class="d-flex gap-2 flex-wrap"></div>
+<script>
+document.getElementById('btnDemo').append(
+  VerxeeUI.button({ label: 'Save', icon: 'device-floppy', variant: 'primary', onClick: () => VerxeeUI.toast('Saved', { type: 'success' }) }),
+  VerxeeUI.button({ icon: 'trash', variant: 'danger', title: 'Delete', confirm: { title: 'Delete?', variant: 'danger', confirmText: 'Delete' }, onClick: () => VerxeeUI.toast('Deleted') }),
+  VerxeeUI.button({ label: 'Docs', variant: 'link', href: 'index.html' })
+);
+</script></div><pre class="example-code"><code>&lt;div id="btnDemo" class="d-flex gap-2 flex-wrap"&gt;&lt;/div&gt;
+&lt;script&gt;
+document.getElementById('btnDemo').append(
+  VerxeeUI.button({ label: 'Save', icon: 'device-floppy', variant: 'primary', onClick: () =&gt; VerxeeUI.toast('Saved', { type: 'success' }) }),
+  VerxeeUI.button({ icon: 'trash', variant: 'danger', title: 'Delete', confirm: { title: 'Delete?', variant: 'danger', confirmText: 'Delete' }, onClick: () =&gt; VerxeeUI.toast('Deleted') }),
+  VerxeeUI.button({ label: 'Docs', variant: 'link', href: 'index.html' })
+);
+&lt;/script&gt;</code></pre></div>
+<h3>Your own button variants</h3>
+<pre><code>VerxeeUI.configure({ buttons: { brand: 'btn-primary my-brand-button', soft: 'btn-secondary' } });
+VerxeeUI.button({ label: 'Upgrade', variant: 'brand' });</code></pre>
+
+<h2>Defaults for popups</h2>
+<p>Set once, applies everywhere — including <code>data-confirm</code> attributes and buttons with <code>confirm</code>.</p>
+<pre><code>VerxeeUI.configure({
+  toast:   { duration: 4000, position: 'top-right' },       // top|bottom + left|center|right
+  confirm: { confirmText: 'Yes', cancelText: 'No',
+             icons: { danger: 'alert-octagon' } },           // Tabler icon per variant
+  modal:   { size: 'lg', closeOnBackdrop: false, okText: 'Save' }
+});</code></pre>
+
+<h2>Look &amp; feel</h2>
+<p><code>configure({ theme })</code> — try every option live in the <a href="customizer.html">Customizer</a>.</p>
+<table class="table"><thead><tr><th>Option</th><th>Values</th></tr></thead><tbody>
+<tr><td><code>accent</code> <code>accentHover</code></td><td>Any CSS colour. Hover defaults to a darker mix</td></tr>
+<tr><td><code>radius</code></td><td><code>'sharp' · 'default' · 'round'</code></td></tr>
+<tr><td><code>density</code></td><td><code>'compact' · 'default' · 'comfortable'</code> (control heights 30 / 34 / 38 px)</td></tr>
+<tr><td><code>font</code></td><td>CSS font stack</td></tr>
+<tr><td><code>sidebarWidth</code></td><td>Number (px) or CSS length</td></tr>
+<tr><td><code>mode</code></td><td><code>'light'</code> or <code>'dark'</code> (not saved)</td></tr>
+</tbody></table>
+<p>Without JavaScript the same knobs are HTML attributes and CSS variables: <code>&lt;html data-vx-radius="round" data-vx-density="compact"&gt;</code>, <code>--radius-sm/md/lg/xl</code>, <code>--control-h</code>, <code>--sidebar-w</code>, <code>--admin-accent</code>.</p>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+</body>
+</html>
