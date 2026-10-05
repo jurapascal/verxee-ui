@@ -1,0 +1,53 @@
+<!-- title: Security | group: Security | order: 41 -->
+<h1>Security</h1>
+<p class="lead">What Verxee UI does for you in the browser, and what only your server can do.</p>
+
+<h2>Threat model in one paragraph</h2>
+<p>Everything that runs in the browser is under the visitor's control. So the UI can make attacks harder (XSS, CSRF, clickjacking, session theft) and make the secure path the easy one — but <strong>authentication, sessions, authorisation and rate limiting live on the server</strong>. Never ship data in the HTML or JS that a signed-out user must not see, and re-check permissions on every API call.</p>
+
+<h2>Built into the UI</h2>
+<table class="table"><thead><tr><th>Protection</th><th>How</th></tr></thead><tbody>
+<tr><td>XSS: text is text</td><td>Every label, title, message and cell is set with <code>textContent</code>. User data in <code>text</code> / <code>label</code> options can't inject markup.</td></tr>
+<tr><td>XSS: HTML is sanitized</td><td>The <code>html</code> options (<code>html</code> block, modal/popover <code>html</code>, card <code>html</code>) pass through <code>VerxeeUI.sanitize()</code>: scripts, iframes, <code>on*</code> handlers, <code>javascript:</code>/<code>data:</code> URLs are removed. Opt out only deliberately: <code>configure({ security: { trustHtml: true } })</code>.</td></tr>
+<tr><td>Unsafe URLs</td><td>Every <code>href</code>/<code>logo</code> goes through <code>safeHref</code> — <code>javascript:</code>, <code>vbscript:</code> and <code>data:</code> become <code>#</code>.</td></tr>
+<tr><td>CSP-friendly</td><td>No <code>eval</code>, no inline event handlers, no inline <code>&lt;script&gt;</code>/<code>&lt;style&gt;</code>. Works under <code>script-src 'self'; style-src 'self'</code> (tested). Self-hosted fonts and icons need no third-party origins.</td></tr>
+<tr><td>CSRF</td><td><code>VerxeeUI.fetch</code> adds the token header to unsafe methods and uses same-origin credentials.</td></tr>
+<tr><td>No secrets in storage</td><td>The framework never stores tokens or passwords. Only the theme choice lives in <code>localStorage</code>.</td></tr>
+<tr><td>No user enumeration</td><td>One generic sign-in error; the reset screen always says “if an account exists…”.</td></tr>
+<tr><td>Session hygiene</td><td>Idle sign-out, sign-out in all tabs, content removed from the DOM on sign-out, 401 handling.</td></tr>
+<tr><td>Supply chain</td><td>CoreUI, icons and fonts are self-hosted/vendored. For CDN use, Subresource Integrity hashes are published in <code>dist/sri.json</code> (see <a href="installation.html">Installation</a>).</td></tr>
+</tbody></table>
+
+<h2>What your server must do</h2>
+<p><code>examples/server.mjs</code> is a small reference implementation (about 100 lines, no dependencies) of exactly these points:</p>
+<ol>
+  <li><strong>Cookies, not tokens in JS.</strong> Session id in a cookie that is <code>HttpOnly; Secure; SameSite=Strict</code>, 256-bit random, stored hashed server-side, <strong>regenerated on login</strong>, destroyed on logout, with idle and absolute expiry.</li>
+  <li><strong>Hash passwords</strong> with scrypt / argon2 / bcrypt; compare in constant time; do the work even for unknown users.</li>
+  <li><strong>Rate-limit and lock out</strong> per account and per IP; return <code>429</code>. (The UI cool-down is cosmetic.)</li>
+  <li><strong>CSRF protection</strong> on every state-changing request (double-submit cookie or synchroniser token) — plus <code>SameSite</code>.</li>
+  <li><strong>Authorise every request</strong> against the session's permissions; the UI's <code>can</code> filter is not access control.</li>
+  <li><strong>Security headers</strong> on every response: a strict CSP, <code>X-Content-Type-Options: nosniff</code>, <code>frame-ancestors 'none'</code> (clickjacking), <code>Referrer-Policy</code>, HSTS over HTTPS.</li>
+  <li><strong>Use HTTPS only.</strong> Add 2FA for admin accounts (the UI supports the code step).</li>
+  <li><strong>Escape output</strong> and validate input on the server as well.</li>
+</ol>
+
+<h2>Recommended CSP</h2>
+<pre><code>Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self';
+  img-src 'self' data:; font-src 'self'; connect-src 'self';
+  frame-ancestors 'none'; base-uri 'self'; form-action 'self'</code></pre>
+<p>Load the runtime as a normal file (<code>&lt;script src="…/verxee-ui.min.js"&gt;</code>) and put your <code>VerxeeUI.app({…})</code> call in a file too, not inline (<code>examples/auth.js</code>). If you serve it from a CDN, add that origin to <code>script-src</code> and use the SRI hash.</p>
+
+<h2>Checklist before going live</h2>
+<ul>
+  <li>☐ HTTPS everywhere, cookies <code>Secure; HttpOnly; SameSite</code></li>
+  <li>☐ Every API route checks the session <em>and</em> the permission</li>
+  <li>☐ Login is rate-limited; passwords hashed with a slow hash</li>
+  <li>☐ CSRF token verified on POST/PUT/PATCH/DELETE</li>
+  <li>☐ Strict CSP and the headers above</li>
+  <li>☐ Nothing confidential in static HTML/JS; data is fetched after sign-in</li>
+  <li>☐ <code>trustHtml</code> is still <code>false</code>; user data goes in <code>text</code>/<code>label</code>, never <code>html</code></li>
+  <li>☐ Pin the version (<code>@v2.2.0</code>) and use SRI</li>
+</ul>
+
+<h2>Reporting a vulnerability</h2>
+<p>Please report security issues privately through GitHub's “Report a vulnerability” on the repository rather than a public issue.</p>

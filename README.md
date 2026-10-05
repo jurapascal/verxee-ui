@@ -27,11 +27,11 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 Straight from GitHub via [jsDelivr](https://www.jsdelivr.com/) — no download, no build:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/coreui/coreui.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/tabler-icons/css/tabler-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/dist/verxee-ui.min.css">
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/vendor/coreui/coreui.bundle.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.1.0/dist/verxee-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.2.0/vendor/coreui/coreui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.2.0/vendor/tabler-icons/css/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.2.0/dist/verxee-ui.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.2.0/vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.2.0/dist/verxee-ui.min.js"></script>
 ```
 
 Set `<html data-coreui-theme="light">` and you are done. `css/verxee-ui.css` is fonts + tokens + components + layout in one file;
@@ -39,6 +39,20 @@ pin a version tag (as above) so updates never surprise you, or use `@main` for t
 
 Prefer self-hosting? Clone the repo and use the same files from `css/` and `vendor/` (load CoreUI first, then Verxee UI).
 Open `index.html` for a full working shell. Icons are [Tabler Icons](https://tabler.io/icons).
+
+## Build an app from config
+
+```js
+VerxeeUI.app({
+  brand: { name: 'Acme', icon: 'bolt' },
+  auth: { urls: { session: '/api/me', login: '/api/login', logout: '/api/logout' }, idleTimeout: 15 },
+  topbar: { right: ['theme', 'user'] },
+  sidebar: [{ label: 'Orders', icon: 'shopping-cart', href: '#/orders', can: 'orders.view' }],
+  page: [{ type: 'heading', title: 'Dashboard' }, { type: 'stats', items: [{ label: 'Orders', value: 128 }] }]
+});
+```
+
+Sign-in screen, sign-out, 2FA step, session expiry, permissions and the same *blocks* in topbar, sidebar and page — see [Blocks](https://jurapascal.github.io/verxee-ui/docs/blocks.html), [Login & sessions](https://jurapascal.github.io/verxee-ui/docs/authentication.html) and [Security](https://jurapascal.github.io/verxee-ui/docs/security.html). The UI is secure by construction (sanitized HTML, CSP-safe, CSRF-aware), but authentication itself is enforced by **your server**; `examples/server.mjs` is a reference implementation.
 
 ## JavaScript
 

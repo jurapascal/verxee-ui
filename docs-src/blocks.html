@@ -1,0 +1,76 @@
+<!-- title: Blocks (compose anything) | group: Customize | order: 7 -->
+<h1>Blocks</h1>
+<p class="lead">One vocabulary for the whole UI. A <em>block</em> is a plain object with a <code>type</code>. Put the same blocks in the topbar, the sidebar or the page — and nest them (a card contains a table, a grid contains cards).</p>
+
+<pre><code>VerxeeUI.app({
+  topbar:        { left: [ … ], center: [ … ], right: [ … ] },   // blocks
+  sidebarHeader: [ … ],                                           // blocks above the menu
+  sidebar:       [ … ],                                           // nav items and/or blocks
+  sidebarFooter: [ … ],
+  page:          [ … ]                                            // blocks in the main area
+});
+VerxeeUI.mount('#panel', [ … ]);                                  // or render blocks anywhere</code></pre>
+
+<h2>Where each block can go</h2>
+<table class="table"><thead><tr><th>Block <code>type</code></th><th>Topbar</th><th>Sidebar</th><th>Page</th><th>Key options</th></tr></thead><tbody>
+<tr><td><code>button</code> <span class="muted">(default)</span></td><td>✓</td><td>✓</td><td>✓</td><td><code>label icon variant size href onClick confirm badge</code></td></tr>
+<tr><td><code>menu</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>label icon items[] align</code></td></tr>
+<tr><td><code>search</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>placeholder width onSearch(q) onInput(q)</code></td></tr>
+<tr><td><code>theme</code> (or <code>'theme'</code>)</td><td>✓</td><td>✓</td><td>✓</td><td>light/dark toggle</td></tr>
+<tr><td><code>notifications</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>items[] title emptyText</code></td></tr>
+<tr><td><code>user</code> (or <code>'user'</code>)</td><td>✓</td><td>✓</td><td>✓</td><td>Filled from the signed-in user; <code>menu[]</code> optional</td></tr>
+<tr><td><code>logout</code></td><td>✓</td><td>✓</td><td>✓</td><td>Sign-out button (needs <a href="authentication.html">auth</a>)</td></tr>
+<tr><td><code>badge</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>label variant</code> (success, warning, critical, info, pending, neutral)</td></tr>
+<tr><td><code>avatar</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>name initials size</code></td></tr>
+<tr><td><code>text</code> · <code>link</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>text muted</code> · <code>label href icon</code></td></tr>
+<tr><td><code>html</code></td><td>✓</td><td>✓</td><td>✓</td><td><code>html</code> — sanitized, see <a href="security.html">Security</a></td></tr>
+<tr><td><code>divider</code> · <code>spacer</code></td><td>✓</td><td>✓</td><td>✓</td><td></td></tr>
+<tr><td><code>nav</code> (link / group / heading)</td><td></td><td>✓</td><td></td><td><code>label icon href badge children[]</code>, <code>{ title }</code>, <code>{ divider: true }</code> — the default in the sidebar</td></tr>
+<tr><td><code>card</code></td><td></td><td>✓</td><td>✓</td><td><code>title body[] footer[] flush text html</code></td></tr>
+<tr><td><code>list</code> · <code>progress</code> · <code>form</code></td><td></td><td>✓</td><td>✓</td><td>list <code>items[{title, sub, dot, right, href}]</code> · progress <code>value</code> · form <code>fields[] onSubmit(values)</code></td></tr>
+<tr><td><code>heading</code></td><td></td><td></td><td>✓</td><td><code>title icon status actions[]</code></td></tr>
+<tr><td><code>stats</code> · <code>kpi</code></td><td></td><td></td><td>✓</td><td><code>items[{label, value, sub, icon, alert, onClick}]</code></td></tr>
+<tr><td><code>grid</code></td><td></td><td></td><td>✓</td><td><code>cols items[]</code> (items are blocks)</td></tr>
+<tr><td><code>tabs</code></td><td></td><td></td><td>✓</td><td><code>items[{label, href, active}]</code></td></tr>
+<tr><td><code>table</code></td><td></td><td></td><td>✓</td><td><code>columns[{key, label, render, status, align}] rows[] onRowClick empty</code></td></tr>
+<tr><td><code>timeline</code> · <code>empty</code></td><td></td><td></td><td>✓</td><td>timeline <code>items[{title, time, dot}]</code> · empty <code>icon title text action</code></td></tr>
+</tbody></table>
+<p>A block placed in an area it was not designed for still renders, but logs a console warning. List what is available at runtime with <code>VerxeeUI.blocks()</code>.</p>
+
+<h2>Every block accepts</h2>
+<table class="table"><tbody>
+<tr><td><code>can</code></td><td>Permission(s) needed — <code>'orders.view'</code>, <code>['a','b']</code> (any of) or <code>(user) =&gt; bool</code>. Not permitted → not rendered. <em>UI convenience only</em>, enforce on the server.</td></tr>
+<tr><td><code>hidden · id · className</code></td><td>Plain HTML attributes</td></tr>
+</tbody></table>
+
+<h2>Composing</h2>
+<pre><code>page: [
+  { type: 'heading', icon: 'users', title: 'Customers',
+    actions: [{ type: 'search', onSearch: load }, { label: 'Add', variant: 'primary', size: 'sm', href: '#/new' }] },
+  { type: 'stats', items: [{ icon: 'users', label: 'Total', value: 1204 }] },
+  { type: 'grid', cols: 2, items: [
+    { type: 'card', title: 'Recent', flush: true, body: [{ type: 'table', columns: [ … ], rows }] },
+    { type: 'card', title: 'Add note', body: [{ type: 'form', fields: [{ name: 'note', label: 'Note' }], onSubmit: save }] } ] }
+]</code></pre>
+
+<h3>Live example</h3>
+<!--example stack-->
+<div id="blkDemo"></div>
+<script>
+VerxeeUI.mount('#blkDemo', [
+  { type: 'heading', icon: 'users', title: 'Customers', status: { label: 'Live', variant: 'success' }, actions: [{ type: 'search', width: 180 }, { label: 'Add', icon: 'plus', variant: 'primary', size: 'sm' }] },
+  { type: 'stats', items: [{ icon: 'users', label: 'Total', value: 1204, sub: '+12 this week' }, { icon: 'alert-circle', label: 'Unpaid', value: 7, alert: true }] },
+  { type: 'grid', cols: 2, items: [
+    { type: 'card', title: 'Recent', flush: true, body: [{ type: 'table', columns: [{ key: 'n', label: 'Name' }, { key: 's', label: 'Status', status: { Active: 'success', Paused: 'warning' } }], rows: [{ n: 'Jane Doe', s: 'Active' }, { n: 'John Smith', s: 'Paused' }] }] },
+    { type: 'card', title: 'Add note', body: [{ type: 'form', fields: [{ name: 'note', label: 'Note', required: true }], onSubmit: (v) => VerxeeUI.toast('Saved: ' + v.note, { type: 'success' }) }] } ] }
+]);
+</script>
+<!--/example-->
+
+<h2>Your own blocks</h2>
+<pre><code>VerxeeUI.register('clock', ['topbar', 'page'], (spec, ctx) =&gt; {
+  const s = document.createElement('span');
+  s.textContent = new Date().toLocaleTimeString();
+  return s;                          // return a DOM node — use textContent, not innerHTML
+});
+// then: topbar: { right: [{ type: 'clock' }, 'user'] }</code></pre>

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 — blocks, login, security
+- **Blocks**: one spec vocabulary for topbar, sidebar and page (button, menu, search, notifications, user, badge, card, table, stats, kpi, grid, form, list, tabs, timeline, empty, …); nestable; `VerxeeUI.render/mount/register/blocks`. `can` permission filter on any block.
+- **Auth**: `app({ auth })` — sign-in screen, two-step code, password reset, sign-out (user menu / `logout` block), session check, 401 → "session expired", idle timeout, sign-out in all tabs; backend-agnostic adapter (`urls` or functions).
+- **Security**: HTML sanitizer for every `html` option (`security.trustHtml` to opt out), unsafe-URL blocking, `VerxeeUI.fetch` with CSRF header, CSP-compatible runtime, SRI hashes (`dist/sri.json`).
+- `examples/server.mjs` reference backend (scrypt, HttpOnly SameSite cookies, CSRF, rate limit, CSP) + `examples/auth.html`; docs: Blocks, Login & sessions, Security.
+
 ## 2.1.0 — configurable
 - `VerxeeUI.app({...})`: sidebar, topbar (buttons, menus, notifications, user), brand built from one config (or JSON in `data-verxee-config`).
 - `VerxeeUI.modal` (with form fields), `VerxeeUI.popover`, `VerxeeUI.button`; `data-vx-popover`.

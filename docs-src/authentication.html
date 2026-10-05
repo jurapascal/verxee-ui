@@ -1,0 +1,66 @@
+<!-- title: Login & sessions | group: Security | order: 40 -->
+<h1>Login &amp; sessions</h1>
+<p class="lead">Add <code>auth</code> to <code>VerxeeUI.app()</code> and you get a sign-in screen, optional two-step code, password reset, sign-out, “session expired” handling, idle timeout and per-permission menus — wired to <em>your</em> backend.</p>
+
+<div class="callout warn"><strong>Read this first.</strong> A browser UI can never be the thing that keeps people out: anyone can edit JavaScript in their own browser. Verxee UI gives you a secure <em>front end</em> for authentication; identity, sessions, rate limiting and every permission check must be done by your server. Hiding a menu item is a convenience, not protection. See <a href="security.html">Security</a>.</div>
+
+<h2>The 10-line setup</h2>
+<pre><code>VerxeeUI.app({
+  brand: { name: 'Acme Admin', icon: 'bolt' },
+  auth: {
+    urls: { session: '/api/me', login: '/api/login', logout: '/api/logout', forgot: '/api/forgot' },
+    idleTimeout: 15                       // minutes
+  },
+  sidebar: [{ label: 'Orders', icon: 'shopping-cart', href: '#/orders', can: 'orders.view' }],
+  page: [{ type: 'heading', title: 'Dashboard' }]
+});</code></pre>
+<p>Before sign-in nothing of the app is shown. After it, the topbar gets a user menu with <strong>Sign out</strong> automatically. A complete working example (screen + backend) is in <code>examples/</code>: run <code>node examples/server.mjs</code> and open <code>/examples/auth.html</code> (<code>admin@example.com</code> / <code>correct horse battery</code>).</p>
+
+<h2>The server contract (<code>auth.urls</code>)</h2>
+<table class="table"><thead><tr><th>Endpoint</th><th>Request</th><th>Response</th></tr></thead><tbody>
+<tr><td><code>session</code> <span class="muted">GET</span></td><td>cookies</td><td><code>200</code> + user JSON, or <code>401</code></td></tr>
+<tr><td><code>login</code> <span class="muted">POST JSON</span></td><td><code>{ identifier, password }</code> (also sent as <code>email</code>/<code>username</code>)</td><td><code>200</code> user JSON · <code>{ twoFactor: true }</code> to ask for a code · <code>4xx</code> + <code>{ message }</code> on failure</td></tr>
+<tr><td><code>verify2fa</code> <span class="muted">POST</span></td><td><code>{ code }</code></td><td>user JSON or <code>4xx</code></td></tr>
+<tr><td><code>forgot</code> <span class="muted">POST</span></td><td><code>{ identifier }</code></td><td><code>200</code> always (never reveal whether the account exists). Omit to hide the link.</td></tr>
+<tr><td><code>logout</code> <span class="muted">POST</span></td><td></td><td><code>200</code>, and the server destroys the session</td></tr>
+</tbody></table>
+<p>The user JSON is whatever you like; these keys are understood: <code>name</code>, <code>email</code>, <code>permissions</code> (array of strings, <code>'*'</code> = everything).</p>
+
+<h2>Using your own functions instead</h2>
+<p>Not a JSON API? Pass functions that return Promises — any of <code>session, login, verify2fa, forgot, logout</code>:</p>
+<pre><code>auth: {
+  session: () =&gt; fetch('/me.php').then(r =&gt; r.ok ? r.json() : null),
+  login:   ({ identifier, password }) =&gt; myLogin(identifier, password),   // reject with new Error('message') to show a message
+  logout:  () =&gt; fetch('/logout.php', { method: 'POST' })
+}</code></pre>
+
+<h2>Options</h2>
+<table class="table"><thead><tr><th>Option</th><th></th></tr></thead><tbody>
+<tr><td><code>idleTimeout</code></td><td>Minutes of inactivity before automatic sign-out (UI side; set the same on the server)</td></tr>
+<tr><td><code>confirmLogout</code></td><td><code>true</code> asks “Sign out?” first</td></tr>
+<tr><td><code>title · subtitle · footer</code></td><td>Texts on the sign-in card</td></tr>
+<tr><td><code>texts</code></td><td>Override any string (translations): <code>identifier, identifierType ('email' | 'text'), password, submit, forgotLink, invalid, codeTitle, codeSub, sent, locked, expired, signedOut, idle …</code></td></tr>
+<tr><td><code>onLogin / events</code></td><td><code>document.addEventListener('verxee:login', e =&gt; e.detail.user)</code> and <code>'verxee:logout'</code></td></tr>
+</tbody></table>
+<pre><code>// Czech UI, username instead of e-mail
+auth: { urls: { … }, texts: { title: 'Přihlášení', identifier: 'Uživatel', identifierType: 'text', password: 'Heslo', submit: 'Přihlásit' } }</code></pre>
+
+<h2>What happens automatically</h2>
+<ul>
+  <li><strong>Session check on load</strong> — shows the app or the sign-in screen; the page is only built after a successful sign-in, and removed from the DOM on sign-out.</li>
+  <li><strong>Two-step code</strong> screen (<code>autocomplete="one-time-code"</code>) when login answers <code>{ twoFactor: true }</code>.</li>
+  <li><strong>401 anywhere</strong> — requests made with <code>VerxeeUI.fetch()</code> that come back <code>401</code> drop the user to the sign-in screen with “session expired”.</li>
+  <li><strong>Sign out in every tab</strong> at once (BroadcastChannel), and after the idle timeout.</li>
+  <li><strong>Double-submit guard</strong>, a generic error message for every failure, a short client-side cool-down after 5 failures (UX only — the server must rate-limit), password manager friendly <code>autocomplete</code> attributes.</li>
+  <li><strong>Permissions</strong>: <code>can: 'orders.view'</code> on any block or sidebar item; <code>VerxeeUI.can('x')</code> in code.</li>
+</ul>
+
+<h2>Calling your API: <code>VerxeeUI.fetch</code></h2>
+<pre><code>const r = await VerxeeUI.fetch('/api/orders', { method: 'POST', json: { sku: 'A1' } });</code></pre>
+<p>Same-origin cookies, the CSRF header on unsafe methods (token from <code>&lt;meta name="csrf-token"&gt;</code> or an <code>XSRF-TOKEN</code> cookie; header name configurable via <code>configure({ security: { csrf: { header } } })</code>) and the 401 handling above.</p>
+
+<h2>Programmatic</h2>
+<pre><code>const shell = VerxeeUI.app({ … });
+shell.logout();             // or VerxeeUI.logout('Reason shown on the sign-in screen')
+VerxeeUI.user;              // the signed-in user (or null)
+VerxeeUI.can('orders.edit');</code></pre>

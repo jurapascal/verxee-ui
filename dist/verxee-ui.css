@@ -1,4 +1,4 @@
-/*! Verxee UI v2.1.0 | MIT | github.com/jurapascal/verxee-ui */
+/*! Verxee UI v2.2.0 | MIT | github.com/jurapascal/verxee-ui */
 /* Inter (variable, self-hosted for CSP + offline PWA) */
 @font-face {
   font-family: 'Inter';
@@ -747,3 +747,10 @@ body { overflow-x: hidden; }
 .vx-popover { width: 280px; padding: 12px 14px; }
 .vx-popover-title { font-weight: 600; margin-bottom: 4px; }
 .vx-popover-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 12px; }
+
+/* Blocks placed in the sidebar (search, user, buttons …) */
+.sidebar-top { padding: 12px 8px 4px; }
+.sidebar-block { padding: 4px 12px; }
+.sidebar-block .btn, .sidebar-block .input-group { width: 100%; }
+.sidebar > .sidebar-nav { flex: 0 0 auto; }
+.sidebar > .sidebar-footer { margin-top: auto; }

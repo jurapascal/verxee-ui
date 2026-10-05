@@ -2,6 +2,7 @@
 // 1) css/verxee-ui.css  = fonts + tokens + components + layout (bundle, kept for CDN URLs)
 // 2) dist/              = bundle + minified css, runtime js + minified js
 // 3) docs/              = documentation site built from docs-src/ (pages wrapped in docs-src/_layout.html)
+import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -31,6 +32,11 @@ const minJs = js.replace(/^\s*\/\/.*$/gm, '').replace(/\n\s*\n/g, '\n').replace(
 w('dist/verxee-ui.js', js);
 w('dist/verxee-ui.min.js', banner + minJs);
 
+// Subresource Integrity hashes for the CDN snippets in the docs
+const sri = (f) => 'sha384-' + createHash('sha384').update(readFileSync(join(root, f))).digest('base64');
+const SRI = { css: sri('dist/verxee-ui.min.css'), js: sri('dist/verxee-ui.min.js') };
+w('dist/sri.json', JSON.stringify(SRI, null, 2) + '\n');
+
 console.log('css + dist built, v' + pkg.version);
 
 // ── Docs ──
@@ -59,7 +65,7 @@ console.log('css + dist built, v' + pkg.version);
     });
     const nav = groups.map((g) => `<li class="nav-title">${g}</li>` + pages.filter((x) => x.group === g).map((x) =>
       `<li class="nav-item"><a class="nav-link${x === p ? ' active' : ''}" href="${x.file}">${x.title}</a></li>`).join('')).join('');
-    w('docs/' + p.file, layout.replace('{{title}}', p.title).replace('{{nav}}', nav).replace('{{body}}', body).replace(/\{\{version\}\}/g, pkg.version));
+    w('docs/' + p.file, layout.replace('{{title}}', p.title).replace('{{nav}}', nav).replace('{{body}}', body).replace(/\{\{version\}\}/g, pkg.version).replace(/\{\{sri_css\}\}/g, SRI.css).replace(/\{\{sri_js\}\}/g, SRI.js));
   }
   console.log('docs built: ' + pages.length + ' pages');
 }

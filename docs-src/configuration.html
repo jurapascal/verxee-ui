@@ -38,8 +38,8 @@
 </tbody></table>
 <p>Change it later: <code>const shell = VerxeeUI.app(…); shell.setSidebar(newItems)</code> — e.g. after loading the user's permissions, so people only see what they may use.</p>
 
-<h2>Topbar items</h2>
-<p><code>topbar.left</code> (after the brand) and <code>topbar.right</code> accept these:</p>
+<h2>Topbar &amp; sidebar contents</h2>
+<p>Both areas (and the page) take the same <a href="blocks.html"><strong>blocks</strong></a>: <code>topbar.left</code>, <code>topbar.center</code>, <code>topbar.right</code>, <code>sidebarHeader</code>, <code>sidebar</code>, <code>sidebarFooter</code> and <code>page</code>. Add <a href="authentication.html">login &amp; sessions</a> with <code>auth</code>. The most common topbar items:</p>
 <table class="table"><thead><tr><th>Item</th><th>Result</th></tr></thead><tbody>
 <tr><td><code>'theme'</code></td><td>Light/dark toggle</td></tr>
 <tr><td><code>{ type: 'notifications', items, title, emptyText }</code></td><td>Bell with unread counter and dropdown. Item: <code>{ icon, title, body, href, unread }</code></td></tr>
