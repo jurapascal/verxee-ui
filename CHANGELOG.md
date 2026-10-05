@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.0 — toasts
+- Toast position is per toast and global (6 corners, independent stacks); five looks (`dark`, `light`, `soft`, `solid`, `accent`); type icons, `title`, `closable`, countdown `progress`, `max`, and identical toasts merge into one with a `×N` counter.
+
 ## 2.2.0 — blocks, login, security
 - **Blocks**: one spec vocabulary for topbar, sidebar and page (button, menu, search, notifications, user, badge, card, table, stats, kpi, grid, form, list, tabs, timeline, empty, …); nestable; `VerxeeUI.render/mount/register/blocks`. `can` permission filter on any block.
 - **Auth**: `app({ auth })` — sign-in screen, two-step code, password reset, sign-out (user menu / `logout` block), session check, 401 → "session expired", idle timeout, sign-out in all tabs; backend-agnostic adapter (`urls` or functions).

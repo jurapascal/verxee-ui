@@ -43,7 +43,7 @@
   // ── Defaults (change with VerxeeUI.configure) ──
   var defaults = {
     security: { trustHtml: false, csrf: { header: 'X-CSRF-Token', token: null } },
-    toast: { duration: 2500, position: 'bottom-right' },
+    toast: { duration: 2500, position: 'bottom-right', style: 'dark', icon: null, closable: false, progress: false, max: 5, dedupe: true },
     confirm: {
       title: 'Are you sure?', confirmText: 'Confirm', cancelText: 'Cancel', variant: 'warning',
       icons: { danger: 'trash', warning: 'alert-triangle', info: 'info-circle' }
@@ -90,7 +90,6 @@
     if (t.sidebarWidth) s.setProperty('--sidebar-w', typeof t.sidebarWidth === 'number' ? t.sidebarWidth + 'px' : t.sidebarWidth);
     if (t.mode) theme.set(t.mode, false);
     ['toast', 'confirm', 'modal', 'buttons', 'security'].forEach(function (k) { if (c[k]) merge(defaults[k], c[k]); });
-    var stack = document.querySelector('.toast-stack'); if (stack) placeStack(stack);
     return defaults;
   }
 
@@ -703,24 +702,51 @@
 
   // ── Toast ──
   // toast('Saved') · toast('Failed', { type: 'critical', duration: 5000 }); type: success|warning|critical|info; duration 0 = sticky
-  function placeStack(s) {
-    var pos = defaults.toast.position || 'bottom-right';
-    s.style.top = /top/.test(pos) ? '16px' : 'auto'; s.style.bottom = /top/.test(pos) ? 'auto' : '16px';
-    s.style.left = /left/.test(pos) ? '16px' : /center/.test(pos) ? '50%' : 'auto';
-    s.style.right = /left|center/.test(pos) ? 'auto' : '16px';
-    s.style.transform = /center/.test(pos) ? 'translateX(-50%)' : '';
+  var TOAST_ICONS = { success: 'circle-check', warning: 'alert-triangle', critical: 'alert-circle', info: 'info-circle' };
+  function stackFor(pos) { // one stack per position, so different toasts can appear in different corners
+    var s = document.querySelector('.toast-stack[data-pos="' + pos + '"]');
+    if (s) return s;
+    s = el('div', 'toast-stack'); s.setAttribute('data-pos', pos); s.setAttribute('role', 'status'); s.setAttribute('aria-live', 'polite');
+    var top = /top/.test(pos), st = s.style;
+    st.top = top ? '16px' : 'auto'; st.bottom = top ? 'auto' : '16px';
+    st.left = /left/.test(pos) ? '16px' : /center/.test(pos) ? '50%' : 'auto'; st.right = /left|center/.test(pos) ? 'auto' : '16px';
+    st.transform = /center/.test(pos) ? 'translateX(-50%)' : ''; st.flexDirection = top ? 'column' : 'column-reverse'; st.alignItems = /left/.test(pos) ? 'flex-start' : /center/.test(pos) ? 'center' : 'flex-end';
+    document.body.appendChild(s); return s;
   }
+  function placeStack() {} // kept for configure(); stacks are positioned when created
+  // toast('Saved') · toast('Failed', { type: 'critical', duration: 5000 })
+  // options (each falls back to configure({ toast })): type success|warning|critical|info · duration (0 = sticky) · position top|bottom-left|center|right
+  //   style dark|light|soft|solid|accent · icon true|false|'tabler-name' · title · closable · progress · max · dedupe
   function toast(message, opts) {
-    opts = opts || {};
-    var s = document.querySelector('.toast-stack');
-    if (!s) { s = el('div', 'toast-stack'); s.setAttribute('role', 'status'); s.setAttribute('aria-live', 'polite'); document.body.appendChild(s); }
-    placeStack(s);
-    var t = el('div', 'toast-msg' + (opts.type ? ' toast-msg--' + opts.type : ''), message);
-    s.appendChild(t);
-    function close() { if (t.parentNode) t.parentNode.removeChild(t); }
-    var ms = opts.duration == null ? defaults.toast.duration : opts.duration;
-    if (ms > 0) setTimeout(close, ms);
+    var d = defaults.toast, o = merge(merge({}, d), opts || {}), type = o.type || '';
+    var s = stackFor(o.position || 'bottom-right'), sig = type + '|' + (o.title || '') + '|' + message;
+    if (o.dedupe !== false) { // same message again → count it instead of stacking a copy
+      var same = [].slice.call(s.children).filter(function (c) { return c._vxSig === sig; })[0];
+      if (same) { same._vxCount++; same._vxBadge.textContent = '×' + same._vxCount; same._vxBadge.hidden = false; same._vxRestart(); return { close: same._vxClose, element: same }; }
+    }
+    var t = el('div', 'toast-msg toast-msg--' + (o.style || 'dark') + (type ? ' toast-msg--' + type : ''));
+    t._vxSig = sig; t._vxCount = 1; t.setAttribute('role', type === 'critical' ? 'alert' : 'status');
+    var ic = o.icon === true || o.icon == null ? (o.icon === true ? TOAST_ICONS[type] || 'bell' : TOAST_ICONS[type]) : o.icon;
+    if (ic) { var w = t.appendChild(el('span', 'toast-icon')); w.appendChild(icon(ic)); }
+    var body = t.appendChild(el('div', 'toast-body'));
+    if (o.title) body.appendChild(el('div', 'toast-title', o.title));
+    body.appendChild(el('div', 'toast-text', message));
+    var badge = t._vxBadge = t.appendChild(el('span', 'toast-count')); badge.hidden = true;
+    var prog = null;
+    if (o.progress && o.duration > 0) { prog = t.appendChild(el('span', 'toast-progress')); }
+    if (o.closable) { var x = t.appendChild(el('button', 'toast-close')); x.type = 'button'; x.setAttribute('aria-label', 'Close'); x.appendChild(icon('x')); }
+    var timer;
+    function close() { clearTimeout(timer); if (t.parentNode) t.parentNode.removeChild(t); }
+    function restart() {
+      clearTimeout(timer);
+      if (prog) { prog.style.animation = 'none'; void prog.offsetWidth; prog.style.animation = 'vx-toast-progress ' + o.duration + 'ms linear forwards'; }
+      if (o.duration > 0) timer = setTimeout(close, o.duration);
+    }
+    t._vxClose = close; t._vxRestart = restart;
     t.addEventListener('click', close);
+    s.appendChild(t);
+    while (o.max > 0 && s.children.length > o.max) s.removeChild(s.firstChild);
+    restart();
     return { close: close, element: t };
   }
 
@@ -753,7 +779,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoConfig); else autoConfig();
 
   window.VerxeeUI = {
-    version: '2.2.0', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
+    version: '2.3.0', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
     can: can, fetch: vxFetch, sanitize: sanitize, logout: logout, get user() { return currentUser; },
     theme: theme, sidebar: sidebar, button: button, toast: toast, confirm: confirmDialog, modal: modal, popover: popover
   };

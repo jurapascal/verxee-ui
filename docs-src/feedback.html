@@ -3,17 +3,42 @@
 <p class="lead">Toasts, confirm dialogs, modals and popovers.</p>
 
 <h2>Toast</h2>
-<p>Call <code>VerxeeUI.toast(message, options)</code>. The stack container is created automatically. Click a toast to dismiss it early.</p>
+<p>Call <code>VerxeeUI.toast(message, options)</code>. Click a toast to dismiss it. The same message sent repeatedly is merged into one toast with a counter (<code>×3</code>) instead of stacking copies.</p>
 <!--example-->
 <button class="btn btn-secondary" onclick="VerxeeUI.toast('Settings saved')">Neutral</button>
 <button class="btn btn-secondary" onclick="VerxeeUI.toast('Order marked paid', {type:'success'})">Success</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning'})">Warning</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:5000})">Critical</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0})">Sticky info</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning', title:'Heads up'})">Warning + title</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:6000, progress:true, closable:true})">Critical + progress</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0, closable:true})">Sticky</button>
 <!--/example-->
+<h3>Look</h3>
+<!--example-->
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'dark'})">dark</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'light'})">light</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'soft'})">soft</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'solid'})">solid</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'accent'})">accent</button>
+<!--/example-->
+<h3>Position</h3>
+<!--example-->
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Top left', {position:'top-left'})">top-left</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Top center', {position:'top-center'})">top-center</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Top right', {position:'top-right'})">top-right</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom left', {position:'bottom-left'})">bottom-left</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom center', {position:'bottom-center'})">bottom-center</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom right', {position:'bottom-right'})">bottom-right</button>
+<!--/example-->
+<p>Every option can be set once for the whole app and overridden per toast:</p>
+<pre><code>VerxeeUI.configure({ toast: { position: 'top-right', style: 'soft', icon: null, closable: true, progress: true, duration: 4000, max: 4 } });</code></pre>
 <table class="table"><thead><tr><th>Option</th><th>Default</th><th></th></tr></thead><tbody>
-<tr><td><code>type</code></td><td>—</td><td><code>success | warning | critical | info</code>; omit for the dark neutral toast</td></tr>
-<tr><td><code>duration</code></td><td>2500</td><td>Milliseconds; <code>0</code> keeps it until clicked</td></tr>
+<tr><td><code>type</code></td><td>—</td><td><code>success | warning | critical | info</code> (colours the icon, border or background)</td></tr>
+<tr><td><code>position</code></td><td><code>bottom-right</code></td><td><code>top | bottom</code> + <code>left | center | right</code></td></tr>
+<tr><td><code>style</code></td><td><code>dark</code></td><td><code>dark · light · soft · solid · accent</code></td></tr>
+<tr><td><code>icon</code></td><td><code>null</code></td><td>Typed toasts show their type icon automatically; <code>false</code> hides it, <code>true</code> forces one, or give any Tabler icon name</td></tr>
+<tr><td><code>title</code></td><td>—</td><td>Bold first line</td></tr>
+<tr><td><code>duration</code></td><td>2500</td><td>Milliseconds; <code>0</code> keeps it until dismissed</td></tr>
+<tr><td><code>closable · progress</code></td><td><code>false</code></td><td>✕ button · countdown bar</td></tr>
+<tr><td><code>max · dedupe</code></td><td>5 · <code>true</code></td><td>Visible toasts per corner (oldest removed) · merge identical toasts</td></tr>
 </tbody></table>
 <p>Returns <code>{ close(), element }</code>.</p>
 

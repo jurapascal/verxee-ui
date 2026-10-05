@@ -86,17 +86,27 @@ body { overflow-x: hidden; }
 .notif-item .b { font-size: 12px; color: var(--admin-text-secondary); }
 /* Clickable table rows, toast */
 .table tr.row-link { cursor: pointer; }
-.toast-stack { position: fixed; right: 16px; bottom: 16px; z-index: 2000; display: flex; flex-direction: column; gap: 8px; }
-.toast-msg { background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; box-shadow: var(--shadow-popover); }
+.toast-stack { position: fixed; z-index: 2000; display: flex; gap: 8px; pointer-events: none; max-width: calc(100vw - 32px); }
+.toast-msg { --toast-c: var(--admin-text-secondary); position: relative; overflow: hidden; pointer-events: auto; cursor: pointer; display: flex; align-items: center; gap: 10px; min-width: 200px; max-width: 380px; background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: var(--radius-md); font-size: 13px; box-shadow: var(--shadow-popover); animation: vx-toast-in .16s ease-out; }
 .timeline { list-style: none; margin: 0; padding: 0; }
 .timeline li { display: flex; gap: 10px; padding: 8px 0; align-items: baseline; }
 
-/* Toast variants (VerxeeUI.toast type option) */
-.toast-msg { cursor: pointer; }
-.toast-msg--success { border-left: 3px solid var(--admin-success); }
-.toast-msg--warning { border-left: 3px solid var(--admin-warning); }
-.toast-msg--critical { border-left: 3px solid var(--admin-critical); }
-.toast-msg--info { border-left: 3px solid var(--admin-info); }
+/* Toast: colour per type; look per style (dark | light | soft | solid | accent) — VerxeeUI.configure({ toast: { style } }) */
+.toast-msg--success { --toast-c: var(--admin-success); } .toast-msg--warning { --toast-c: var(--admin-warning); }
+.toast-msg--critical { --toast-c: var(--admin-critical); } .toast-msg--info { --toast-c: var(--admin-info); }
+.toast-icon { display: flex; font-size: 17px; color: var(--toast-c); flex: 0 0 auto; }
+.toast-body { flex: 1 1 auto; min-width: 0; line-height: 1.35; } .toast-title { font-weight: 600; }
+.toast-count { font-size: 11px; font-weight: 600; padding: 1px 6px; border-radius: 999px; background: rgba(127,127,127,.25); }
+.toast-close { all: unset; cursor: pointer; display: flex; opacity: .6; padding: 2px; } .toast-close:hover { opacity: 1; }
+.toast-progress { position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: var(--toast-c); opacity: .7; transform-origin: left; }
+.toast-msg--light, .toast-msg--accent { background: var(--admin-surface); color: var(--admin-text); border: 1px solid var(--admin-border); }
+.toast-msg--accent { box-shadow: inset 3px 0 0 var(--toast-c), var(--shadow-popover); }
+.toast-msg--soft { background: color-mix(in srgb, var(--toast-c) 14%, var(--admin-surface)); color: var(--admin-text); border: 1px solid color-mix(in srgb, var(--toast-c) 35%, transparent); }
+.toast-msg--solid { background: var(--toast-c); color: #fff; } .toast-msg--solid .toast-icon { color: #fff; }
+.toast-msg--solid:not(.toast-msg--success):not(.toast-msg--warning):not(.toast-msg--critical):not(.toast-msg--info) { background: var(--admin-action); }
+@keyframes vx-toast-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes vx-toast-progress { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@media (prefers-reduced-motion: reduce) { .toast-msg { animation: none; } }
 
 /* Modal (VerxeeUI.modal) — reuses the confirm overlay */
 .vx-modal-box { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: var(--radius-xl); box-shadow: 0 16px 48px rgba(0,0,0,.2); width: 100%; max-width: 520px; max-height: calc(100vh - 40px); display: flex; flex-direction: column; }

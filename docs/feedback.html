@@ -16,7 +16,7 @@
 <a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
 <nav class="admin-topbar" aria-label="Top bar">
   <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
-  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.2.0</span></a></div>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.3.0</span></a></div>
   <div class="d-flex align-items-center gap-2 ms-auto">
     <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
     <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
@@ -30,19 +30,49 @@
 <p class="lead">Toasts, confirm dialogs, modals and popovers.</p>
 
 <h2>Toast</h2>
-<p>Call <code>VerxeeUI.toast(message, options)</code>. The stack container is created automatically. Click a toast to dismiss it early.</p>
+<p>Call <code>VerxeeUI.toast(message, options)</code>. Click a toast to dismiss it. The same message sent repeatedly is merged into one toast with a counter (<code>×3</code>) instead of stacking copies.</p>
 <div class="example"><div class="example-preview"><button class="btn btn-secondary" onclick="VerxeeUI.toast('Settings saved')">Neutral</button>
 <button class="btn btn-secondary" onclick="VerxeeUI.toast('Order marked paid', {type:'success'})">Success</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning'})">Warning</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:5000})">Critical</button>
-<button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0})">Sticky info</button></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Settings saved')"&gt;Neutral&lt;/button&gt;
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning', title:'Heads up'})">Warning + title</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:6000, progress:true, closable:true})">Critical + progress</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0, closable:true})">Sticky</button></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Settings saved')"&gt;Neutral&lt;/button&gt;
 &lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Order marked paid', {type:'success'})"&gt;Success&lt;/button&gt;
-&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning'})"&gt;Warning&lt;/button&gt;
-&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:5000})"&gt;Critical&lt;/button&gt;
-&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0})"&gt;Sticky info&lt;/button&gt;</code></pre></div>
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning', title:'Heads up'})"&gt;Warning + title&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:6000, progress:true, closable:true})"&gt;Critical + progress&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0, closable:true})"&gt;Sticky&lt;/button&gt;</code></pre></div>
+<h3>Look</h3>
+<div class="example"><div class="example-preview"><button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'dark'})">dark</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'light'})">light</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'soft'})">soft</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'solid'})">solid</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'accent'})">accent</button></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'dark'})"&gt;dark&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'light'})"&gt;light&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'soft'})"&gt;soft&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'solid'})"&gt;solid&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Saved', {type:'success', style:'accent'})"&gt;accent&lt;/button&gt;</code></pre></div>
+<h3>Position</h3>
+<div class="example"><div class="example-preview"><button class="btn btn-secondary" onclick="VerxeeUI.toast('Top left', {position:'top-left'})">top-left</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Top center', {position:'top-center'})">top-center</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Top right', {position:'top-right'})">top-right</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom left', {position:'bottom-left'})">bottom-left</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom center', {position:'bottom-center'})">bottom-center</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom right', {position:'bottom-right'})">bottom-right</button></div><pre class="example-code"><code>&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Top left', {position:'top-left'})"&gt;top-left&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Top center', {position:'top-center'})"&gt;top-center&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Top right', {position:'top-right'})"&gt;top-right&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom left', {position:'bottom-left'})"&gt;bottom-left&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom center', {position:'bottom-center'})"&gt;bottom-center&lt;/button&gt;
+&lt;button class="btn btn-secondary" onclick="VerxeeUI.toast('Bottom right', {position:'bottom-right'})"&gt;bottom-right&lt;/button&gt;</code></pre></div>
+<p>Every option can be set once for the whole app and overridden per toast:</p>
+<pre><code>VerxeeUI.configure({ toast: { position: 'top-right', style: 'soft', icon: null, closable: true, progress: true, duration: 4000, max: 4 } });</code></pre>
 <table class="table"><thead><tr><th>Option</th><th>Default</th><th></th></tr></thead><tbody>
-<tr><td><code>type</code></td><td>—</td><td><code>success | warning | critical | info</code>; omit for the dark neutral toast</td></tr>
-<tr><td><code>duration</code></td><td>2500</td><td>Milliseconds; <code>0</code> keeps it until clicked</td></tr>
+<tr><td><code>type</code></td><td>—</td><td><code>success | warning | critical | info</code> (colours the icon, border or background)</td></tr>
+<tr><td><code>position</code></td><td><code>bottom-right</code></td><td><code>top | bottom</code> + <code>left | center | right</code></td></tr>
+<tr><td><code>style</code></td><td><code>dark</code></td><td><code>dark · light · soft · solid · accent</code></td></tr>
+<tr><td><code>icon</code></td><td><code>null</code></td><td>Typed toasts show their type icon automatically; <code>false</code> hides it, <code>true</code> forces one, or give any Tabler icon name</td></tr>
+<tr><td><code>title</code></td><td>—</td><td>Bold first line</td></tr>
+<tr><td><code>duration</code></td><td>2500</td><td>Milliseconds; <code>0</code> keeps it until dismissed</td></tr>
+<tr><td><code>closable · progress</code></td><td><code>false</code></td><td>✕ button · countdown bar</td></tr>
+<tr><td><code>max · dedupe</code></td><td>5 · <code>true</code></td><td>Visible toasts per corner (oldest removed) · merge identical toasts</td></tr>
 </tbody></table>
 <p>Returns <code>{ close(), element }</code>.</p>
 

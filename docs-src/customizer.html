@@ -8,6 +8,7 @@
     <div><label class="form-label" for="cRadius">Radius</label><select id="cRadius" class="form-select"><option value="sharp">sharp</option><option value="default" selected>default</option><option value="round">round</option></select></div>
     <div><label class="form-label" for="cDensity">Density</label><select id="cDensity" class="form-select"><option>compact</option><option selected>default</option><option>comfortable</option></select></div>
     <div><label class="form-label" for="cPos">Toast position</label><select id="cPos" class="form-select"><option>bottom-right</option><option>bottom-center</option><option>bottom-left</option><option>top-right</option><option>top-center</option><option>top-left</option></select></div>
+    <div><label class="form-label" for="cTStyle">Toast style</label><select id="cTStyle" class="form-select"><option>dark</option><option>light</option><option>soft</option><option>solid</option><option>accent</option></select></div>
   </div>
 </div></div>
 
@@ -31,10 +32,10 @@
   var $ = function (id) { return document.getElementById(id); };
   function apply() {
     var theme = { accent: $('cAccent').value, radius: $('cRadius').value, density: $('cDensity').value };
-    VerxeeUI.configure({ theme: theme, toast: { position: $('cPos').value } });
-    $('cOut').textContent = 'VerxeeUI.configure({\n  theme: { accent: \'' + theme.accent + '\', radius: \'' + theme.radius + '\', density: \'' + theme.density + '\' },\n  toast: { position: \'' + $('cPos').value + '\' }\n});';
+    VerxeeUI.configure({ theme: theme, toast: { position: $('cPos').value, style: $('cTStyle').value } });
+    $('cOut').textContent = 'VerxeeUI.configure({\n  theme: { accent: \'' + theme.accent + '\', radius: \'' + theme.radius + '\', density: \'' + theme.density + '\' },\n  toast: { position: \'' + $('cPos').value + '\', style: \'' + $('cTStyle').value + '\' }\n});';
   }
-  ['cAccent', 'cRadius', 'cDensity', 'cPos'].forEach(function (id) { $(id).addEventListener('input', apply); });
+  ['cAccent', 'cRadius', 'cDensity', 'cPos', 'cTStyle'].forEach(function (id) { $(id).addEventListener('input', apply); });
   $('pToast').onclick = function () { VerxeeUI.toast('Settings saved', { type: 'success' }); };
   $('pConfirm').onclick = function () { VerxeeUI.confirm({ title: 'Delete order?', description: 'This cannot be undone.', variant: 'danger', confirmText: 'Delete' }); };
   $('pModal').onclick = function () { VerxeeUI.modal({ title: 'New customer', fields: [{ name: 'name', label: 'Name' }, { name: 'email', label: 'E-mail', type: 'email' }] }); };
