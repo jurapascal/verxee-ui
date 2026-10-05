@@ -90,3 +90,11 @@ body { overflow-x: hidden; }
 .toast-msg { background: var(--admin-text); color: var(--admin-bg); padding: 10px 14px; border-radius: 8px; font-size: 13px; box-shadow: var(--shadow-popover); }
 .timeline { list-style: none; margin: 0; padding: 0; }
 .timeline li { display: flex; gap: 10px; padding: 8px 0; align-items: baseline; }
+
+/* Toast variants (VerxeeUI.toast type option) */
+.toast-msg { cursor: pointer; }
+.toast-msg--success { border-left: 3px solid var(--admin-success); }
+.toast-msg--warning { border-left: 3px solid var(--admin-warning); }
+.toast-msg--critical { border-left: 3px solid var(--admin-critical); }
+.toast-msg--info { border-left: 3px solid var(--admin-info); }
+.admin-confirm-actions .btn-outline-danger:focus, .admin-confirm-actions .btn-outline-danger:active { background: rgba(239,68,68,.06); color: var(--admin-critical); border-color: rgba(239,68,68,.3); }

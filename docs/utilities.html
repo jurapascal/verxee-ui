@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utilities — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link active" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Utilities</h1>
+<p class="lead">Small helpers on top of Bootstrap's own (<code>d-flex</code>, <code>gap-2</code>, <code>mb-3</code>, <code>ms-auto</code> … all work).</p>
+
+<table class="table"><thead><tr><th>Class</th><th>Effect</th></tr></thead><tbody>
+<tr><td><code>.fs-xs · -sm · -base · -md · -lg · -xl · -2xl</code></td><td>Font size 11 · 12 · 13 · 14 · 16 · 20 · 24 px</td></tr>
+<tr><td><code>.muted</code> · <code>.text-secondary</code></td><td>Secondary text colour</td></tr>
+<tr><td><code>.help</code></td><td>12 px secondary text (hints, timestamps)</td></tr>
+<tr><td><code>.text-tabular</code></td><td>Tabular numbers — use for money and counts</td></tr>
+<tr><td><code>.truncate</code></td><td>Single-line ellipsis (needs a width / <code>min-width:0</code> in flex: use with <code>.grow</code>)</td></tr>
+<tr><td><code>.grow</code></td><td>Flexible item (<code>flex: 1 1 auto; min-width: 0</code>) inside <code>.list-row</code></td></tr>
+<tr><td><code>.hide-xs</code></td><td>Hidden below 576 px</td></tr>
+<tr><td><code>.thumb-32 · -40 · -48 · -56</code></td><td>Square thumbnails with radius</td></tr>
+<tr><td><code>.obj-cover · .obj-contain</code></td><td><code>object-fit</code></td></tr>
+<tr><td><code>.w-input-sm · .w-input-md · .max-w-200</code></td><td>Fixed widths for compact inputs</td></tr>
+<tr><td><code>.scroll-y-200</code></td><td>Max height 200 px, vertical scroll</td></tr>
+<tr><td><code>.grab</code></td><td><code>cursor: grab</code> (drag handles)</td></tr>
+<tr><td><code>.star-on · .star-off</code></td><td>Favourite star colours</td></tr>
+<tr><td><code>.visually-hidden-focusable</code></td><td>Hidden until focused (skip links)</td></tr>
+</tbody></table>
+
+<h2>Spacing</h2>
+<p>Gaps follow a 4 px grid: <code>--gap-tight</code> 8, <code>--gap-base</code> 16, <code>--gap-section</code> 24, <code>--gap-large</code> 40. In markup prefer Bootstrap's <code>gap-2</code> (8) / <code>gap-3</code> (16) / <code>mb-4</code> (24).</p>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

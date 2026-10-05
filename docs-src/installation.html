@@ -1,0 +1,53 @@
+<!-- title: Installation | group: Start | order: 2 -->
+<h1>Installation</h1>
+<p class="lead">Three ways in: CDN, self-host, or npm. Load CoreUI first, Verxee UI second.</p>
+
+<h2>1 · CDN (jsDelivr)</h2>
+<p>Pin a version tag so updates never surprise you; use <code>@main</code> for bleeding edge.</p>
+<pre><code>&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/tabler-icons/css/tabler-icons.min.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.css"&gt;</code></pre>
+
+<h2>2 · Self-host</h2>
+<p>Clone or download the repository and copy <code>dist/</code>, <code>fonts/</code> and <code>vendor/</code> next to your app. Fonts are resolved relative to the CSS file (<code>../fonts/</code>), so keep that folder layout. Self-hosting is CSP-friendly and works offline (PWA).</p>
+<pre><code>git clone https://github.com/jurapascal/verxee-ui.git</code></pre>
+
+<h2>3 · npm / build tools</h2>
+<pre><code>npm install github:jurapascal/verxee-ui @coreui/coreui</code></pre>
+<pre><code>import '@coreui/coreui/dist/css/coreui.min.css';
+import 'verxee-ui/dist/verxee-ui.min.css';
+import 'verxee-ui';              // sets up window.VerxeeUI</code></pre>
+
+<h2>No flash of the wrong theme</h2>
+<p>The runtime applies the saved theme after load. To avoid a flash on first paint, put this tiny inline script in <code>&lt;head&gt;</code> <em>before</em> the stylesheets render:</p>
+<pre><code>&lt;script&gt;
+  try { var t = localStorage.getItem('verxee-ui-theme');
+        if (t) document.documentElement.setAttribute('data-coreui-theme', t); } catch (e) {}
+&lt;/script&gt;</code></pre>
+
+<h2>App shell skeleton</h2>
+<p>The standard admin layout: fixed topbar, fixed sidebar, content wrapper. This is exactly what the <a href="../index.html">demo</a> uses.</p>
+<pre><code>&lt;nav class="admin-topbar"&gt;
+  &lt;button class="btn btn-ghost-secondary btn-sm d-lg-none" data-sidebar-toggle aria-label="Menu"&gt;&lt;i class="ti ti-menu-2"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;div class="brand"&gt;&lt;a href="/"&gt;&lt;span class="brand-logo"&gt;&lt;i class="ti ti-layout-dashboard"&gt;&lt;/i&gt;&lt;/span&gt; My app&lt;/a&gt;&lt;/div&gt;
+  &lt;button class="btn btn-ghost-secondary btn-sm ms-auto" data-theme-toggle aria-label="Toggle theme"&gt;&lt;i class="ti ti-moon"&gt;&lt;/i&gt;&lt;/button&gt;
+&lt;/nav&gt;
+
+&lt;div class="sidebar sidebar-fixed" id="sidebar"&gt;
+  &lt;ul class="sidebar-nav" data-coreui="navigation"&gt;
+    &lt;li class="nav-item"&gt;&lt;a class="nav-link active" href="#"&gt;&lt;i class="nav-icon ti ti-layout-dashboard"&gt;&lt;/i&gt; Dashboard&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class="sidebar-backdrop" data-sidebar-toggle&gt;&lt;/div&gt;
+
+&lt;div class="admin-wrapper"&gt;
+  &lt;main class="admin-content"&gt; … &lt;/main&gt;
+&lt;/div&gt;</code></pre>
+
+<div class="callout"><strong>Icons.</strong> Verxee UI uses <a href="https://tabler.io/icons">Tabler Icons</a>: <code>&lt;i class="ti ti-settings"&gt;&lt;/i&gt;</code>. Any other icon font works too.</div>
+
+<h2>Browser support</h2>
+<p>Evergreen browsers. The sticky save bar uses <code>:has()</code> to pad the page (progressive enhancement — everything else works without it).</p>
+
+<h2>Building from source</h2>
+<pre><code>node scripts/build.mjs   # css bundle + dist/ + docs/ (Node 18+, no dependencies)</code></pre>

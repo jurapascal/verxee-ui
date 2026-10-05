@@ -136,10 +136,7 @@
       });
     });
   }
-  function toast(msg) {
-    var el = document.createElement('div'); el.className = 'toast-msg'; el.textContent = msg;
-    $('#toasts').appendChild(el); setTimeout(function () { el.remove(); }, 2500);
-  }
+  function toast(msg) { VerxeeUI.toast(msg, { type: 'success' }); }
 
   // ── Notifications ──
   function drawNotifs() {

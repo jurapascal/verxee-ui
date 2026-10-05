@@ -1,0 +1,41 @@
+<!-- title: Buttons | group: Components | order: 10 -->
+<h1>Buttons</h1>
+<p class="lead">Three sizes, five variants. Colour carries meaning: blue acts, red deletes, orange edits.</p>
+
+<h2>Variants</h2>
+<!--example-->
+<button class="btn btn-primary">Primary</button>
+<button class="btn btn-secondary">Secondary</button>
+<button class="btn btn-ghost-secondary">Ghost</button>
+<button class="btn btn-outline-danger">Delete</button>
+<button class="btn btn-ghost-danger">Ghost danger</button>
+<button class="btn btn-outline-warning">Edit</button>
+<button class="btn btn-link">Link button</button>
+<!--/example-->
+
+<h2>Sizes</h2>
+<!--example-->
+<button class="btn btn-primary btn-sm">Small 28</button>
+<button class="btn btn-primary">Default 34</button>
+<button class="btn btn-primary btn-lg">Large 40</button>
+<!--/example-->
+
+<h2>With icons</h2>
+<!--example-->
+<button class="btn btn-primary"><i class="ti ti-plus"></i> New order</button>
+<button class="btn btn-secondary btn--icon" aria-label="Settings"><i class="ti ti-settings"></i></button>
+<button class="btn btn-ghost-secondary btn-sm btn--icon" aria-label="More"><i class="ti ti-dots"></i></button>
+<!--/example-->
+<p>Icon-only buttons need an <code>aria-label</code>.</p>
+
+<h2>Disabled</h2>
+<!--example-->
+<button class="btn btn-primary" disabled>Disabled</button>
+<button class="btn btn-secondary" disabled>Disabled</button>
+<!--/example-->
+
+<h2>Confirm before acting</h2>
+<p>Add <code>data-confirm</code> to any button or link and the runtime shows a confirm dialog first; the original action only runs on “Confirm”.</p>
+<!--example-->
+<button class="btn btn-outline-danger" data-confirm="This cannot be undone." data-confirm-title="Delete order?" data-confirm-ok="Delete" onclick="VerxeeUI.toast('Deleted', {type:'critical'})"><i class="ti ti-trash"></i> Delete</button>
+<!--/example-->

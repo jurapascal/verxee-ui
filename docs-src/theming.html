@@ -1,0 +1,34 @@
+<!-- title: Theming & dark mode | group: Foundations | order: 3 -->
+<h1>Theming &amp; dark mode</h1>
+<p class="lead">All colour decisions live in CSS variables. Override them after the stylesheet and the whole UI follows.</p>
+
+<h2>Light / dark</h2>
+<p>Theme is an attribute on <code>&lt;html&gt;</code>, shared with CoreUI: <code>data-coreui-theme="light|dark"</code>. The runtime follows the OS preference until the user chooses, then remembers the choice in <code>localStorage</code> (<code>verxee-ui-theme</code>).</p>
+<!--example-->
+<button class="btn btn-secondary" data-theme-toggle><i class="ti ti-moon"></i> Toggle theme</button>
+<button class="btn btn-ghost-secondary" onclick="VerxeeUI.theme.set('light')">Light</button>
+<button class="btn btn-ghost-secondary" onclick="VerxeeUI.theme.set('dark')">Dark</button>
+<!--/example-->
+<p>React to changes (e.g. to redraw a chart):</p>
+<pre><code>document.addEventListener('verxee:themechange', e =&gt; console.log(e.detail.theme));</code></pre>
+
+<h2>Rebrand in one place</h2>
+<p>Change the accent and action colours (primary buttons, focus rings, links). Override both themes if the colour needs a lighter dark-mode variant.</p>
+<pre><code>:root, [data-coreui-theme="light"] {
+  --admin-accent: #7C3AED;
+  --admin-action: #7C3AED;
+  --admin-action-hover: #6D28D9;
+}
+[data-coreui-theme="dark"] {
+  --admin-accent: #A78BFA;
+  --admin-action: #8B5CF6;
+  --admin-action-hover: #7C3AED;
+}</code></pre>
+
+<h2>Change the font</h2>
+<pre><code>:root { --admin-font: 'Geist', system-ui, sans-serif; }</code></pre>
+
+<h2>Scoping a theme</h2>
+<p>Because variables cascade, a section can have its own theme: <code>&lt;section data-coreui-theme="dark"&gt;</code> re-skins everything inside it.</p>
+
+<div class="callout warn"><strong>Status badge colours</strong> (<code>.status--*</code>) use fixed tints tuned for contrast in both themes. To change them, override the <code>.status--success</code> etc. rules, not the <code>--admin-success</code> variable (that one drives dots, borders and text).</div>

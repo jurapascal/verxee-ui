@@ -1,0 +1,18 @@
+{
+  "name": "verxee-ui",
+  "version": "2.0.0",
+  "description": "Admin design system / CSS framework on top of CoreUI 5: tokens, components, page patterns, dark mode and a tiny JS runtime.",
+  "license": "MIT",
+  "homepage": "https://jurapascal.github.io/verxee-ui/docs/",
+  "repository": { "type": "git", "url": "git+https://github.com/jurapascal/verxee-ui.git" },
+  "keywords": ["css", "framework", "design-system", "admin", "coreui", "dark-mode"],
+  "style": "dist/verxee-ui.min.css",
+  "main": "dist/verxee-ui.js",
+  "files": ["dist", "css", "js/verxee-ui.js", "fonts", "vendor", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "docs": "node scripts/build.mjs --docs",
+    "dev": "node scripts/build.mjs && npx --yes serve . -l 8080"
+  },
+  "peerDependencies": { "@coreui/coreui": "^5.3.1" }
+}

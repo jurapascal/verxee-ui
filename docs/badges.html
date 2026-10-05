@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Badges & dots — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link active" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Badges &amp; dots</h1>
+<p class="lead">One badge component (22 px) with six semantic colours. Pair it with a status — never use colour alone for meaning.</p>
+
+<h2>Status badges</h2>
+<div class="example"><div class="example-preview"><span class="status status--success">Paid</span>
+<span class="status status--warning">Pending</span>
+<span class="status status--critical">Refunded</span>
+<span class="status status--info">Shipped</span>
+<span class="status status--pending">In review</span>
+<span class="status status--neutral">Draft</span></div><pre class="example-code"><code>&lt;span class="status status--success"&gt;Paid&lt;/span&gt;
+&lt;span class="status status--warning"&gt;Pending&lt;/span&gt;
+&lt;span class="status status--critical"&gt;Refunded&lt;/span&gt;
+&lt;span class="status status--info"&gt;Shipped&lt;/span&gt;
+&lt;span class="status status--pending"&gt;In review&lt;/span&gt;
+&lt;span class="status status--neutral"&gt;Draft&lt;/span&gt;</code></pre></div>
+<p><code>.badge--success</code> etc. are aliases, so CoreUI/Bootstrap <code>.badge</code> markup is restyled too.</p>
+
+<h2>Dots</h2>
+<div class="example"><div class="example-preview"><span class="d-inline-flex align-items-center gap-2"><span class="dot dot-success"></span> Online</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-warning"></span> Away</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-critical"></span> Error</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-info"></span> Info</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-neutral"></span> Offline</span></div><pre class="example-code"><code>&lt;span class="d-inline-flex align-items-center gap-2"&gt;&lt;span class="dot dot-success"&gt;&lt;/span&gt; Online&lt;/span&gt;
+&lt;span class="d-inline-flex align-items-center gap-2"&gt;&lt;span class="dot dot-warning"&gt;&lt;/span&gt; Away&lt;/span&gt;
+&lt;span class="d-inline-flex align-items-center gap-2"&gt;&lt;span class="dot dot-critical"&gt;&lt;/span&gt; Error&lt;/span&gt;
+&lt;span class="d-inline-flex align-items-center gap-2"&gt;&lt;span class="dot dot-info"&gt;&lt;/span&gt; Info&lt;/span&gt;
+&lt;span class="d-inline-flex align-items-center gap-2"&gt;&lt;span class="dot dot-neutral"&gt;&lt;/span&gt; Offline&lt;/span&gt;</code></pre></div>
+
+<h2>Notification counter</h2>
+<p>Put <code>.dot</code> inside a <code>.icon-btn</code> and give it a number; hide it with <code>hidden</code> when the count is zero.</p>
+<div class="example"><div class="example-preview"><button class="btn btn-ghost-secondary btn-sm icon-btn" aria-label="Notifications"><i class="ti ti-bell fs-5"></i><span class="dot">3</span></button></div><pre class="example-code"><code>&lt;button class="btn btn-ghost-secondary btn-sm icon-btn" aria-label="Notifications"&gt;&lt;i class="ti ti-bell fs-5"&gt;&lt;/i&gt;&lt;span class="dot"&gt;3&lt;/span&gt;&lt;/button&gt;</code></pre></div>
+
+<h2>Avatars &amp; colour dots</h2>
+<div class="example"><div class="example-preview"><span class="avatar">JD</span><span class="avatar avatar-lg">AB</span>
+<span class="color-dot" style="background:#7C3AED"></span><span class="color-dot" style="background:#059669"></span></div><pre class="example-code"><code>&lt;span class="avatar"&gt;JD&lt;/span&gt;&lt;span class="avatar avatar-lg"&gt;AB&lt;/span&gt;
+&lt;span class="color-dot" style="background:#7C3AED"&gt;&lt;/span&gt;&lt;span class="color-dot" style="background:#059669"&gt;&lt;/span&gt;</code></pre></div>
+
+<h2>Status-coloured selects</h2>
+<p>A <code>&lt;select class="form-select status-select-paid"&gt;</code> gets a coloured left edge. Available: <code>-paid</code> / <code>-delivered</code> (green), <code>-shipped</code> / <code>-processing</code> (blue), <code>-pending</code> / <code>-awaiting_payment</code> (orange), <code>-cancelled</code> / <code>-failed</code> (red).</p>
+<div class="example"><div class="example-preview"><select class="form-select status-select-paid w-input-md"><option>Paid</option></select>
+<select class="form-select status-select-pending w-input-md"><option>Pending</option></select>
+<select class="form-select status-select-cancelled w-input-md"><option>Cancelled</option></select></div><pre class="example-code"><code>&lt;select class="form-select status-select-paid w-input-md"&gt;&lt;option&gt;Paid&lt;/option&gt;&lt;/select&gt;
+&lt;select class="form-select status-select-pending w-input-md"&gt;&lt;option&gt;Pending&lt;/option&gt;&lt;/select&gt;
+&lt;select class="form-select status-select-cancelled w-input-md"&gt;&lt;option&gt;Cancelled&lt;/option&gt;&lt;/select&gt;</code></pre></div>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

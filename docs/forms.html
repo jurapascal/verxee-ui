@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forms — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link active" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Forms</h1>
+<p class="lead">Standard Bootstrap/CoreUI form markup, restyled: 34 px controls, blue focus ring, tabular numbers.</p>
+
+<h2>Text inputs</h2>
+<div class="example"><div class="example-preview example-stack"><div style="max-width:420px">
+  <label class="form-label" for="f1">Store name</label>
+  <input id="f1" class="form-control" value="Demo Store">
+  <div class="form-hint">Shown in e-mails and on invoices.</div>
+
+  <label class="form-label mt-3" for="f2">E-mail</label>
+  <input id="f2" class="form-control is-invalid" value="not-an-email">
+  <div class="invalid-msg">Enter a valid e-mail address.</div>
+
+  <label class="form-label mt-3" for="f3">Currency</label>
+  <select id="f3" class="form-select"><option>CZK</option><option>EUR</option></select>
+</div></div><pre class="example-code"><code>&lt;div style="max-width:420px"&gt;
+  &lt;label class="form-label" for="f1"&gt;Store name&lt;/label&gt;
+  &lt;input id="f1" class="form-control" value="Demo Store"&gt;
+  &lt;div class="form-hint"&gt;Shown in e-mails and on invoices.&lt;/div&gt;
+
+  &lt;label class="form-label mt-3" for="f2"&gt;E-mail&lt;/label&gt;
+  &lt;input id="f2" class="form-control is-invalid" value="not-an-email"&gt;
+  &lt;div class="invalid-msg"&gt;Enter a valid e-mail address.&lt;/div&gt;
+
+  &lt;label class="form-label mt-3" for="f3"&gt;Currency&lt;/label&gt;
+  &lt;select id="f3" class="form-select"&gt;&lt;option&gt;CZK&lt;/option&gt;&lt;option&gt;EUR&lt;/option&gt;&lt;/select&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Sizes</h2>
+<div class="example"><div class="example-preview"><input class="form-control form-control-sm w-input-md" placeholder="Small 28">
+<input class="form-control w-input-md" placeholder="Default 34"></div><pre class="example-code"><code>&lt;input class="form-control form-control-sm w-input-md" placeholder="Small 28"&gt;
+&lt;input class="form-control w-input-md" placeholder="Default 34"&gt;</code></pre></div>
+<p>Width helpers: <code>.w-input-sm</code> (64 px), <code>.w-input-md</code> (120 px).</p>
+
+<h2>Switches &amp; checkboxes</h2>
+<div class="example"><div class="example-preview"><div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="sw1" checked><label class="form-check-label" for="sw1">E-mail me about new orders</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox" id="cb1"><label class="form-check-label" for="cb1">Remember me</label></div></div><pre class="example-code"><code>&lt;div class="form-check form-switch"&gt;&lt;input class="form-check-input" type="checkbox" id="sw1" checked&gt;&lt;label class="form-check-label" for="sw1"&gt;E-mail me about new orders&lt;/label&gt;&lt;/div&gt;
+&lt;div class="form-check"&gt;&lt;input class="form-check-input" type="checkbox" id="cb1"&gt;&lt;label class="form-check-label" for="cb1"&gt;Remember me&lt;/label&gt;&lt;/div&gt;</code></pre></div>
+
+<h2>Inline row</h2>
+<p><code>.form-row-inline</code> lays fields out in a wrapping row aligned to the bottom — good for filters.</p>
+<div class="example"><div class="example-preview example-stack"><div class="form-row-inline">
+  <div><label class="form-label" for="r1">From</label><input id="r1" type="date" class="form-control"></div>
+  <div><label class="form-label" for="r2">To</label><input id="r2" type="date" class="form-control"></div>
+  <div><button class="btn btn-primary">Apply</button></div>
+</div></div><pre class="example-code"><code>&lt;div class="form-row-inline"&gt;
+  &lt;div&gt;&lt;label class="form-label" for="r1"&gt;From&lt;/label&gt;&lt;input id="r1" type="date" class="form-control"&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;label class="form-label" for="r2"&gt;To&lt;/label&gt;&lt;input id="r2" type="date" class="form-control"&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;button class="btn btn-primary"&gt;Apply&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Input group</h2>
+<div class="example"><div class="example-preview"><div class="input-group" style="max-width:320px"><span class="input-group-text"><i class="ti ti-search"></i></span><input class="form-control" placeholder="Search…"></div></div><pre class="example-code"><code>&lt;div class="input-group" style="max-width:320px"&gt;&lt;span class="input-group-text"&gt;&lt;i class="ti ti-search"&gt;&lt;/i&gt;&lt;/span&gt;&lt;input class="form-control" placeholder="Search…"&gt;&lt;/div&gt;</code></pre></div>
+
+<h2>One-time code</h2>
+<div class="example"><div class="example-preview"><input class="form-control otp-input" maxlength="6" placeholder="••••••" style="max-width:220px" inputmode="numeric" autocomplete="one-time-code"></div><pre class="example-code"><code>&lt;input class="form-control otp-input" maxlength="6" placeholder="••••••" style="max-width:220px" inputmode="numeric" autocomplete="one-time-code"&gt;</code></pre></div>
+
+<h2>Sticky save bar</h2>
+<p>For long settings forms, add <code>.page-actions-bar</code> as the last child of the content. It pins to the bottom of the viewport (right of the sidebar) and the page pads itself so nothing hides behind it. Put a message in <code>.page-actions-status</code> — it is pushed to the left.</p>
+<pre><code>&lt;div class="page-actions-bar"&gt;
+  &lt;span class="page-actions-status"&gt;Unsaved changes&lt;/span&gt;
+  &lt;button class="btn btn-secondary"&gt;Discard&lt;/button&gt;
+  &lt;button class="btn btn-primary"&gt;Save&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cards & data — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link active" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Cards &amp; data display</h1>
+<p class="lead">Cards, KPI tiles, tables, list rows, timelines and empty states.</p>
+
+<h2>Card</h2>
+<div class="example"><div class="example-preview example-stack"><div class="card" style="max-width:420px">
+  <div class="card-header">Customer</div>
+  <div class="card-body">
+    <div class="d-flex align-items-center gap-2 mb-2"><span class="avatar">JD</span> Jane Doe</div>
+    <div class="muted">jane.doe@example.com · Brno</div>
+  </div>
+  <div class="card-footer"><button class="btn btn-secondary btn-sm">Edit</button></div>
+</div></div><pre class="example-code"><code>&lt;div class="card" style="max-width:420px"&gt;
+  &lt;div class="card-header"&gt;Customer&lt;/div&gt;
+  &lt;div class="card-body"&gt;
+    &lt;div class="d-flex align-items-center gap-2 mb-2"&gt;&lt;span class="avatar"&gt;JD&lt;/span&gt; Jane Doe&lt;/div&gt;
+    &lt;div class="muted"&gt;jane.doe@example.com · Brno&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="card-footer"&gt;&lt;button class="btn btn-secondary btn-sm"&gt;Edit&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>KPI tiles</h2>
+<p>Put <code>.kpi</code> on a card and lay several out with <code>.grid-2</code> / <code>.grid-3</code> (auto-fit grids).</p>
+<div class="example"><div class="example-preview example-stack"><div class="grid-3">
+  <div class="card kpi"><div class="kpi-label">Revenue</div><div class="kpi-value">48 200 Kč</div><div class="kpi-sub">+12 % vs. last month</div></div>
+  <div class="card kpi"><div class="kpi-label">Orders</div><div class="kpi-value">128</div><div class="kpi-sub">9 waiting for shipment</div></div>
+  <div class="card kpi"><div class="kpi-label">Conversion</div><div class="kpi-value">2.8 %</div><div class="kpi-sub">stable</div></div>
+</div></div><pre class="example-code"><code>&lt;div class="grid-3"&gt;
+  &lt;div class="card kpi"&gt;&lt;div class="kpi-label"&gt;Revenue&lt;/div&gt;&lt;div class="kpi-value"&gt;48 200 Kč&lt;/div&gt;&lt;div class="kpi-sub"&gt;+12 % vs. last month&lt;/div&gt;&lt;/div&gt;
+  &lt;div class="card kpi"&gt;&lt;div class="kpi-label"&gt;Orders&lt;/div&gt;&lt;div class="kpi-value"&gt;128&lt;/div&gt;&lt;div class="kpi-sub"&gt;9 waiting for shipment&lt;/div&gt;&lt;/div&gt;
+  &lt;div class="card kpi"&gt;&lt;div class="kpi-label"&gt;Conversion&lt;/div&gt;&lt;div class="kpi-value"&gt;2.8 %&lt;/div&gt;&lt;div class="kpi-sub"&gt;stable&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Stats strip</h2>
+<p>A single bar of figures with an icon in a circle. Add <code>.stat--alert</code> to a tile that needs attention; make a tile clickable with <code>role="button"</code>.</p>
+<div class="example"><div class="example-preview example-stack"><div class="stats-strip">
+  <div class="stat"><div class="stat-label"><i class="ti ti-shopping-cart"></i> Orders</div><div class="stat-value">128</div><div class="stat-sub">this month</div></div>
+  <div class="stat"><div class="stat-label"><i class="ti ti-coin"></i> Revenue</div><div class="stat-value">48 200 Kč</div><div class="stat-sub">+12 %</div></div>
+  <div class="stat stat--alert" role="button" tabindex="0"><div class="stat-label"><i class="ti ti-alert-circle"></i> Unpaid</div><div class="stat-value">7</div><div class="stat-sub">chase these</div></div>
+</div></div><pre class="example-code"><code>&lt;div class="stats-strip"&gt;
+  &lt;div class="stat"&gt;&lt;div class="stat-label"&gt;&lt;i class="ti ti-shopping-cart"&gt;&lt;/i&gt; Orders&lt;/div&gt;&lt;div class="stat-value"&gt;128&lt;/div&gt;&lt;div class="stat-sub"&gt;this month&lt;/div&gt;&lt;/div&gt;
+  &lt;div class="stat"&gt;&lt;div class="stat-label"&gt;&lt;i class="ti ti-coin"&gt;&lt;/i&gt; Revenue&lt;/div&gt;&lt;div class="stat-value"&gt;48 200 Kč&lt;/div&gt;&lt;div class="stat-sub"&gt;+12 %&lt;/div&gt;&lt;/div&gt;
+  &lt;div class="stat stat--alert" role="button" tabindex="0"&gt;&lt;div class="stat-label"&gt;&lt;i class="ti ti-alert-circle"&gt;&lt;/i&gt; Unpaid&lt;/div&gt;&lt;div class="stat-value"&gt;7&lt;/div&gt;&lt;div class="stat-sub"&gt;chase these&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Table</h2>
+<p>14 px cell padding, no uppercase headers. Wrap in <code>.table-responsive</code> inside a <code>.card</code>. <code>.table-hover</code> highlights rows; <code>.row-link</code> + <code>data-href</code> makes a row clickable (wire up navigation yourself). Use <code>.text-tabular</code> for numeric columns and <code>th[data-sort]</code> with <code>.sort-asc / .sort-desc</code> for sortable headers.</p>
+<div class="example"><div class="example-preview example-stack"><div class="card"><div class="table-responsive"><table class="table table-hover mb-0">
+  <thead><tr><th>Order</th><th>Customer</th><th data-sort class="sort-desc">Total</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr class="row-link"><td><a href="#">#1042</a></td><td>Jane Doe</td><td class="text-tabular">1 290 Kč</td><td><span class="status status--success">Paid</span></td></tr>
+    <tr class="row-link"><td><a href="#">#1041</a></td><td>John Smith</td><td class="text-tabular">590 Kč</td><td><span class="status status--warning">Pending</span></td></tr>
+    <tr class="row-link"><td><a href="#">#1040</a></td><td>Eva Nováková</td><td class="text-tabular">340 Kč</td><td><span class="status status--info">Shipped</span></td></tr>
+  </tbody></table></div></div></div><pre class="example-code"><code>&lt;div class="card"&gt;&lt;div class="table-responsive"&gt;&lt;table class="table table-hover mb-0"&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Order&lt;/th&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th data-sort class="sort-desc"&gt;Total&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr class="row-link"&gt;&lt;td&gt;&lt;a href="#"&gt;#1042&lt;/a&gt;&lt;/td&gt;&lt;td&gt;Jane Doe&lt;/td&gt;&lt;td class="text-tabular"&gt;1 290 Kč&lt;/td&gt;&lt;td&gt;&lt;span class="status status--success"&gt;Paid&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class="row-link"&gt;&lt;td&gt;&lt;a href="#"&gt;#1041&lt;/a&gt;&lt;/td&gt;&lt;td&gt;John Smith&lt;/td&gt;&lt;td class="text-tabular"&gt;590 Kč&lt;/td&gt;&lt;td&gt;&lt;span class="status status--warning"&gt;Pending&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class="row-link"&gt;&lt;td&gt;&lt;a href="#"&gt;#1040&lt;/a&gt;&lt;/td&gt;&lt;td&gt;Eva Nováková&lt;/td&gt;&lt;td class="text-tabular"&gt;340 Kč&lt;/td&gt;&lt;td&gt;&lt;span class="status status--info"&gt;Shipped&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;&lt;/div&gt;</code></pre></div>
+<div class="callout"><code>data-sort</code> only styles the arrow — sorting logic is yours (or your data-table library's).</div>
+
+<h2>List rows</h2>
+<div class="example"><div class="example-preview example-stack"><div class="card">
+  <div class="list-row"><span class="dot dot-success"></span><div class="grow truncate">Order #1042 · Jane Doe</div><span class="muted">1 290 Kč</span></div>
+  <div class="list-row"><span class="dot dot-warning"></span><div class="grow truncate">Order #1041 · John Smith</div><span class="muted">590 Kč</span></div>
+  <div class="list-row"><span class="dot dot-info"></span><div class="grow truncate">Order #1040 · Eva Nováková</div><span class="muted">340 Kč</span></div>
+</div></div><pre class="example-code"><code>&lt;div class="card"&gt;
+  &lt;div class="list-row"&gt;&lt;span class="dot dot-success"&gt;&lt;/span&gt;&lt;div class="grow truncate"&gt;Order #1042 · Jane Doe&lt;/div&gt;&lt;span class="muted"&gt;1 290 Kč&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="list-row"&gt;&lt;span class="dot dot-warning"&gt;&lt;/span&gt;&lt;div class="grow truncate"&gt;Order #1041 · John Smith&lt;/div&gt;&lt;span class="muted"&gt;590 Kč&lt;/span&gt;&lt;/div&gt;
+  &lt;div class="list-row"&gt;&lt;span class="dot dot-info"&gt;&lt;/span&gt;&lt;div class="grow truncate"&gt;Order #1040 · Eva Nováková&lt;/div&gt;&lt;span class="muted"&gt;340 Kč&lt;/span&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Timeline</h2>
+<div class="example"><div class="example-preview"><ul class="timeline" style="width:100%">
+  <li><span class="dot dot-info"></span><span class="grow">Order created</span><span class="help">05/10/2026 09:14</span></li>
+  <li><span class="dot dot-success"></span><span class="grow">Payment received</span><span class="help">05/10/2026 09:16</span></li>
+</ul></div><pre class="example-code"><code>&lt;ul class="timeline" style="width:100%"&gt;
+  &lt;li&gt;&lt;span class="dot dot-info"&gt;&lt;/span&gt;&lt;span class="grow"&gt;Order created&lt;/span&gt;&lt;span class="help"&gt;05/10/2026 09:14&lt;/span&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;span class="dot dot-success"&gt;&lt;/span&gt;&lt;span class="grow"&gt;Payment received&lt;/span&gt;&lt;span class="help"&gt;05/10/2026 09:16&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre></div>
+
+<h2>Empty state</h2>
+<div class="example"><div class="example-preview example-stack"><div class="card"><div class="empty">
+  <i class="ti ti-inbox empty-icon"></i>
+  <div class="empty-title">No orders yet</div>
+  <div class="empty-subtitle">Orders will show up here as soon as customers check out.</div>
+  <div class="empty-action"><button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Create order</button></div>
+</div></div></div><pre class="example-code"><code>&lt;div class="card"&gt;&lt;div class="empty"&gt;
+  &lt;i class="ti ti-inbox empty-icon"&gt;&lt;/i&gt;
+  &lt;div class="empty-title"&gt;No orders yet&lt;/div&gt;
+  &lt;div class="empty-subtitle"&gt;Orders will show up here as soon as customers check out.&lt;/div&gt;
+  &lt;div class="empty-action"&gt;&lt;button class="btn btn-primary btn-sm"&gt;&lt;i class="ti ti-plus"&gt;&lt;/i&gt; Create order&lt;/button&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;</code></pre></div>
+
+<h2>Progress &amp; thumbnails</h2>
+<div class="example"><div class="example-preview example-stack"><div class="progress-thin mb-3" style="max-width:320px"><span style="width:62%"></span></div>
+<div class="d-flex gap-2"><div class="thumb-32" style="background:var(--admin-surface-selected)"></div><div class="thumb-40" style="background:var(--admin-surface-selected)"></div><div class="thumb-48" style="background:var(--admin-surface-selected)"></div></div></div><pre class="example-code"><code>&lt;div class="progress-thin mb-3" style="max-width:320px"&gt;&lt;span style="width:62%"&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class="d-flex gap-2"&gt;&lt;div class="thumb-32" style="background:var(--admin-surface-selected)"&gt;&lt;/div&gt;&lt;div class="thumb-40" style="background:var(--admin-surface-selected)"&gt;&lt;/div&gt;&lt;div class="thumb-48" style="background:var(--admin-surface-selected)"&gt;&lt;/div&gt;&lt;/div&gt;</code></pre></div>
+
+<h2>Explain box &amp; help text</h2>
+<div class="example"><div class="example-preview example-stack"><div class="explain">Prices are shown without VAT. <span class="help">Changes apply to new orders only.</span></div></div><pre class="example-code"><code>&lt;div class="explain"&gt;Prices are shown without VAT. &lt;span class="help"&gt;Changes apply to new orders only.&lt;/span&gt;&lt;/div&gt;</code></pre></div>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

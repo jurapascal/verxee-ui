@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Navigation — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link active" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Navigation</h1>
+<p class="lead">Topbar, sidebar, line tabs and dropdowns. The sidebar and topbar you are looking at right now are the real components.</p>
+
+<h2>Topbar</h2>
+<p><code>.admin-topbar</code> is fixed, 48 px tall. Inside: an optional menu button (mobile), a <code>.brand</code>, then actions pushed right with <code>ms-auto</code>. Use <code>.hide-xs</code> to drop labels on phones, <code>.brand-logo</code> for the square mark.</p>
+<pre><code>&lt;nav class="admin-topbar"&gt;
+  &lt;div class="brand me-3"&gt;&lt;a href="/"&gt;&lt;span class="brand-logo"&gt;&lt;i class="ti ti-bolt"&gt;&lt;/i&gt;&lt;/span&gt; App&lt;/a&gt;&lt;/div&gt;
+  &lt;div class="d-flex align-items-center gap-2 ms-auto"&gt; … &lt;/div&gt;
+&lt;/nav&gt;</code></pre>
+<p>There is also <code>.topbar-timer</code> (add <code>.running</code> for the green state) for time-tracking widgets.</p>
+
+<h2>Sidebar</h2>
+<p><code>.sidebar.sidebar-fixed#sidebar</code> is 240 px on desktop and slides in on mobile (toggle with <code>data-sidebar-toggle</code> on a button and on the <code>.sidebar-backdrop</code>). Mark the current page with <code>.active</code>; <code>.nav-title</code> adds a group heading; <code>.sidebar-footer</code> pins content to the bottom.</p>
+<pre><code>&lt;div class="sidebar sidebar-fixed" id="sidebar"&gt;
+  &lt;ul class="sidebar-nav" data-coreui="navigation"&gt;
+    &lt;li class="nav-item"&gt;&lt;a class="nav-link active" href="/"&gt;&lt;i class="nav-icon ti ti-layout-dashboard"&gt;&lt;/i&gt; Dashboard&lt;/a&gt;&lt;/li&gt;
+    &lt;li class="nav-title"&gt;Admin&lt;/li&gt;
+    &lt;li class="nav-item"&gt;&lt;a class="nav-link" href="/audit"&gt;&lt;i class="nav-icon ti ti-history"&gt;&lt;/i&gt; Audit log&lt;/a&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+  &lt;div class="sidebar-footer border-top"&gt;&lt;a class="nav-link fs-sm" href="/settings"&gt;&lt;i class="ti ti-settings"&gt;&lt;/i&gt; Settings&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="sidebar-backdrop" data-sidebar-toggle&gt;&lt;/div&gt;</code></pre>
+<p>Collapsible groups use CoreUI's <code>.nav-group</code> / <code>.nav-group-items</code> markup; child links are indented and muted automatically.</p>
+
+<h2>Line tabs</h2>
+<div class="example"><div class="example-preview example-stack"><div class="tabs-line">
+  <a href="#" class="active">Overview</a><a href="#">Orders</a><a href="#">Activity</a><a href="#">Settings</a>
+</div></div><pre class="example-code"><code>&lt;div class="tabs-line"&gt;
+  &lt;a href="#" class="active"&gt;Overview&lt;/a&gt;&lt;a href="#"&gt;Orders&lt;/a&gt;&lt;a href="#"&gt;Activity&lt;/a&gt;&lt;a href="#"&gt;Settings&lt;/a&gt;
+&lt;/div&gt;</code></pre></div>
+<p>Scrolls horizontally when it does not fit. (CoreUI <code>.nav-tabs</code> is restyled to match.)</p>
+
+<h2>Dropdowns</h2>
+<div class="example"><div class="example-preview"><div class="dropdown">
+  <button class="btn btn-secondary" data-coreui-toggle="dropdown">Actions <i class="ti ti-chevron-down"></i></button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#"><i class="ti ti-edit"></i> Edit</a>
+    <a class="dropdown-item" href="#"><i class="ti ti-copy"></i> Duplicate</a>
+    <a class="dropdown-item" href="#"><i class="ti ti-trash"></i> Delete</a>
+  </div>
+</div></div><pre class="example-code"><code>&lt;div class="dropdown"&gt;
+  &lt;button class="btn btn-secondary" data-coreui-toggle="dropdown"&gt;Actions &lt;i class="ti ti-chevron-down"&gt;&lt;/i&gt;&lt;/button&gt;
+  &lt;div class="dropdown-menu"&gt;
+    &lt;a class="dropdown-item" href="#"&gt;&lt;i class="ti ti-edit"&gt;&lt;/i&gt; Edit&lt;/a&gt;
+    &lt;a class="dropdown-item" href="#"&gt;&lt;i class="ti ti-copy"&gt;&lt;/i&gt; Duplicate&lt;/a&gt;
+    &lt;a class="dropdown-item" href="#"&gt;&lt;i class="ti ti-trash"&gt;&lt;/i&gt; Delete&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+<p>Wrap an item in <code>.dropdown-submenu</code> with a nested <code>.dropdown-menu</code> for a hover flyout.</p>
+
+<h2>Notifications menu</h2>
+<div class="example"><div class="example-preview"><div class="dropdown">
+  <button class="btn btn-ghost-secondary btn-sm icon-btn" data-coreui-toggle="dropdown" aria-label="Notifications"><i class="ti ti-bell fs-5"></i><span class="dot">2</span></button>
+  <div class="dropdown-menu notif-menu">
+    <a class="notif-item unread" href="#"><span class="ico"><i class="ti ti-credit-card"></i></span><span><div class="t">Order #1042 paid</div><div class="b">Jane Doe · 1 290 Kč</div></span></a>
+    <a class="notif-item" href="#"><span class="ico"><i class="ti ti-truck-delivery"></i></span><span><div class="t">Order #1040 shipped</div><div class="b">Eva Nováková · 340 Kč</div></span></a>
+  </div>
+</div></div><pre class="example-code"><code>&lt;div class="dropdown"&gt;
+  &lt;button class="btn btn-ghost-secondary btn-sm icon-btn" data-coreui-toggle="dropdown" aria-label="Notifications"&gt;&lt;i class="ti ti-bell fs-5"&gt;&lt;/i&gt;&lt;span class="dot"&gt;2&lt;/span&gt;&lt;/button&gt;
+  &lt;div class="dropdown-menu notif-menu"&gt;
+    &lt;a class="notif-item unread" href="#"&gt;&lt;span class="ico"&gt;&lt;i class="ti ti-credit-card"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;&lt;div class="t"&gt;Order #1042 paid&lt;/div&gt;&lt;div class="b"&gt;Jane Doe · 1 290 Kč&lt;/div&gt;&lt;/span&gt;&lt;/a&gt;
+    &lt;a class="notif-item" href="#"&gt;&lt;span class="ico"&gt;&lt;i class="ti ti-truck-delivery"&gt;&lt;/i&gt;&lt;/span&gt;&lt;span&gt;&lt;div class="t"&gt;Order #1040 shipped&lt;/div&gt;&lt;div class="b"&gt;Eva Nováková · 340 Kč&lt;/div&gt;&lt;/span&gt;&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+
+<h2>Page header</h2>
+<div class="example"><div class="example-preview example-stack"><div class="page-head"><h1><i class="ti ti-shopping-cart"></i>Orders</h1><div class="actions"><button class="btn btn-secondary btn-sm">Export</button><button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> New</button></div></div></div><pre class="example-code"><code>&lt;div class="page-head"&gt;&lt;h1&gt;&lt;i class="ti ti-shopping-cart"&gt;&lt;/i&gt;Orders&lt;/h1&gt;&lt;div class="actions"&gt;&lt;button class="btn btn-secondary btn-sm"&gt;Export&lt;/button&gt;&lt;button class="btn btn-primary btn-sm"&gt;&lt;i class="ti ti-plus"&gt;&lt;/i&gt; New&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;</code></pre></div>
+<p>Need a subtitle or larger title? Use <code>.page-title-section</code> (<code>h1</code> + <code>.page-subtitle</code>).</p>
+
+<h2>Accessibility</h2>
+<p>Add a skip link as the first element in <code>&lt;body&gt;</code>: <code>&lt;a class="skip-link visually-hidden-focusable" href="#main"&gt;Skip to content&lt;/a&gt;</code>.</p>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

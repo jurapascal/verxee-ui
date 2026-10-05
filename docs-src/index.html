@@ -1,0 +1,48 @@
+<!-- title: Introduction | group: Start | order: 1 -->
+<h1>Verxee UI</h1>
+<p class="lead">A small admin CSS framework in the Linear / Vercel spirit: neutral greys, one blue accent, a 4 px grid, Inter, and a proper dark mode. It is a skin on top of <a href="https://coreui.io">CoreUI 5</a> (Bootstrap-based), so you keep all CoreUI markup and JS.</p>
+
+<div class="grid-3 mb-4">
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-palette"></i> Tokens</h2><p class="muted mb-0">Every colour, shadow and gap is a CSS variable. Rebrand in one line, dark mode comes free.</p></div></div>
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-components"></i> Components</h2><p class="muted mb-0">Buttons, badges, forms, tables, cards, sidebar, topbar, dialogs, toasts — consistent heights and spacing.</p></div></div>
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-bolt"></i> Tiny runtime</h2><p class="muted mb-0">~5 KB of dependency-free JS: theme, sidebar, toast and confirm dialog (<code>VerxeeUI</code>).</p></div></div>
+</div>
+
+<h2>Quick start</h2>
+<p>Paste this into your <code>&lt;head&gt;</code> and you are done — no build step needed.</p>
+<pre><code>&lt;html lang="en" data-coreui-theme="light"&gt;
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.min.css"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/tabler-icons/css/tabler-icons.min.css"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.css"&gt;
+  &lt;script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.bundle.min.js"&gt;&lt;/script&gt;
+  &lt;script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;</code></pre>
+<p>See <a href="installation.html">Installation</a> for self-hosting, the no-flash theme snippet and the app-shell skeleton.</p>
+
+<h2>Hello, Verxee</h2>
+<!--example-->
+<button class="btn btn-primary">Save</button>
+<button class="btn btn-secondary">Cancel</button>
+<span class="status status--success">Paid</span>
+<button class="btn btn-outline-danger" onclick="VerxeeUI.toast('Nothing was deleted', {type:'info'})">Try a toast</button>
+<!--/example-->
+
+<h2>Principles</h2>
+<ul>
+  <li><strong>Variables first.</strong> Components read <code>--admin-*</code> tokens, never hard-coded colours (status badges excepted).</li>
+  <li><strong>Fixed rhythm.</strong> Badges 22 px · buttons 28 / 34 / 40 px · inputs 34 px · topbar 48 px · sidebar 240 px.</li>
+  <li><strong>Semantic buttons.</strong> Ordinary actions are blue, deletes red, edits orange.</li>
+  <li><strong>Classes over inline styles.</strong> Use the <a href="utilities.html">utilities</a> for the common cases.</li>
+  <li><strong>Accessible by default.</strong> Visible focus ring, skip link, ARIA roles on dialogs and toasts.</li>
+</ul>
+
+<h2>What is inside</h2>
+<table class="table"><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>dist/verxee-ui.min.css</code></td><td>Fonts + tokens + components + layout, minified. Use this one.</td></tr>
+<tr><td><code>dist/verxee-ui.css</code></td><td>The same, readable.</td></tr>
+<tr><td><code>css/tokens.css · components.css · layout.css</code></td><td>Sources — import selectively if you only need part of it.</td></tr>
+<tr><td><code>dist/verxee-ui.min.js</code></td><td>Runtime: theme, sidebar, toast, confirm.</td></tr>
+<tr><td><code>vendor/</code></td><td>CoreUI 5.3.1 and Tabler Icons 3.31, self-hosted.</td></tr>
+<tr><td><code>fonts/</code></td><td>Inter (variable, latin + latin-ext), self-hosted.</td></tr>
+</tbody></table>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Design tokens — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link active" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Design tokens</h1>
+<p class="lead">Every token is a CSS custom property declared in <code>css/tokens.css</code>. The swatches below read the live values, so they follow the theme toggle.</p>
+
+<h2>Surfaces &amp; borders</h2>
+<div class="swatches">
+  <div class="swatch"><i style="background:var(--admin-bg)"></i><div>Page<code>--admin-bg</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-surface)"></i><div>Card / surface<code>--admin-surface</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-surface-hover)"></i><div>Hover<code>--admin-surface-hover</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-surface-selected)"></i><div>Selected<code>--admin-surface-selected</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-border)"></i><div>Border<code>--admin-border</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-border-subtle)"></i><div>Subtle border<code>--admin-border-subtle</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-border-strong)"></i><div>Strong border<code>--admin-border-strong</code></div></div>
+</div>
+
+<h2>Text</h2>
+<div class="swatches">
+  <div class="swatch"><i style="background:var(--admin-text)"></i><div>Primary<code>--admin-text</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-text-secondary)"></i><div>Secondary<code>--admin-text-secondary</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-text-disabled)"></i><div>Disabled<code>--admin-text-disabled</code></div></div>
+</div>
+
+<h2>Status &amp; accent</h2>
+<div class="swatches">
+  <div class="swatch"><i style="background:var(--admin-success)"></i><div>Success<code>--admin-success</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-warning)"></i><div>Warning<code>--admin-warning</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-critical)"></i><div>Critical<code>--admin-critical</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-info)"></i><div>Info<code>--admin-info</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-pending)"></i><div>Pending<code>--admin-pending</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-accent)"></i><div>Accent<code>--admin-accent</code></div></div>
+  <div class="swatch"><i style="background:var(--admin-action)"></i><div>Action (CTA)<code>--admin-action</code></div></div>
+</div>
+
+<h2>Other tokens</h2>
+<table class="table"><thead><tr><th>Token</th><th>Value (light)</th><th>Use</th></tr></thead><tbody>
+<tr><td><code>--admin-action-hover</code></td><td>#1D4ED8</td><td>Primary button hover, link hover</td></tr>
+<tr><td><code>--admin-action-text</code></td><td>#FFFFFF</td><td>Text on primary buttons</td></tr>
+<tr><td><code>--admin-overlay</code></td><td>rgba(0,0,0,.5)</td><td>Backdrop of dialogs and the mobile sidebar</td></tr>
+<tr><td><code>--shadow-xs · -sm · -md · -popover</code></td><td>—</td><td>Elevation scale; dark mode swaps in stronger shadows</td></tr>
+<tr><td><code>--admin-font</code></td><td>Inter, system stack</td><td>Typeface</td></tr>
+<tr><td><code>--gap-tight · -base · -section · -large</code></td><td>8 · 16 · 24 · 40 px</td><td>Spacing on the 4 px grid</td></tr>
+</tbody></table>
+
+<h2>Typography</h2>
+<p>Base size is 13 px with <code>-0.01em</code> tracking. Use the size utilities rather than ad-hoc values:</p>
+<div class="example"><div class="example-preview example-stack"><div class="fs-xs">fs-xs · 11px</div>
+<div class="fs-sm">fs-sm · 12px</div>
+<div class="fs-base">fs-base · 13px</div>
+<div class="fs-md">fs-md · 14px</div>
+<div class="fs-lg">fs-lg · 16px</div>
+<div class="fs-xl">fs-xl · 20px</div>
+<div class="fs-2xl">fs-2xl · 24px</div></div><pre class="example-code"><code>&lt;div class="fs-xs"&gt;fs-xs · 11px&lt;/div&gt;
+&lt;div class="fs-sm"&gt;fs-sm · 12px&lt;/div&gt;
+&lt;div class="fs-base"&gt;fs-base · 13px&lt;/div&gt;
+&lt;div class="fs-md"&gt;fs-md · 14px&lt;/div&gt;
+&lt;div class="fs-lg"&gt;fs-lg · 16px&lt;/div&gt;
+&lt;div class="fs-xl"&gt;fs-xl · 20px&lt;/div&gt;
+&lt;div class="fs-2xl"&gt;fs-2xl · 24px&lt;/div&gt;</code></pre></div>
+
+<h2>Sizing rhythm</h2>
+<table class="table"><tbody>
+<tr><td>Badge</td><td>22 px</td></tr><tr><td>Button</td><td>28 (<code>btn-sm</code>) · 34 (default) · 40 (<code>btn-lg</code>)</td></tr>
+<tr><td>Input</td><td>34 px (<code>form-control-sm</code>: 28 px)</td></tr><tr><td>Topbar</td><td>48 px</td></tr>
+<tr><td>Sidebar</td><td>240 px</td></tr><tr><td>Card radius</td><td>12 px</td></tr>
+</tbody></table>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

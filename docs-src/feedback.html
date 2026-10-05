@@ -1,0 +1,51 @@
+<!-- title: Feedback | group: Components | order: 15 -->
+<h1>Feedback</h1>
+<p class="lead">Toasts, confirm dialogs, modals and popovers.</p>
+
+<h2>Toast</h2>
+<p>Call <code>VerxeeUI.toast(message, options)</code>. The stack container is created automatically. Click a toast to dismiss it early.</p>
+<!--example-->
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Settings saved')">Neutral</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Order marked paid', {type:'success'})">Success</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Low stock', {type:'warning'})">Warning</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('Payment failed', {type:'critical', duration:5000})">Critical</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.toast('New version available', {type:'info', duration:0})">Sticky info</button>
+<!--/example-->
+<table class="table"><thead><tr><th>Option</th><th>Default</th><th></th></tr></thead><tbody>
+<tr><td><code>type</code></td><td>—</td><td><code>success | warning | critical | info</code>; omit for the dark neutral toast</td></tr>
+<tr><td><code>duration</code></td><td>2500</td><td>Milliseconds; <code>0</code> keeps it until clicked</td></tr>
+</tbody></table>
+<p>Returns <code>{ close(), element }</code>.</p>
+
+<h2>Confirm dialog</h2>
+<p><code>VerxeeUI.confirm(options)</code> returns a Promise that resolves to <code>true</code> or <code>false</code>. <kbd>Esc</kbd> and a click on the backdrop cancel; focus is trapped and restored.</p>
+<!--example-->
+<button class="btn btn-outline-danger" onclick="VerxeeUI.confirm({title:'Delete customer?',description:'Their orders stay, but the profile is removed.',confirmText:'Delete',variant:'danger'}).then(ok => VerxeeUI.toast(ok ? 'Deleted' : 'Cancelled'))">Danger</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.confirm({title:'Discard changes?',variant:'warning'}).then(ok => VerxeeUI.toast(String(ok)))">Warning</button>
+<button class="btn btn-secondary" onclick="VerxeeUI.confirm({title:'Send e-mail now?',description:'12 recipients.',confirmText:'Send',variant:'info'}).then(ok => VerxeeUI.toast(String(ok)))">Info</button>
+<!--/example-->
+<pre><code>if (await VerxeeUI.confirm({ title: 'Delete?', variant: 'danger' })) {
+  await deleteIt();
+}</code></pre>
+<p>Options: <code>title</code>, <code>description</code>, <code>confirmText</code> (“Confirm”), <code>cancelText</code> (“Cancel”), <code>variant</code> (<code>danger | warning | info</code>).</p>
+<p>No JavaScript needed for the common case — see <code>data-confirm</code> on <a href="buttons.html">Buttons</a>.</p>
+
+<h2>Modal</h2>
+<p>For forms and rich content use the CoreUI modal (it is restyled). Open it with <code>data-coreui-toggle="modal"</code>.</p>
+<!--example-->
+<button class="btn btn-primary" data-coreui-toggle="modal" data-coreui-target="#demoModal">Open modal</button>
+<div class="modal fade" id="demoModal" tabindex="-1" aria-labelledby="demoModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
+    <div class="modal-header"><h2 class="modal-title fs-md" id="demoModalTitle">Add note</h2><button class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button></div>
+    <div class="modal-body"><label class="form-label" for="note">Note</label><textarea id="note" class="form-control" rows="3"></textarea></div>
+    <div class="modal-footer"><button class="btn btn-secondary" data-coreui-dismiss="modal">Cancel</button><button class="btn btn-primary" data-coreui-dismiss="modal">Save</button></div>
+  </div></div>
+</div>
+<!--/example-->
+
+<h2>Popover</h2>
+<p><code>.admin-popover</code> is a lightweight arrowed panel for inline help. Place it inside a <code>position: relative</code> parent and choose <code>.pop-above</code> or <code>.pop-below</code>; <code>.pop-fixed</code> drops the arrow when you position it yourself.</p>
+<!--example-->
+<span style="position:relative;display:inline-block;margin-bottom:70px"><button class="btn btn-secondary">Anchor</button>
+<div class="admin-popover pop-below p-3" style="width:220px">Popovers are for short hints.</div></span>
+<!--/example-->

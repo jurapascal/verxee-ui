@@ -1,0 +1,43 @@
+<!-- title: Badges & dots | group: Components | order: 11 -->
+<h1>Badges &amp; dots</h1>
+<p class="lead">One badge component (22 px) with six semantic colours. Pair it with a status — never use colour alone for meaning.</p>
+
+<h2>Status badges</h2>
+<!--example-->
+<span class="status status--success">Paid</span>
+<span class="status status--warning">Pending</span>
+<span class="status status--critical">Refunded</span>
+<span class="status status--info">Shipped</span>
+<span class="status status--pending">In review</span>
+<span class="status status--neutral">Draft</span>
+<!--/example-->
+<p><code>.badge--success</code> etc. are aliases, so CoreUI/Bootstrap <code>.badge</code> markup is restyled too.</p>
+
+<h2>Dots</h2>
+<!--example-->
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-success"></span> Online</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-warning"></span> Away</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-critical"></span> Error</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-info"></span> Info</span>
+<span class="d-inline-flex align-items-center gap-2"><span class="dot dot-neutral"></span> Offline</span>
+<!--/example-->
+
+<h2>Notification counter</h2>
+<p>Put <code>.dot</code> inside a <code>.icon-btn</code> and give it a number; hide it with <code>hidden</code> when the count is zero.</p>
+<!--example-->
+<button class="btn btn-ghost-secondary btn-sm icon-btn" aria-label="Notifications"><i class="ti ti-bell fs-5"></i><span class="dot">3</span></button>
+<!--/example-->
+
+<h2>Avatars &amp; colour dots</h2>
+<!--example-->
+<span class="avatar">JD</span><span class="avatar avatar-lg">AB</span>
+<span class="color-dot" style="background:#7C3AED"></span><span class="color-dot" style="background:#059669"></span>
+<!--/example-->
+
+<h2>Status-coloured selects</h2>
+<p>A <code>&lt;select class="form-select status-select-paid"&gt;</code> gets a coloured left edge. Available: <code>-paid</code> / <code>-delivered</code> (green), <code>-shipped</code> / <code>-processing</code> (blue), <code>-pending</code> / <code>-awaiting_payment</code> (orange), <code>-cancelled</code> / <code>-failed</code> (red).</p>
+<!--example-->
+<select class="form-select status-select-paid w-input-md"><option>Paid</option></select>
+<select class="form-select status-select-pending w-input-md"><option>Pending</option></select>
+<select class="form-select status-select-cancelled w-input-md"><option>Cancelled</option></select>
+<!--/example-->

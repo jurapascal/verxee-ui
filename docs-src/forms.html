@@ -1,0 +1,60 @@
+<!-- title: Forms | group: Components | order: 12 -->
+<h1>Forms</h1>
+<p class="lead">Standard Bootstrap/CoreUI form markup, restyled: 34 px controls, blue focus ring, tabular numbers.</p>
+
+<h2>Text inputs</h2>
+<!--example stack-->
+<div style="max-width:420px">
+  <label class="form-label" for="f1">Store name</label>
+  <input id="f1" class="form-control" value="Demo Store">
+  <div class="form-hint">Shown in e-mails and on invoices.</div>
+
+  <label class="form-label mt-3" for="f2">E-mail</label>
+  <input id="f2" class="form-control is-invalid" value="not-an-email">
+  <div class="invalid-msg">Enter a valid e-mail address.</div>
+
+  <label class="form-label mt-3" for="f3">Currency</label>
+  <select id="f3" class="form-select"><option>CZK</option><option>EUR</option></select>
+</div>
+<!--/example-->
+
+<h2>Sizes</h2>
+<!--example-->
+<input class="form-control form-control-sm w-input-md" placeholder="Small 28">
+<input class="form-control w-input-md" placeholder="Default 34">
+<!--/example-->
+<p>Width helpers: <code>.w-input-sm</code> (64 px), <code>.w-input-md</code> (120 px).</p>
+
+<h2>Switches &amp; checkboxes</h2>
+<!--example-->
+<div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="sw1" checked><label class="form-check-label" for="sw1">E-mail me about new orders</label></div>
+<div class="form-check"><input class="form-check-input" type="checkbox" id="cb1"><label class="form-check-label" for="cb1">Remember me</label></div>
+<!--/example-->
+
+<h2>Inline row</h2>
+<p><code>.form-row-inline</code> lays fields out in a wrapping row aligned to the bottom — good for filters.</p>
+<!--example stack-->
+<div class="form-row-inline">
+  <div><label class="form-label" for="r1">From</label><input id="r1" type="date" class="form-control"></div>
+  <div><label class="form-label" for="r2">To</label><input id="r2" type="date" class="form-control"></div>
+  <div><button class="btn btn-primary">Apply</button></div>
+</div>
+<!--/example-->
+
+<h2>Input group</h2>
+<!--example-->
+<div class="input-group" style="max-width:320px"><span class="input-group-text"><i class="ti ti-search"></i></span><input class="form-control" placeholder="Search…"></div>
+<!--/example-->
+
+<h2>One-time code</h2>
+<!--example-->
+<input class="form-control otp-input" maxlength="6" placeholder="••••••" style="max-width:220px" inputmode="numeric" autocomplete="one-time-code">
+<!--/example-->
+
+<h2>Sticky save bar</h2>
+<p>For long settings forms, add <code>.page-actions-bar</code> as the last child of the content. It pins to the bottom of the viewport (right of the sidebar) and the page pads itself so nothing hides behind it. Put a message in <code>.page-actions-status</code> — it is pushed to the left.</p>
+<pre><code>&lt;div class="page-actions-bar"&gt;
+  &lt;span class="page-actions-status"&gt;Unsaved changes&lt;/span&gt;
+  &lt;button class="btn btn-secondary"&gt;Discard&lt;/button&gt;
+  &lt;button class="btn btn-primary"&gt;Save&lt;/button&gt;
+&lt;/div&gt;</code></pre>

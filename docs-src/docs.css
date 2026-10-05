@@ -1,0 +1,23 @@
+/* Documentation-only styles (not part of the framework) */
+.docs { max-width: 920px; }
+.docs h1 { font-size: 26px; font-weight: 700; margin: 0 0 6px; }
+.docs .lead { font-size: 15px; color: var(--admin-text-secondary); margin-bottom: 28px; }
+.docs h2 { font-size: 18px; font-weight: 600; margin: 36px 0 10px; padding-top: 4px; }
+.docs h3 { font-size: 14px; font-weight: 600; margin: 24px 0 8px; }
+.docs p, .docs li { line-height: 1.65; font-size: 14px; }
+.docs code { font-size: 12.5px; background: var(--admin-surface-selected); padding: 1px 6px; border-radius: 5px; color: var(--admin-text); }
+.docs pre { background: var(--admin-surface); border: 1px solid var(--admin-border); border-radius: 10px; padding: 14px 16px; overflow-x: auto; margin: 0 0 16px; }
+.docs pre code { background: none; padding: 0; line-height: 1.55; }
+.docs table { font-size: 13px; }
+.docs table code { white-space: nowrap; }
+.example { border: 1px solid var(--admin-border); border-radius: 12px; overflow: hidden; margin: 12px 0 20px; background: var(--admin-surface); }
+.example-preview { padding: 24px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--admin-bg); }
+.example-stack { display: block; }
+.example .example-code { margin: 0; border: 0; border-top: 1px solid var(--admin-border); border-radius: 0; max-height: 280px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.swatch { border: 1px solid var(--admin-border); border-radius: 10px; overflow: hidden; background: var(--admin-surface); }
+.swatch i { display: block; height: 44px; border-bottom: 1px solid var(--admin-border); }
+.swatch div { padding: 8px 10px; font-size: 12px; } .swatch code { font-size: 11px; padding: 0; background: none; display: block; }
+.callout { border-left: 3px solid var(--admin-info); background: var(--admin-surface); border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 16px 0; font-size: 13px; }
+.callout.warn { border-color: var(--admin-warning); }
+.docs .nav-link .ti { margin-right: 6px; }

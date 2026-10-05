@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Introduction — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.0.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link active" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Verxee UI</h1>
+<p class="lead">A small admin CSS framework in the Linear / Vercel spirit: neutral greys, one blue accent, a 4 px grid, Inter, and a proper dark mode. It is a skin on top of <a href="https://coreui.io">CoreUI 5</a> (Bootstrap-based), so you keep all CoreUI markup and JS.</p>
+
+<div class="grid-3 mb-4">
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-palette"></i> Tokens</h2><p class="muted mb-0">Every colour, shadow and gap is a CSS variable. Rebrand in one line, dark mode comes free.</p></div></div>
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-components"></i> Components</h2><p class="muted mb-0">Buttons, badges, forms, tables, cards, sidebar, topbar, dialogs, toasts — consistent heights and spacing.</p></div></div>
+  <div class="card"><div class="card-body"><h2 class="section-title"><i class="ti ti-bolt"></i> Tiny runtime</h2><p class="muted mb-0">~5 KB of dependency-free JS: theme, sidebar, toast and confirm dialog (<code>VerxeeUI</code>).</p></div></div>
+</div>
+
+<h2>Quick start</h2>
+<p>Paste this into your <code>&lt;head&gt;</code> and you are done — no build step needed.</p>
+<pre><code>&lt;html lang="en" data-coreui-theme="light"&gt;
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.min.css"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/tabler-icons/css/tabler-icons.min.css"&gt;
+  &lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.css"&gt;
+  &lt;script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/vendor/coreui/coreui.bundle.min.js"&gt;&lt;/script&gt;
+  &lt;script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.0.0/dist/verxee-ui.min.js"&gt;&lt;/script&gt;
+&lt;/head&gt;</code></pre>
+<p>See <a href="installation.html">Installation</a> for self-hosting, the no-flash theme snippet and the app-shell skeleton.</p>
+
+<h2>Hello, Verxee</h2>
+<div class="example"><div class="example-preview"><button class="btn btn-primary">Save</button>
+<button class="btn btn-secondary">Cancel</button>
+<span class="status status--success">Paid</span>
+<button class="btn btn-outline-danger" onclick="VerxeeUI.toast('Nothing was deleted', {type:'info'})">Try a toast</button></div><pre class="example-code"><code>&lt;button class="btn btn-primary"&gt;Save&lt;/button&gt;
+&lt;button class="btn btn-secondary"&gt;Cancel&lt;/button&gt;
+&lt;span class="status status--success"&gt;Paid&lt;/span&gt;
+&lt;button class="btn btn-outline-danger" onclick="VerxeeUI.toast('Nothing was deleted', {type:'info'})"&gt;Try a toast&lt;/button&gt;</code></pre></div>
+
+<h2>Principles</h2>
+<ul>
+  <li><strong>Variables first.</strong> Components read <code>--admin-*</code> tokens, never hard-coded colours (status badges excepted).</li>
+  <li><strong>Fixed rhythm.</strong> Badges 22 px · buttons 28 / 34 / 40 px · inputs 34 px · topbar 48 px · sidebar 240 px.</li>
+  <li><strong>Semantic buttons.</strong> Ordinary actions are blue, deletes red, edits orange.</li>
+  <li><strong>Classes over inline styles.</strong> Use the <a href="utilities.html">utilities</a> for the common cases.</li>
+  <li><strong>Accessible by default.</strong> Visible focus ring, skip link, ARIA roles on dialogs and toasts.</li>
+</ul>
+
+<h2>What is inside</h2>
+<table class="table"><thead><tr><th>File</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>dist/verxee-ui.min.css</code></td><td>Fonts + tokens + components + layout, minified. Use this one.</td></tr>
+<tr><td><code>dist/verxee-ui.css</code></td><td>The same, readable.</td></tr>
+<tr><td><code>css/tokens.css · components.css · layout.css</code></td><td>Sources — import selectively if you only need part of it.</td></tr>
+<tr><td><code>dist/verxee-ui.min.js</code></td><td>Runtime: theme, sidebar, toast, confirm.</td></tr>
+<tr><td><code>vendor/</code></td><td>CoreUI 5.3.1 and Tabler Icons 3.31, self-hosted.</td></tr>
+<tr><td><code>fonts/</code></td><td>Inter (variable, latin + latin-ext), self-hosted.</td></tr>
+</tbody></table>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+</body>
+</html>

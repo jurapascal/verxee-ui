@@ -1,0 +1,86 @@
+<!-- title: Cards & data | group: Components | order: 13 -->
+<h1>Cards &amp; data display</h1>
+<p class="lead">Cards, KPI tiles, tables, list rows, timelines and empty states.</p>
+
+<h2>Card</h2>
+<!--example stack-->
+<div class="card" style="max-width:420px">
+  <div class="card-header">Customer</div>
+  <div class="card-body">
+    <div class="d-flex align-items-center gap-2 mb-2"><span class="avatar">JD</span> Jane Doe</div>
+    <div class="muted">jane.doe@example.com · Brno</div>
+  </div>
+  <div class="card-footer"><button class="btn btn-secondary btn-sm">Edit</button></div>
+</div>
+<!--/example-->
+
+<h2>KPI tiles</h2>
+<p>Put <code>.kpi</code> on a card and lay several out with <code>.grid-2</code> / <code>.grid-3</code> (auto-fit grids).</p>
+<!--example stack-->
+<div class="grid-3">
+  <div class="card kpi"><div class="kpi-label">Revenue</div><div class="kpi-value">48 200 Kč</div><div class="kpi-sub">+12 % vs. last month</div></div>
+  <div class="card kpi"><div class="kpi-label">Orders</div><div class="kpi-value">128</div><div class="kpi-sub">9 waiting for shipment</div></div>
+  <div class="card kpi"><div class="kpi-label">Conversion</div><div class="kpi-value">2.8 %</div><div class="kpi-sub">stable</div></div>
+</div>
+<!--/example-->
+
+<h2>Stats strip</h2>
+<p>A single bar of figures with an icon in a circle. Add <code>.stat--alert</code> to a tile that needs attention; make a tile clickable with <code>role="button"</code>.</p>
+<!--example stack-->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-label"><i class="ti ti-shopping-cart"></i> Orders</div><div class="stat-value">128</div><div class="stat-sub">this month</div></div>
+  <div class="stat"><div class="stat-label"><i class="ti ti-coin"></i> Revenue</div><div class="stat-value">48 200 Kč</div><div class="stat-sub">+12 %</div></div>
+  <div class="stat stat--alert" role="button" tabindex="0"><div class="stat-label"><i class="ti ti-alert-circle"></i> Unpaid</div><div class="stat-value">7</div><div class="stat-sub">chase these</div></div>
+</div>
+<!--/example-->
+
+<h2>Table</h2>
+<p>14 px cell padding, no uppercase headers. Wrap in <code>.table-responsive</code> inside a <code>.card</code>. <code>.table-hover</code> highlights rows; <code>.row-link</code> + <code>data-href</code> makes a row clickable (wire up navigation yourself). Use <code>.text-tabular</code> for numeric columns and <code>th[data-sort]</code> with <code>.sort-asc / .sort-desc</code> for sortable headers.</p>
+<!--example stack-->
+<div class="card"><div class="table-responsive"><table class="table table-hover mb-0">
+  <thead><tr><th>Order</th><th>Customer</th><th data-sort class="sort-desc">Total</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr class="row-link"><td><a href="#">#1042</a></td><td>Jane Doe</td><td class="text-tabular">1 290 Kč</td><td><span class="status status--success">Paid</span></td></tr>
+    <tr class="row-link"><td><a href="#">#1041</a></td><td>John Smith</td><td class="text-tabular">590 Kč</td><td><span class="status status--warning">Pending</span></td></tr>
+    <tr class="row-link"><td><a href="#">#1040</a></td><td>Eva Nováková</td><td class="text-tabular">340 Kč</td><td><span class="status status--info">Shipped</span></td></tr>
+  </tbody></table></div></div>
+<!--/example-->
+<div class="callout"><code>data-sort</code> only styles the arrow — sorting logic is yours (or your data-table library's).</div>
+
+<h2>List rows</h2>
+<!--example stack-->
+<div class="card">
+  <div class="list-row"><span class="dot dot-success"></span><div class="grow truncate">Order #1042 · Jane Doe</div><span class="muted">1 290 Kč</span></div>
+  <div class="list-row"><span class="dot dot-warning"></span><div class="grow truncate">Order #1041 · John Smith</div><span class="muted">590 Kč</span></div>
+  <div class="list-row"><span class="dot dot-info"></span><div class="grow truncate">Order #1040 · Eva Nováková</div><span class="muted">340 Kč</span></div>
+</div>
+<!--/example-->
+
+<h2>Timeline</h2>
+<!--example-->
+<ul class="timeline" style="width:100%">
+  <li><span class="dot dot-info"></span><span class="grow">Order created</span><span class="help">05/10/2026 09:14</span></li>
+  <li><span class="dot dot-success"></span><span class="grow">Payment received</span><span class="help">05/10/2026 09:16</span></li>
+</ul>
+<!--/example-->
+
+<h2>Empty state</h2>
+<!--example stack-->
+<div class="card"><div class="empty">
+  <i class="ti ti-inbox empty-icon"></i>
+  <div class="empty-title">No orders yet</div>
+  <div class="empty-subtitle">Orders will show up here as soon as customers check out.</div>
+  <div class="empty-action"><button class="btn btn-primary btn-sm"><i class="ti ti-plus"></i> Create order</button></div>
+</div></div>
+<!--/example-->
+
+<h2>Progress &amp; thumbnails</h2>
+<!--example stack-->
+<div class="progress-thin mb-3" style="max-width:320px"><span style="width:62%"></span></div>
+<div class="d-flex gap-2"><div class="thumb-32" style="background:var(--admin-surface-selected)"></div><div class="thumb-40" style="background:var(--admin-surface-selected)"></div><div class="thumb-48" style="background:var(--admin-surface-selected)"></div></div>
+<!--/example-->
+
+<h2>Explain box &amp; help text</h2>
+<!--example stack-->
+<div class="explain">Prices are shown without VAT. <span class="help">Changes apply to new orders only.</span></div>
+<!--/example-->

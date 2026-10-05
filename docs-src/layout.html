@@ -1,0 +1,42 @@
+<!-- title: Layout & pages | group: Patterns | order: 20 -->
+<h1>Layout &amp; page patterns</h1>
+<p class="lead">How to assemble the shell and the recurring page types.</p>
+
+<h2>Shell</h2>
+<p>Fixed <code>.admin-topbar</code> (48 px) + fixed <code>.sidebar</code> (240 px) + <code>.admin-wrapper</code> containing <code>.admin-content</code>. Below 992 px the sidebar becomes an off-canvas drawer and the content padding shrinks. Full markup: <a href="installation.html">Installation</a>.</p>
+
+<h2>Grids</h2>
+<p><code>.grid-2</code> (min 320 px columns) and <code>.grid-3</code> (min 240 px) are auto-fit CSS grids with a 16 px gap — they collapse by themselves, no breakpoints needed. For anything else use Bootstrap's <code>.row</code> / <code>.col-*</code>, which CoreUI includes.</p>
+<!--example stack-->
+<div class="grid-2">
+  <div class="card"><div class="card-body">Left</div></div>
+  <div class="card"><div class="card-body">Right</div></div>
+</div>
+<!--/example-->
+
+<h2>Typical page</h2>
+<pre><code>&lt;main class="admin-content"&gt;
+  &lt;div class="page-head"&gt;&lt;h1&gt;&lt;i class="ti ti-users"&gt;&lt;/i&gt;Customers&lt;/h1&gt;&lt;div class="actions"&gt; … &lt;/div&gt;&lt;/div&gt;
+  &lt;div class="stats-strip"&gt; … &lt;/div&gt;
+  &lt;div class="tabs-line"&gt; … &lt;/div&gt;
+  &lt;div class="card"&gt;&lt;div class="table-responsive"&gt;&lt;table class="table table-hover mb-0"&gt; … &lt;/table&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/main&gt;</code></pre>
+
+<h2>Auth screen</h2>
+<p>A centred card on the page background — sign-in, 2FA, recovery.</p>
+<pre><code>&lt;div class="auth-shell"&gt;
+  &lt;div class="auth-card"&gt;
+    &lt;div class="auth-brand"&gt;&lt;span class="logo"&gt;&lt;i class="ti ti-bolt"&gt;&lt;/i&gt;&lt;/span&gt; My app&lt;/div&gt;
+    &lt;div class="card"&gt;&lt;div class="card-body"&gt;
+      &lt;div class="auth-title"&gt;Sign in&lt;/div&gt;
+      &lt;div class="auth-sub"&gt;Welcome back.&lt;/div&gt;
+      &lt;label class="form-label" for="e"&gt;E-mail&lt;/label&gt;&lt;input id="e" class="form-control"&gt;
+      &lt;button class="btn btn-primary w-100 mt-3"&gt;Continue&lt;/button&gt;
+    &lt;/div&gt;&lt;/div&gt;
+    &lt;div class="auth-foot"&gt;Need help? Contact support.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<p>For two-factor setup: <code>.qr-box</code> (200 px, white background so scanners work in dark mode), <code>.otp-input</code> and <code>.recovery-codes</code> (two-column monospace grid).</p>
+
+<h2>Print</h2>
+<p>The stylesheet includes print rules: chrome (topbar, sidebar, buttons) is hidden, content flows full width.</p>
