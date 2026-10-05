@@ -97,4 +97,3 @@ body { overflow-x: hidden; }
 .toast-msg--warning { border-left: 3px solid var(--admin-warning); }
 .toast-msg--critical { border-left: 3px solid var(--admin-critical); }
 .toast-msg--info { border-left: 3px solid var(--admin-info); }
-.admin-confirm-actions .btn-outline-danger:focus, .admin-confirm-actions .btn-outline-danger:active { background: rgba(239,68,68,.06); color: var(--admin-critical); border-color: rgba(239,68,68,.3); }

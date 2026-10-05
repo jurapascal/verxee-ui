@@ -149,16 +149,16 @@ a:hover { color: var(--admin-action-hover); }
 .btn--icon { width: 34px; padding: 0; } .btn--icon.btn-sm, .btn--icon.btn--sm { width: 28px; } .btn--icon.btn-lg, .btn--icon.btn--lg { width: 40px; }
 
 .btn-primary, .btn--primary { background: var(--admin-action); color: var(--admin-action-text); box-shadow: 0 1px 2px rgba(37,99,235,.2); }
-.btn-primary:hover, .btn--primary:hover { background: var(--admin-action-hover); color: var(--admin-action-text); box-shadow: 0 2px 6px rgba(37,99,235,.25); }
+.btn-primary:hover, .btn-primary:focus-visible, .btn--primary:hover , .btn--primary:focus-visible { background: var(--admin-action-hover); color: var(--admin-action-text); box-shadow: 0 2px 6px rgba(37,99,235,.25); }
 .btn-secondary, .btn-outline-secondary, .btn--secondary { background: var(--admin-surface); color: var(--admin-text) !important; border-color: var(--admin-border); box-shadow: var(--shadow-xs); }
-.btn-secondary:hover, .btn-outline-secondary:hover, .btn--secondary:hover { background: var(--admin-surface-hover); color: var(--admin-text) !important; border-color: var(--admin-border-strong); }
+.btn-secondary:hover, .btn-secondary:focus-visible, .btn-outline-secondary:hover, .btn-outline-secondary:focus-visible, .btn--secondary:hover , .btn--secondary:focus-visible { background: var(--admin-surface-hover); color: var(--admin-text) !important; border-color: var(--admin-border-strong); }
 .btn-ghost-secondary, .btn--ghost { background: transparent; color: var(--admin-text-secondary); border: none; }
-.btn-ghost-secondary:hover, .btn--ghost:hover { background: var(--admin-surface-hover); color: var(--admin-text); }
+.btn-ghost-secondary:hover, .btn-ghost-secondary:focus-visible, .btn--ghost:hover , .btn--ghost:focus-visible { background: var(--admin-surface-hover); color: var(--admin-text); }
 .btn-outline-danger, .btn--danger { background: transparent; color: var(--admin-critical); border-color: var(--admin-border); }
-.btn-outline-danger:hover, .btn--danger:hover { background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.3); }
+.btn-outline-danger:hover, .btn-outline-danger:focus-visible, .btn--danger:hover , .btn--danger:focus-visible { background: rgba(239,68,68,.06); border-color: rgba(239,68,68,.3); }
 .btn-ghost-danger { background: transparent; color: var(--admin-critical); border: none; }
 .btn-link, .btn--link { height: auto; padding: 0; background: none; border: none; color: var(--admin-accent); font-size: 13px; text-decoration: none !important; box-shadow: none !important; }
-.btn-link:hover, .btn--link:hover { text-decoration: underline !important; }
+.btn-link:hover, .btn-link:focus-visible, .btn--link:hover , .btn--link:focus-visible { text-decoration: underline !important; }
 .btn:disabled, .btn[aria-disabled="true"] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 
 /* ═══════ Button interaction — three semantic schemes ═══════
@@ -166,6 +166,8 @@ a:hover { color: var(--admin-action-hover); }
    Each: light normal → tinted hover (a bit of colour) → full colour when pressed/
    active/open. Doubled classes (0,3,0) beat the light-mode `.btn{color:!important}`. */
 .btn:active { transform: translateY(1px); }
+/* Focus: keyboard focus looks like hover (see variants below) plus the global :focus-visible outline; CoreUI's tinted box-shadow ring is dropped. */
+.btn:focus, .btn:focus-visible { box-shadow: none; }
 .btn:disabled:active, .btn[aria-disabled="true"]:active { transform: none; }
 
 /* primary keeps its blue identity (a touch darker when pressed) */
@@ -176,12 +178,12 @@ a:hover { color: var(--admin-action-hover); }
 }
 
 /* ── ORDINARY: white → light blue (hover) → full blue (pressed/active) ── */
-.btn.btn-secondary:hover, .btn.btn-outline-secondary:hover, .btn.btn--secondary:hover,
-.btn.btn-ghost-secondary:hover, .btn.btn--ghost:hover {
+.btn.btn-secondary:hover, .btn.btn-secondary:focus-visible, .btn.btn-outline-secondary:hover, .btn.btn-outline-secondary:focus-visible, .btn.btn--secondary:hover, .btn.btn--secondary:focus-visible,
+.btn.btn-ghost-secondary:hover, .btn.btn-ghost-secondary:focus-visible, .btn.btn--ghost:hover , .btn.btn--ghost:focus-visible {
   background: rgba(37,99,235,.10) !important; color: var(--admin-action) !important; border-color: rgba(37,99,235,.45) !important;
 }
-.btn.btn-secondary:hover .ti, .btn.btn-outline-secondary:hover .ti, .btn.btn--secondary:hover .ti,
-.btn.btn-ghost-secondary:hover .ti, .btn.btn--ghost:hover .ti { color: var(--admin-action) !important; }
+.btn.btn-secondary:hover .ti, .btn.btn-secondary:focus-visible .ti, .btn.btn-outline-secondary:hover .ti, .btn.btn-outline-secondary:focus-visible .ti, .btn.btn--secondary:hover .ti, .btn.btn--secondary:focus-visible .ti,
+.btn.btn-ghost-secondary:hover .ti, .btn.btn-ghost-secondary:focus-visible .ti, .btn.btn--ghost:hover .ti , .btn.btn--ghost:focus-visible .ti { color: var(--admin-action) !important; }
 .btn.btn-secondary:active, .btn.btn-secondary.active, .btn.btn-secondary.show,
 .btn.btn-outline-secondary:active, .btn.btn-outline-secondary.active, .btn.btn-outline-secondary.show,
 .btn.btn--secondary:active, .btn.btn--secondary.active, .btn.btn--secondary.show,
@@ -196,7 +198,7 @@ a:hover { color: var(--admin-action-hover); }
 .btn.btn--ghost:active .ti, .btn.btn--ghost.active .ti, .btn.btn--ghost.show .ti { color: #fff !important; }
 
 /* ── DELETE: red → redder (hover) → full red (pressed/active) ── */
-.btn.btn-outline-danger:hover, .btn.btn--danger:hover, .btn.btn-danger:hover, .btn.btn-ghost-danger:hover {
+.btn.btn-outline-danger:hover, .btn.btn-outline-danger:focus-visible, .btn.btn--danger:hover, .btn.btn--danger:focus-visible, .btn.btn-danger:hover, .btn.btn-danger:focus-visible, .btn.btn-ghost-danger:hover , .btn.btn-ghost-danger:focus-visible {
   background: rgba(239,68,68,.12) !important; color: #dc2626 !important; border-color: rgba(239,68,68,.55) !important;
 }
 .btn.btn-outline-danger:active, .btn.btn-outline-danger.active, .btn.btn-outline-danger.show,
@@ -209,10 +211,10 @@ a:hover { color: var(--admin-action-hover); }
 
 /* ── EDIT: orange → more orange (hover) → full orange (pressed/active) ── */
 .btn-outline-warning, .btn-warning, .btn--warning { background: transparent; color: #c2630a; border-color: rgba(217,119,6,.45); }
-.btn.btn-outline-warning:hover, .btn.btn-warning:hover, .btn.btn--warning:hover {
+.btn.btn-outline-warning:hover, .btn.btn-outline-warning:focus-visible, .btn.btn-warning:hover, .btn.btn-warning:focus-visible, .btn.btn--warning:hover , .btn.btn--warning:focus-visible {
   background: rgba(245,158,11,.16) !important; color: #b45309 !important; border-color: rgba(217,119,6,.6) !important;
 }
-.btn.btn-outline-warning:hover .ti, .btn.btn-warning:hover .ti, .btn.btn--warning:hover .ti { color: #b45309 !important; }
+.btn.btn-outline-warning:hover .ti, .btn.btn-outline-warning:focus-visible .ti, .btn.btn-warning:hover .ti, .btn.btn-warning:focus-visible .ti, .btn.btn--warning:hover .ti , .btn.btn--warning:focus-visible .ti { color: #b45309 !important; }
 .btn.btn-outline-warning:active, .btn.btn-outline-warning.active, .btn.btn-outline-warning.show,
 .btn.btn-warning:active, .btn.btn-warning.active, .btn.btn-warning.show,
 .btn.btn--warning:active, .btn.btn--warning.active, .btn.btn--warning.show {
@@ -717,4 +719,3 @@ body { overflow-x: hidden; }
 .toast-msg--warning { border-left: 3px solid var(--admin-warning); }
 .toast-msg--critical { border-left: 3px solid var(--admin-critical); }
 .toast-msg--info { border-left: 3px solid var(--admin-info); }
-.admin-confirm-actions .btn-outline-danger:focus, .admin-confirm-actions .btn-outline-danger:active { background: rgba(239,68,68,.06); color: var(--admin-critical); border-color: rgba(239,68,68,.3); }
