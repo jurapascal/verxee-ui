@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.1 — fix
+- `VerxeeUI.modal`: a button's `onClick` ran twice (bound by `button()` with the click event, and again by the modal with the button's value) — actions in dialogs saved or created things twice. It now runs once, from the modal.
+
 ## 2.3.0 — toasts
 - Toast position is per toast and global (6 corners, independent stacks); five looks (`dark`, `light`, `soft`, `solid`, `accent`); type icons, `title`, `closable`, countdown `progress`, `max`, and identical toasts merge into one with a `×N` counter.
 

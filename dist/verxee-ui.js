@@ -652,7 +652,9 @@
       var btns = o.buttons || [{ label: o.cancelText || d.cancelText, variant: 'secondary', value: false }, { label: o.okText || d.okText, variant: 'primary', value: true, submit: true }];
       var first = null;
       btns.forEach(function (bt) {
-        var b = button(bt); foot.appendChild(b); if (bt.submit || bt.variant === 'primary') first = first || b;
+        // The modal runs onClick itself (with the button's value) — button() must not bind it a second time.
+        var spec = {}; Object.keys(bt).forEach(function (k) { if (k !== 'onClick' && k !== 'confirm') spec[k] = bt[k]; });
+        var b = button(spec); foot.appendChild(b); if (bt.submit || bt.variant === 'primary') first = first || b;
         b.addEventListener('click', function () {
           var val = bt.value;
           if (bt.submit || (o.fields && val === true)) {
@@ -779,7 +781,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoConfig); else autoConfig();
 
   window.VerxeeUI = {
-    version: '2.3.0', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
+    version: '2.3.1', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
     can: can, fetch: vxFetch, sanitize: sanitize, logout: logout, get user() { return currentUser; },
     theme: theme, sidebar: sidebar, button: button, toast: toast, confirm: confirmDialog, modal: modal, popover: popover
   };
