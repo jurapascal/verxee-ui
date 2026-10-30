@@ -55,6 +55,27 @@ auth: { urls: { … }, texts: { title: 'Přihlášení', identifier: 'Uživatel'
   <li><strong>Permissions</strong>: <code>can: 'orders.view'</code> on any block or sidebar item; <code>VerxeeUI.can('x')</code> in code.</li>
 </ul>
 
+<h2>Testing roles without signing in: <code>rolePreview</code></h2>
+<p>For first versions and prototypes: instead of a login, give <code>app()</code> a list of roles. A dropdown appears in the topbar; picking a role rebuilds the sidebar, topbar and page exactly as that role would see them (<code>can</code> is evaluated against the role's <code>permissions</code>). No server, no sign-in.</p>
+<pre><code>VerxeeUI.app({
+  rolePreview: {
+    initial: 'admin',
+    roles: {
+      admin:   { label: 'Admin',   name: 'Anna Admin',   permissions: ['*'] },
+      manager: { label: 'Manager', name: 'Marek Manager', permissions: ['orders.view', 'orders.edit'] },
+      viewer:  { label: 'Viewer',  name: 'Viola Viewer',  permissions: ['orders.view'] }
+    }
+  },
+  sidebar: [
+    { label: 'Orders', icon: 'shopping-cart', href: '#/orders', can: 'orders.view' },
+    { label: 'Users',  icon: 'users', href: '#/users', can: 'users.manage' }
+  ]
+});
+shell.role;            // current role key
+shell.setRole('viewer');  // switch from code / tests
+document.addEventListener('verxee:rolechange', e =&gt; e.detail.role);</code></pre>
+<div class="callout warn"><strong>Test mode only.</strong> <code>rolePreview</code> skips authentication entirely (the chosen role is remembered per tab in <code>sessionStorage</code>). Never ship it to production — switch it off and use <code>auth</code> with a real backend before the first live release.</div>
+
 <h2>Calling your API: <code>VerxeeUI.fetch</code></h2>
 <pre><code>const r = await VerxeeUI.fetch('/api/orders', { method: 'POST', json: { sku: 'A1' } });</code></pre>
 <p>Same-origin cookies, the CSRF header on unsafe methods (token from <code>&lt;meta name="csrf-token"&gt;</code> or an <code>XSRF-TOKEN</code> cookie; header name configurable via <code>configure({ security: { csrf: { header } } })</code>) and the 401 handling above.</p>

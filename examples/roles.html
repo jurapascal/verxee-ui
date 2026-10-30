@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Role preview — Verxee UI</title>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+</head>
+<body>
+<main id="main"></main>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+<script defer>
+addEventListener('DOMContentLoaded', function () {
+  VerxeeUI.app({
+    brand: { name: 'Acme Admin', icon: 'bolt' },
+    rolePreview: { initial: 'admin', roles: {
+      admin:   { label: 'Admin',   name: 'Anna Admin',    permissions: ['*'] },
+      manager: { label: 'Manager', name: 'Marek Manager', permissions: ['orders.view', 'orders.edit'] },
+      viewer:  { label: 'Viewer',  name: 'Viola Viewer',  permissions: ['orders.view'] }
+    } },
+    topbar: { right: [{ type: 'badge', label: 'Test mode', variant: 'warning' }, 'theme', 'user'] },
+    sidebar: [
+      { label: 'Orders', icon: 'shopping-cart', href: '#/orders', can: 'orders.view' },
+      { label: 'Users', icon: 'users', href: '#/users', can: 'users.manage' }
+    ],
+    page: [
+      { type: 'heading', title: 'Orders' },
+      { type: 'card', body: 'Switch the role in the topbar — the menu and buttons change.' },
+      { type: 'button', label: 'Edit order', variant: 'primary', can: 'orders.edit' },
+      { type: 'button', label: 'Delete all', variant: 'danger', can: 'orders.delete' }
+    ]
+  });
+});
+</script>
+</body>
+</html>

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0 — role preview
+- `app({ rolePreview: { roles, initial } })`: no-login test mode — a topbar dropdown (`rolepreview` block) switches the acting role; sidebar, topbar and page rebuild with that role's permissions. `shell.role`, `shell.setRole()`, `verxee:rolechange` event. Test only, never for production.
+- `AGENTS.md`: instructions for AI agents building apps with Verxee UI (versioned delivery, first versions ship with role preview).
+
 ## 2.3.1 — fix
 - `VerxeeUI.modal`: a button's `onClick` ran twice (bound by `button()` with the click event, and again by the modal with the button's value) — actions in dialogs saved or created things twice. It now runs once, from the modal.
 

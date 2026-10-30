@@ -54,6 +54,8 @@ VerxeeUI.app({
 
 Sign-in screen, sign-out, 2FA step, session expiry, permissions and the same *blocks* in topbar, sidebar and page — see [Blocks](https://jurapascal.github.io/verxee-ui/docs/blocks.html), [Login & sessions](https://jurapascal.github.io/verxee-ui/docs/authentication.html) and [Security](https://jurapascal.github.io/verxee-ui/docs/security.html). The UI is secure by construction (sanitized HTML, CSP-safe, CSRF-aware), but authentication itself is enforced by **your server**; `examples/server.mjs` is a reference implementation.
 
+**Test roles without signing in:** `app({ rolePreview: { initial: 'admin', roles: { admin: { label: 'Admin', permissions: ['*'] }, viewer: { label: 'Viewer', permissions: ['orders.view'] } } } })` puts a role dropdown in the topbar — pick a role and the whole UI re-renders as that role. First versions of every app should use this; see [AGENTS.md](AGENTS.md).
+
 ## JavaScript
 
 ```js
@@ -62,7 +64,7 @@ if (await VerxeeUI.confirm({ title: 'Delete?', variant: 'danger' })) { /* … */
 VerxeeUI.theme.toggle();
 ```
 
-Full reference in the [docs](https://jurapascal.github.io/verxee-ui/docs/javascript.html). Build from source: `node scripts/build.mjs`; see [CONTRIBUTING](CONTRIBUTING.md).
+Full reference in the [docs](https://jurapascal.github.io/verxee-ui/docs/javascript.html). Build from source: `node scripts/build.mjs`; see [CONTRIBUTING](CONTRIBUTING.md). **AI agents: read [AGENTS.md](AGENTS.md) first.**
 
 ## Theming
 

@@ -260,6 +260,15 @@
   register('theme', ALL, function (s, c) { var t = button(merge(merge({ icon: 'moon', title: 'Toggle theme' }, AREA_DEFAULTS[c.area]), s)); t.setAttribute('data-theme-toggle', ''); return t; });
   register('notifications', ALL, function (s) { return notifications(s); });
   register('user', ALL, function (s) { return user(merge(merge({}, currentUser || {}), s)); });
+  // Role preview (dev/test only): dropdown that switches the acting role without signing in. See app({ rolePreview }).
+  var rolePreview = null;
+  register('rolepreview', ALL, function (s, c) {
+    if (!rolePreview) return document.createComment('vx: no rolePreview');
+    var cur = rolePreview.current, roles = rolePreview.roles;
+    return menu(merge(merge({ label: 'Role: ' + ((roles[cur] && roles[cur].label) || cur), icon: 'user-shield', title: 'Preview as role (test only)',
+      items: Object.keys(roles).map(function (k) { return { label: roles[k].label || k, icon: k === cur ? 'check' : null, onClick: function () { rolePreview.set(k); } }; }) },
+      AREA_DEFAULTS[c.area]), s));
+  });
   register('logout', ALL, function (s, c) { return button(merge(merge({ label: 'Sign out', icon: 'logout', variant: 'ghost', onClick: function () { logout(); } }, AREA_DEFAULTS[c.area]), s)); });
   register('search', ALL, function (s) {
     var g = el('div', 'input-group'), i = el('span', 'input-group-text'); i.appendChild(icon('search'));
@@ -482,6 +491,19 @@
     function park() { if (cfg.page) main.textContent = ''; else while (main.firstChild) held.appendChild(main.firstChild); }
     var T = merge(merge({}, TEXTS), (cfg.auth && cfg.auth.texts) || {}), bar, sb, ctl, hooksBound = false, fails = 0, lockUntil = 0;
     if (cfg.user) currentUser = cfg.user;
+    if (cfg.rolePreview) { // test mode: no sign-in, a dropdown in the topbar switches the role
+      var rp = cfg.rolePreview, rkeys = Object.keys(rp.roles || {}), saved = null;
+      try { saved = sessionStorage.getItem('vx-role'); } catch (e) {}
+      var start = rp.roles[saved] ? saved : (rp.roles[rp.initial] ? rp.initial : rkeys[0]);
+      rolePreview = { roles: rp.roles, current: start, set: function (k) {
+        if (!rp.roles[k] || k === rolePreview.current) return;
+        rolePreview.current = k; try { sessionStorage.setItem('vx-role', k); } catch (e) {}
+        currentUser = merge({ role: k }, rp.roles[k]); buildShell(); emit('verxee:rolechange', { role: k, user: currentUser });
+      } };
+      currentUser = merge({ role: start }, rp.roles[start]);
+      cfg.topbar = cfg.topbar || {}; var rr = cfg.topbar.right = (cfg.topbar.right || []).slice();
+      if (!rr.some(function (x) { return x === 'rolepreview' || (x && x.type === 'rolepreview'); })) rr.unshift('rolepreview');
+    }
 
     function clearShell() { ['.admin-topbar', '.sidebar', '.sidebar-backdrop', '.skip-link', '#vx-auth'].forEach(function (s) { var o = document.querySelector(s); if (o) o.remove(); }); }
     function buildShell() {
@@ -501,10 +523,10 @@
       setSidebar: function (items, footer, header) { cfg.sidebar = items; if (footer) cfg.sidebarFooter = footer; if (header) cfg.sidebarHeader = header; if (sb) fillSidebar(sb, cfg); },
       setTopbar: function (t, brand) { cfg.topbar = t; if (brand) cfg.brand = brand; if (!bar) return; var n = buildTopbar(cfg.topbar, cfg.brand); bar.replaceWith(n); bar = n; ctl.topbar = n; },
       setPage: function (list) { cfg.page = list; main.textContent = ''; renderAll(list, main, { area: 'page' }); },
-      get user() { return currentUser; }
+      get user() { return currentUser; }, get role() { return rolePreview && rolePreview.current; }, setRole: function (k) { if (rolePreview) rolePreview.set(k); }
     };
 
-    if (!cfg.auth) { buildShell(); return ctl; }
+    if (!cfg.auth || cfg.rolePreview) { buildShell(); return ctl; }
 
     // — auth flow —
     var A = authCfg = cfg.auth, ad = adapter(A), idleT = null, lastAct = Date.now();
