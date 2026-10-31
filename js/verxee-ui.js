@@ -905,7 +905,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoConfig); else autoConfig();
 
   window.VerxeeUI = {
-    version: '2.5.0', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
+    version: '2.5.1', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
     can: can, fetch: vxFetch, sanitize: sanitize, logout: logout, get user() { return currentUser; },
     hub: hub, theme: theme, sidebar: sidebar, button: button, toast: toast, confirm: confirmDialog, modal: modal, popover: popover
   };

@@ -27,7 +27,7 @@ final class VerxeeSsoError extends RuntimeException
 
 final class VerxeeSso
 {
-    public const VERSION = '1.0.0';
+    public const VERSION = '1.0.1';
 
     /** Known providers: only issuer + quirks; client_id/secret always come from your config. */
     private const PRESETS = [
@@ -310,7 +310,8 @@ final class VerxeeSso
         if (!$this->urlOk($url)) throw new VerxeeSsoError('Provider address must be https.', 'http');
         $ch = curl_init($url);
         $hdr = ['Accept: application/json'];
-        $o = [CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 12, CURLOPT_CONNECTTIMEOUT => 6, CURLOPT_FOLLOWLOCATION => false,
+        // A User-Agent is required: WEDOS (and other shared hosts) answer UA-less requests with 401/429.
+        $o = [CURLOPT_USERAGENT => 'VerxeeSso/' . self::VERSION . ' (+https://github.com/jurapascal/verxee-ui)', CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 12, CURLOPT_CONNECTTIMEOUT => 6, CURLOPT_FOLLOWLOCATION => false,
               CURLOPT_SSL_VERIFYPEER => true, CURLOPT_SSL_VERIFYHOST => 2, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS | ($this->allowHttp ? CURLPROTO_HTTP : 0)];
         if ($post !== null) { $o[CURLOPT_POST] = true; $o[CURLOPT_POSTFIELDS] = http_build_query($post); $hdr[] = 'Content-Type: application/x-www-form-urlencoded'; }
         if ($basic) $hdr[] = 'Authorization: Basic ' . base64_encode(rawurlencode($basic[0]) . ':' . rawurlencode($basic[1]));

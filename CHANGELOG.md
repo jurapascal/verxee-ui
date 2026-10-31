@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.1 — fix
+- `VerxeeSso` sends a User-Agent: WEDOS answers server-to-server requests without one with 401/429, so discovery and the token exchange failed on that hosting.
+
 ## 2.5.0 — hub & single sign-on
 - **Hub bridge** `VerxeeUI.hub` / `app({ hub: { origin } })`: an app framed by a hub (e.g. alba-rosa.cz/hub) talks to it with origin-checked `postMessage` — `ready`, `user`, `title`, `route`, `badge`, `login-required`, `logout` up; `hello`/`theme`, `logout`, `navigate` down. Framed apps hide brand, theme toggle and user menu (`topbar: 'compact' | 'hidden' | 'keep'`, class `vx-hub-hide`). Works without `app()` for plain PHP pages.
 - **Sign-in providers**: `auth.providers: ['hub', 'google', {…}]` buttons, `auth.password: false` for SSO-only, `auth.ssoUrl`. Silent sign-in inside the hub (`prompt=none`, loop guard, `?vx_sso=ok|fail` result); in a frame Google is hidden and the hub signs people in at the top level.
