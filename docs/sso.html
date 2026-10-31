@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hub & single sign-on — Verxee UI</title>
+  <link rel="preload" href="../fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+  <link rel="stylesheet" href="docs.css">
+  <script>try{var t=localStorage.getItem('verxee-ui-theme');if(t)document.documentElement.setAttribute('data-coreui-theme',t)}catch(e){}</script>
+  <script src="../dist/verxee-ui.min.js"></script>
+</head>
+<body>
+<a class="skip-link visually-hidden-focusable" href="#main">Skip to content</a>
+<nav class="admin-topbar" aria-label="Top bar">
+  <button class="btn btn-ghost-secondary btn-sm d-lg-none me-2" type="button" data-sidebar-toggle aria-label="Menu"><i class="ti ti-menu-2"></i></button>
+  <div class="brand me-3"><a href="index.html"><span class="brand-logo"><i class="ti ti-layout-dashboard"></i></span><span>Verxee UI</span><span class="muted fs-sm hide-xs">v2.5.0</span></a></div>
+  <div class="d-flex align-items-center gap-2 ms-auto">
+    <a class="btn btn-ghost-secondary btn-sm" href="../index.html"><i class="ti ti-player-play"></i><span class="hide-xs"> Demo</span></a>
+    <a class="btn btn-ghost-secondary btn-sm" href="https://github.com/jurapascal/verxee-ui"><i class="ti ti-brand-github"></i><span class="hide-xs"> GitHub</span></a>
+    <button class="btn btn-ghost-secondary btn-sm" type="button" data-theme-toggle aria-label="Toggle theme"><i class="ti ti-moon"></i></button>
+  </div>
+</nav>
+<div class="sidebar sidebar-fixed" id="sidebar"><ul class="sidebar-nav" data-coreui="navigation"><li class="nav-title">Start</li><li class="nav-item"><a class="nav-link" href="index.html">Introduction</a></li><li class="nav-item"><a class="nav-link" href="installation.html">Installation</a></li><li class="nav-title">Foundations</li><li class="nav-item"><a class="nav-link" href="theming.html">Theming & dark mode</a></li><li class="nav-item"><a class="nav-link" href="tokens.html">Design tokens</a></li><li class="nav-title">Customize</li><li class="nav-item"><a class="nav-link" href="configuration.html">Configuration</a></li><li class="nav-item"><a class="nav-link" href="customizer.html">Customizer</a></li><li class="nav-item"><a class="nav-link" href="blocks.html">Blocks (compose anything)</a></li><li class="nav-title">Components</li><li class="nav-item"><a class="nav-link" href="buttons.html">Buttons</a></li><li class="nav-item"><a class="nav-link" href="badges.html">Badges & dots</a></li><li class="nav-item"><a class="nav-link" href="forms.html">Forms</a></li><li class="nav-item"><a class="nav-link" href="data-display.html">Cards & data</a></li><li class="nav-item"><a class="nav-link" href="navigation.html">Navigation</a></li><li class="nav-item"><a class="nav-link" href="feedback.html">Feedback</a></li><li class="nav-title">Patterns</li><li class="nav-item"><a class="nav-link" href="layout.html">Layout & pages</a></li><li class="nav-item"><a class="nav-link" href="utilities.html">Utilities</a></li><li class="nav-title">Reference</li><li class="nav-item"><a class="nav-link" href="javascript.html">JavaScript API</a></li><li class="nav-title">Security</li><li class="nav-item"><a class="nav-link" href="authentication.html">Login & sessions</a></li><li class="nav-item"><a class="nav-link" href="security.html">Security</a></li><li class="nav-item"><a class="nav-link active" href="sso.html">Hub & single sign-on</a></li></ul></div>
+<div class="sidebar-backdrop" data-sidebar-toggle></div>
+<div class="admin-wrapper"><main class="admin-content docs" id="main">
+<h1>Hub &amp; single sign-on</h1>
+<p class="lead">One sign-in for a whole family of apps: people sign in once in the <strong>hub</strong> (e.g. <code>alba-rosa.cz/hub</code>), the hub shows each app in an iframe, and every app signs them in silently. Outside the hub the same apps offer <em>Sign in with Alba Rosa Hub</em> and <em>Sign in with Google</em>.</p>
+
+<div class="callout"><strong>How it fits together.</strong> The hub is an <a href="https://openid.net/developers/how-connect-works/">OpenID Connect</a> provider. Each app is an OIDC client with its own <code>client_id</code>/secret, keeps its <strong>own users and roles</strong>, and only learns <em>who</em> the person is (verified e-mail + stable <code>sub</code>) from the hub or from Google. Google is just another OIDC provider, so one library handles both.</div>
+
+<h2>The pieces</h2>
+<table class="table"><thead><tr><th>Piece</th><th>Where</th><th>Job</th></tr></thead><tbody>
+<tr><td>Sign-in buttons, silent SSO, hub bridge</td><td><code>VerxeeUI.app({ auth: { providers }, hub })</code>, <code>VerxeeUI.hub</code></td><td>Browser side. Navigates to your server's sign-in URL, talks to the hub with <code>postMessage</code>.</td></tr>
+<tr><td>OIDC client</td><td><code>server/php/VerxeeSso.php</code> (one file, no dependencies, PHP 8.1+)</td><td>Server side. PKCE + state + nonce, verifies the RS256 <code>id_token</code> against the provider's keys, safe return paths.</td></tr>
+<tr><td>Reference endpoint</td><td><code>examples/php/auth.php</code> + <code>sso.config.example.php</code></td><td>Start, callback, sign-out and <code>me</code> JSON in one file — copy into an app and map e-mail → your user.</td></tr>
+<tr><td>Demo</td><td><code>examples/hub-demo.html</code> framing <code>examples/hub-app.html</code></td><td>Shows the message flow (no server needed).</td></tr>
+</tbody></table>
+
+<h2>Flow</h2>
+<ol>
+  <li><strong>Inside the hub.</strong> The hub frames <code>/app/</code>. The app has no session → it redirects <em>inside the frame</em> to <code>auth.php?provider=hub&amp;prompt=none</code> → hub sees its own session → returns a code at once (no screen) → <code>auth.php</code> verifies, starts the app session, sends the frame back to where it was with <code>?vx_sso=ok</code>.</li>
+  <li><strong>Not signed in at the hub</strong> (or the silent try fails): the app gets <code>?vx_sso=fail</code>, shows its sign-in screen with only the hub button, and posts <code>login-required</code> to the hub. The hub signs the person in <em>at the top level</em> (Google cannot run inside iframes) and reloads the frame — step 1 now succeeds.</li>
+  <li><strong>Outside the hub</strong> (app opened directly): the sign-in screen shows <em>Sign in with Alba Rosa Hub</em> and <em>Sign in with Google</em> (plus the password form if you keep it). One click, normal OIDC redirect.</li>
+  <li><strong>Sign-out.</strong> Signing out in the app posts <code>logout</code> to the hub (the hub decides whether to end the hub session too). <em>Sign out everywhere</em> in the hub posts <code>logout</code> to every frame; each app ends its own session.</li>
+</ol>
+
+<h2>Browser: <code>app()</code> options</h2>
+<pre><code>VerxeeUI.app({
+  hub: { origin: 'https://alba-rosa.cz' },     // hubs allowed to frame and talk to this app (string or array)
+  auth: {
+    urls: { session: 'auth.php?me=1', logout: 'auth.php?logout=1' },
+    providers: ['hub', 'google'],              // buttons on the sign-in screen
+    ssoUrl: 'auth.php?provider={id}',          // default; return= and prompt=none are appended
+    password: false,                           // hide the e-mail + password form (SSO only)
+    sso: { provider: 'hub', auto: 'embedded' } // silent sign-in: 'embedded' (only in a frame, default), true (always), false
+  },
+  …
+});</code></pre>
+<table class="table"><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>providers</code></td><td><code>'hub'</code>, <code>'google'</code> or <code>{ id, label, icon, href }</code>. Change the text per app: <code>{ id: 'hub', label: 'Přihlásit přes Alba Rosa Hub' }</code>. Google is hidden automatically inside a frame.</td></tr>
+<tr><td><code>hub.topbar</code></td><td>What the app hides when framed: <code>'compact'</code> (default — brand, theme toggle, user menu; the hub shows those), <code>'hidden'</code> (whole topbar; no mobile menu button), <code>'keep'</code>. Add class <code>vx-hub-hide</code> to anything else to hide when framed.</td></tr>
+<tr><td>Loop guard</td><td>A silent attempt is made at most once per 30 s per tab unless the server answers with <code>vx_sso</code>; the flag is removed from the address bar.</td></tr>
+</tbody></table>
+
+<h2>Browser: plain PHP pages (no <code>app()</code>)</h2>
+<p>Server-rendered apps only need the bridge — include <code>verxee-ui.js</code> and:</p>
+<pre><code>VerxeeUI.hub.connect({ origin: 'https://alba-rosa.cz', topbar: 'keep', logoutUrl: 'auth.php?logout=1' });
+VerxeeUI.hub.setTitle('Orders');      // shown in the hub's tab/title
+VerxeeUI.hub.setBadge(3);             // unread count next to the app in the hub
+VerxeeUI.hub.on('navigate', m =&gt; …); // any hub message
+VerxeeUI.hub.embedded;                // true once the hub answered</code></pre>
+<p>Silent sign-in for such apps is a server redirect: if there is no session and the request is a page load, redirect to <code>auth.php?provider=hub&amp;prompt=none&amp;return=…</code> once (remember the attempt in the session to avoid loops).</p>
+
+<h2>Message protocol</h2>
+<p>All messages are objects <code>{ vx: 1, type, … }</code> sent with an explicit target origin. Both sides check <code>event.origin</code> against their allowlist and <code>event.source</code> against the expected window; anything else is ignored.</p>
+<table class="table"><thead><tr><th>Direction</th><th>type</th><th>Fields</th></tr></thead><tbody>
+<tr><td>app → hub</td><td><code>ready</code></td><td><code>title, url</code> — sent on start</td></tr>
+<tr><td>app → hub</td><td><code>user</code></td><td><code>name, email</code> — after sign-in</td></tr>
+<tr><td>app → hub</td><td><code>title</code> · <code>route</code> · <code>badge</code></td><td><code>title</code> · <code>url</code> · <code>count</code></td></tr>
+<tr><td>app → hub</td><td><code>login-required</code></td><td>— app has no session and silent sign-in did not help</td></tr>
+<tr><td>app → hub</td><td><code>logout</code></td><td>— person signed out in the app</td></tr>
+<tr><td>hub → app</td><td><code>hello</code> · <code>theme</code></td><td><code>theme: 'light' | 'dark'</code></td></tr>
+<tr><td>hub → app</td><td><code>logout</code></td><td>— end the app session</td></tr>
+<tr><td>hub → app</td><td><code>navigate</code></td><td><code>url</code> — same-origin only</td></tr>
+</tbody></table>
+
+<h2>Server: <code>VerxeeSso</code></h2>
+<pre><code>require 'server/php/VerxeeSso.php';
+VerxeeSso::sessionStart('MYAPPSESS');                 // Lax, HttpOnly, Secure on HTTPS, strict mode
+$sso = new VerxeeSso(require 'sso.config.php');       // providers, redirect_uri, optional allowlists
+
+// start
+header('Location: ' . $sso-&gt;start('hub', ['return' =&gt; $_GET['return'] ?? '/', 'prompt' =&gt; $_GET['prompt'] ?? null]), true, 303);
+
+// callback
+try { $id = $sso-&gt;finish($_GET); }                    // provider, sub, email, name, picture, roles, return
+catch (VerxeeSsoError $e) {
+  if ($e-&gt;reason === 'login_required') { header('Location: ' . VerxeeSso::withResult($e-&gt;returnTo, 'fail')); exit; }
+  // show $e-&gt;getMessage()
+}
+$user = find_user_by_email($id['email']);             // YOUR users table decides access and roles
+VerxeeSso::login($user);                               // new session id, then store
+header('Location: ' . VerxeeSso::withResult($id['return'], 'ok'), true, 303);</code></pre>
+<p>Checked for you: issuer (incl. discovery), <code>aud</code>/<code>azp</code>, RS256 signature by <code>kid</code> (re-fetches keys once on rotation), <code>exp</code>/<code>iat</code> with leeway, <code>nonce</code>, single-use <code>state</code> (10 min), PKCE S256, verified e-mail, Google Workspace <code>hd</code>, optional <code>allowed_domains</code>/<code>allowed_emails</code>, local-only return paths. <code>php tests/sso/run.php</code> runs the flows against a fake provider.</p>
+
+<h2>Cookies, headers and iframes</h2>
+<ul>
+  <li><strong>Same site as the hub</strong> (<code>alba-rosa.cz/app</code> in <code>alba-rosa.cz/hub</code>): session cookie <code>SameSite=Lax</code> — the default of <code>sessionStart()</code>. Not <code>Strict</code>: the return from the provider is a cross-site navigation and a Strict cookie would not be sent, so <code>state</code> would be lost.</li>
+  <li><strong>Another site</strong> (<code>accom.ubysys.tech</code> in the hub): <code>VerxeeSso::sessionStart('NAME', crossSiteFrame: true)</code> → <code>SameSite=None; Secure; Partitioned</code>. The session then lives only inside the hub's frame (a separate one when opened directly). Prefer moving such apps under the hub's site when possible.</li>
+  <li><strong>Framing:</strong> send <code>Content-Security-Policy: frame-ancestors 'self' https://alba-rosa.cz</code> (and drop <code>X-Frame-Options: DENY</code>) from every app that lives in the hub. Without it the hub cannot show the app; with <code>*</code> anyone could frame it (clickjacking).</li>
+  <li>The hub's own sign-in page must <em>not</em> be framable (<code>frame-ancestors 'none'</code>), and its <code>authorize</code> endpoint must redirect at once for <code>prompt=none</code> (never render a page in someone's frame).</li>
+</ul>
+
+<h2>What the hub must provide</h2>
+<ul>
+  <li>OIDC discovery at <code>{issuer}/.well-known/openid-configuration</code>, <code>authorize</code> (code flow, PKCE S256 required, <code>prompt=none</code> → <code>login_required</code>), <code>token</code> (client_secret_basic), <code>jwks</code> (RS256), optionally <code>end_session</code>.</li>
+  <li>Registered clients with exact <code>redirect_uri</code> match, one per app; secrets stored hashed.</li>
+  <li><code>id_token</code> claims: <code>sub</code> (stable per person), <code>email</code>, <code>email_verified</code>, <code>name</code>, optionally <code>roles</code> for that client.</li>
+  <li>The frame side: <code>hello</code>/<code>theme</code> on load, handle <code>login-required</code> (top-level sign-in, then reload that frame once), <code>logout</code>, <code>title</code>/<code>badge</code>.</li>
+</ul>
+
+</main></div>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+</body>
+</html>

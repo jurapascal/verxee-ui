@@ -46,6 +46,18 @@ Rules:
 
 You can switch role from tests with `shell.setRole('viewer')` and listen for `verxee:rolechange`.
 
+## Shared login through the hub (alba-rosa.cz/hub)
+
+Apps of this family sign people in through **one hub** (OpenID Connect provider at `https://alba-rosa.cz/hub`) and run inside it as iframes. Guide: `docs/sso.html`. When you connect an app:
+
+1. **Identity from the hub, roles from the app.** The hub says *who* (verified e-mail + `sub`). The app looks the person up in its own users table and keeps its own roles/permissions. Store `provider` + `sub` next to the user on first sign-in; match by e-mail only for the first link.
+2. **Server side = `server/php/VerxeeSso.php`** (copy the single file into the app or load it from this repo's tag). Start from `examples/php/auth.php`; one callback URL per app, registered exactly in the hub. Providers: `hub` always, `google` when the app wants it.
+3. **Secrets never in git.** `sso.config.php` (client secret) is in `.gitignore` *and* excluded from the auto-deploy (`.github/deploy.json`); put it on the server once by hand.
+4. **Embedding:** send `Content-Security-Policy: frame-ancestors 'self' https://alba-rosa.cz` (remove `X-Frame-Options: DENY`), session cookie `SameSite=Lax` (`VerxeeSso::sessionStart()`), apps on another domain use `crossSiteFrame: true`. Front end: `app({ hub: { origin: 'https://alba-rosa.cz' }, auth: { providers: ['hub', 'google'] } })`, or `VerxeeUI.hub.connect({...})` on plain PHP pages.
+5. **Do not lock people out.** Keep the old login working until the hub login is verified for every role in production, then remove it in a separate version. Ask the owner before deleting any user accounts or passwords.
+6. **Everything through GitHub.** Work in the app's repo, commit, push; the auto-deploy puts it on the server. Never edit files on the FTP directly; if the server differs from the repo, stop and report it first.
+7. **Version it.** Each migrated app gets its own version + changelog entry ("Sign in with Alba Rosa Hub").
+
 ## Changing Verxee UI itself
 
 - Edit sources in `css/tokens.css`, `components.css`, `layout.css`, `js/verxee-ui.js` — never `dist/` or `css/verxee-ui.css` by hand.

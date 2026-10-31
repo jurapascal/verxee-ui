@@ -159,7 +159,7 @@
     return wrap;
   }
   function user(a) {
-    var wrap = el('div', 'dropdown');
+    var wrap = el('div', 'dropdown vx-user');
     var b = el('button', 'btn btn-ghost-secondary btn-sm d-flex align-items-center gap-2'); b.type = 'button';
     b.setAttribute('data-coreui-toggle', 'dropdown'); b.setAttribute('aria-label', a.name || a.email || 'Account');
     var initials = a.initials || String(a.name || a.email || '?').split(/\s+/).map(function (w) { return w[0]; }).join('').slice(0, 2).toUpperCase();
@@ -290,7 +290,7 @@
   register('nav', ['sidebar'], function (s) { return navItem(s); });
 
   // ── Page blocks ──
-  function kids(list, parent, area) { return renderAll(list, parent, { area: area || 'page' }); }
+  function kids(list, parent, area) { if (typeof list === 'string') list = [{ type: 'text', text: list, tag: 'p' }]; return renderAll(list, parent, { area: area || 'page' }); } // a plain string = one paragraph
   register('heading', ['page'], function (s) {
     var h = el('div', 'page-head'), t = el('h1'); if (s.icon) t.appendChild(icon(s.icon)); t.appendChild(document.createTextNode(s.title || ''));
     if (s.status) t.appendChild(el('span', 'status status--' + (s.status.variant || 'neutral'), s.status.label));
@@ -416,6 +416,77 @@
   }
   function logout(reason) { if (authCtl) return authCtl.logout(reason); }
 
+  // ═══════════════════════════════════════════
+  // HUB — the app runs inside a hub (e.g. alba-rosa.cz/hub) as an iframe. postMessage bridge, origin-checked both ways.
+  // App → hub: ready, title, route, badge, login-required, logout. Hub → app: hello, theme, logout, navigate.
+  // ═══════════════════════════════════════════
+  var hubCfg = null, hubOn = {}, hubQueue = [], hubLive = false;
+  function inFrame() { try { return window.parent !== window; } catch (e) { return true; } }
+  function originOf(u) { try { return new URL(u).origin; } catch (e) { return ''; } }
+  function hubAllowed(o) { return !!hubCfg && hubCfg.origins.indexOf(o) > -1; }
+  function hubParentOrigin() { // best guess before the handshake; the handshake is what really counts
+    if (location.ancestorOrigins && location.ancestorOrigins.length) return location.ancestorOrigins[0];
+    return originOf(document.referrer);
+  }
+  function hubActivate() {
+    if (hubLive) return; hubLive = true;
+    root.classList.add('vx-embedded'); root.setAttribute('data-vx-topbar', hubCfg.topbar);
+    hubQueue.splice(0).forEach(function (m) { window.parent.postMessage(m, hubCfg.target); });
+    emit('verxee:hub', { embedded: true });
+  }
+  function hubPost(type, data) {
+    if (!hubCfg || !inFrame()) return;
+    var m = merge({ vx: 1, type: type }, data || {});
+    if (hubLive) window.parent.postMessage(m, hubCfg.target); else hubQueue.push(m);
+  }
+  var hub = {
+    get embedded() { return hubLive; },
+    get origin() { return hubLive ? hubCfg.target : null; },
+    // connect({ origin: 'https://alba-rosa.cz' | [...], topbar: 'compact' | 'hidden' | 'keep', title, logoutUrl })
+    // Works on its own too (plain PHP pages): include verxee-ui.js and call VerxeeUI.hub.connect({...}).
+    connect: function (o) {
+      if (hubCfg || !inFrame()) return hub;
+      o = o || {};
+      hubCfg = { origins: [].concat(o.origin || []).map(originOf).filter(Boolean), topbar: o.topbar || 'compact', target: null, logoutUrl: o.logoutUrl || null };
+      if (!hubCfg.origins.length) { hubCfg = null; return hub; }
+      var guess = hubParentOrigin();
+      window.addEventListener('message', function (e) {
+        if (e.source !== window.parent || !hubAllowed(e.origin) || !e.data || e.data.vx !== 1) return;
+        if (!hubLive) { hubCfg.target = e.origin; hubActivate(); }
+        else if (e.origin !== hubCfg.target) return;
+        var d = e.data;
+        if (d.type === 'hello' || d.type === 'theme') { if (d.theme) theme.set(d.theme, false); }
+        if (d.type === 'logout') { if (authCtl) authCtl.signedOutByHub(); else if (hubCfg.logoutUrl) location.href = safeHref(hubCfg.logoutUrl); }
+        if (d.type === 'navigate' && typeof d.url === 'string') { var u = new URL(d.url, location.href); if (u.origin === location.origin) location.href = u.href; }
+        (hubOn[d.type] || []).forEach(function (fn) { fn(d); });
+      });
+      if (hubAllowed(guess)) { hubCfg.target = guess; hubActivate(); }
+      hubPost('ready', { title: o.title || document.title, url: location.origin + relReturn() });
+      window.addEventListener('hashchange', function () { hubPost('route', { url: location.origin + relReturn() }); });
+      return hub;
+    },
+    on: function (type, fn) { (hubOn[type] = hubOn[type] || []).push(fn); return hub; },
+    post: hubPost,
+    setTitle: function (t) { hubPost('title', { title: String(t) }); },
+    setBadge: function (n) { hubPost('badge', { count: +n || 0 }); },
+    loginRequired: function () { hubPost('login-required', {}); }
+  };
+
+  // ── Single sign-on providers for the sign-in screen ──
+  // Your server does the OpenID Connect work (server/php/VerxeeSso.php). The browser only navigates to `ssoUrl`.
+  var PROVIDERS = {
+    hub: { label: 'Sign in with Alba Rosa Hub', icon: 'circles-relation', hub: true },
+    google: { label: 'Sign in with Google', icon: 'brand-google', frameable: false } // Google refuses to load inside iframes
+  };
+  function providerList(A) {
+    return (A.providers || []).map(function (p) { return typeof p === 'string' ? merge({ id: p }, PROVIDERS[p] || { label: p }) : merge(merge({}, PROVIDERS[p.id] || {}), p); });
+  }
+  function relReturn() { return location.pathname + location.search.replace(/([?&])vx_sso=[^&]*&?/, '$1').replace(/[?&]$/, '') + location.hash; }
+  function ssoHref(A, p, silent) {
+    var base = p.href || String(A.ssoUrl || 'auth.php?provider={id}').replace('{id}', encodeURIComponent(p.id));
+    return base + (base.indexOf('?') > -1 ? '&' : '?') + 'return=' + encodeURIComponent(relReturn()) + (silent ? '&prompt=none' : '');
+  }
+
   var TEXTS = {
     title: 'Sign in', subtitle: 'Welcome back.', identifier: 'E-mail', identifierType: 'email', password: 'Password', submit: 'Sign in',
     forgotLink: 'Forgot your password?', invalid: 'Sign-in failed. Check your details and try again.', network: 'Could not reach the server. Try again.',
@@ -423,7 +494,7 @@
     forgotTitle: 'Reset your password', forgotSub: 'Enter your e-mail and we will send you instructions.', send: 'Send instructions',
     sent: 'If an account exists for that address, instructions are on their way.', back: 'Back to sign in',
     locked: 'Too many attempts. Try again in {s} s.', expired: 'Your session has expired. Please sign in again.', signedOut: 'You have been signed out.',
-    idle: 'You were signed out due to inactivity.', loading: 'Loading…'
+    idle: 'You were signed out due to inactivity.', loading: 'Loading…', or: 'or', ssoFailed: 'Single sign-on did not complete. Sign in again.'
   };
   function authScreen(o, T, brand) {
     var shell = el('div', 'auth-shell'); shell.id = 'vx-auth';
@@ -434,7 +505,16 @@
     c.appendChild(el('div', 'auth-title', o.title)); if (o.sub) c.appendChild(el('div', 'auth-sub', o.sub));
     var msg = c.appendChild(el('div', 'invalid-msg mb-3')); msg.setAttribute('role', 'alert'); msg.hidden = !o.error; if (o.error) msg.textContent = o.error;
     if (o.notice) c.appendChild(el('div', 'explain mb-3', o.notice));
+    var firstBtn = null;
+    (o.providers || []).forEach(function (p) {
+      var b = c.appendChild(el(p.onClick ? 'button' : 'a', 'btn btn-secondary w-100 mb-2 d-flex align-items-center justify-content-center gap-2 vx-sso vx-sso-' + p.id));
+      if (p.onClick) { b.type = 'button'; b.addEventListener('click', p.onClick); } else b.href = safeHref(p.url);
+      if (p.icon) b.appendChild(icon(p.icon)); b.appendChild(document.createTextNode(p.label));
+      firstBtn = firstBtn || b;
+    });
     var f = c.appendChild(el('form')); f.setAttribute('novalidate', ''); var inputs = {}, first = null;
+    if (o.providers && o.providers.length && o.fields && o.fields.length) f.appendChild(el('div', 'vx-or', T.or));
+    if (!o.fields || !o.fields.length) f.hidden = true;
     (o.fields || []).forEach(function (fd, i) {
       var row = f.appendChild(el('div', 'vx-field')), id = 'vx-a' + i, lab = row.appendChild(el('label', 'form-label', fd.label)); lab.setAttribute('for', id);
       var inp = row.appendChild(el('input', 'form-control' + (fd.otp ? ' otp-input' : ''))); inp.id = id; inp.name = fd.name; inp.type = fd.type || 'text'; inp.required = true;
@@ -452,7 +532,7 @@
     });
     (o.links || []).forEach(function (l) { var p = c.appendChild(el('div', 'text-center mt-3')), a = p.appendChild(el('a', '', l.label)); a.href = '#'; a.addEventListener('click', function (e) { e.preventDefault(); l.onClick(); }); });
     if (o.foot) card.appendChild(el('div', 'auth-foot', o.foot));
-    return { node: shell, focus: function () { if (first) first.focus(); }, lock: function (s) { sub.disabled = true; msg.hidden = false; msg.textContent = T.locked.replace('{s}', s); } };
+    return { node: shell, focus: function () { var x = first || firstBtn; if (x) x.focus(); }, lock: function (s) { sub.disabled = true; msg.hidden = false; msg.textContent = T.locked.replace('{s}', s); } };
   }
 
   // ── Sidebar ──
@@ -491,6 +571,7 @@
     function park() { if (cfg.page) main.textContent = ''; else while (main.firstChild) held.appendChild(main.firstChild); }
     var T = merge(merge({}, TEXTS), (cfg.auth && cfg.auth.texts) || {}), bar, sb, ctl, hooksBound = false, fails = 0, lockUntil = 0;
     if (cfg.user) currentUser = cfg.user;
+    if (cfg.hub) hub.connect(merge({ title: (cfg.brand && cfg.brand.name) || document.title }, cfg.hub));
     if (cfg.rolePreview) { // test mode: no sign-in, a dropdown in the topbar switches the role
       var rp = cfg.rolePreview, rkeys = Object.keys(rp.roles || {}), saved = null;
       try { saved = sessionStorage.getItem('vx-role'); } catch (e) {}
@@ -557,7 +638,11 @@
         onSubmit: function (v) { return ad.forgot({ identifier: v.identifier, email: v.identifier }).then(function () { show('login', T.sent); }); },
         links: [{ label: T.back, onClick: function () { show('login'); } }] }, T, cfg.brand);
       else s = authScreen({ title: A.title || T.title, sub: A.subtitle || T.subtitle, submit: T.submit, fail: T.invalid, notice: note, foot: A.footer,
-        fields: [{ name: 'identifier', label: T.identifier, type: T.identifierType, autocomplete: 'username' }, { name: 'password', label: T.password, type: 'password', autocomplete: 'current-password' }],
+        providers: providerList(A).filter(function (p) { return !(hub.embedded && p.frameable === false); }).map(function (p) {
+          // inside the hub the hub signs people in at the top level (Google & co. cannot run in a frame)
+          return merge(merge({}, p), hub.embedded && p.hub ? { onClick: function () { hub.loginRequired(); } } : { url: ssoHref(A, p) });
+        }),
+        fields: A.password === false || !ad.login ? [] : [{ name: 'identifier', label: T.identifier, type: T.identifierType, autocomplete: 'username' }, { name: 'password', label: T.password, type: 'password', autocomplete: 'current-password' }],
         onSubmit: function (v) {
           var left = Math.ceil((lockUntil - Date.now()) / 1000); if (left > 0) { s.lock(left); return Promise.reject(new Error(T.locked.replace('{s}', left))); } // UX only — the server must rate-limit
           return ad.login({ identifier: v.identifier, email: v.identifier, username: v.identifier, password: v.password }).then(function (d) {
@@ -569,15 +654,32 @@
       document.body.appendChild(s.node); s.focus();
     }
     ctl.logout = function (reason) {
-      var done = function () { currentUser = null; stopIdle(); if (chan) chan.postMessage('logout'); emit('verxee:logout', {}); show('login', reason && typeof reason === 'string' ? reason : T.signedOut); };
+      var done = function () { currentUser = null; stopIdle(); if (chan) chan.postMessage('logout'); hubPost('logout', {}); emit('verxee:logout', {}); show('login', reason && typeof reason === 'string' ? reason : T.signedOut); };
       var go = function () { return Promise.resolve(ad.logout()).then(done, done); };
       return A.confirmLogout ? confirmDialog({ title: 'Sign out?', variant: 'info', confirmText: 'Sign out' }).then(function (ok) { if (ok) return go(); }) : go();
     };
     ctl.expired = function () { if (currentUser) { currentUser = null; stopIdle(); show('login', T.expired); } };
+    ctl.signedOutByHub = function () { var done = function () { currentUser = null; stopIdle(); emit('verxee:logout', { by: 'hub' }); show('login', T.signedOut); }; return Promise.resolve(ad.logout()).then(done, done); };
     authCtl = ctl;
 
+    // Silent single sign-on: no session yet → ask the provider with prompt=none (no screen if already signed in there).
+    // The server's callback returns to `return` with ?vx_sso=ok|fail; a per-tab guard stops redirect loops.
+    var ssoRes = (location.search.match(/[?&]vx_sso=([a-z_]+)/) || [])[1] || null;
+    if (ssoRes) try { history.replaceState(null, '', relReturn()); sessionStorage.removeItem('vx-sso-try'); } catch (e) {} // answer arrived → a new attempt is fine later
+    function silentSso() {
+      var auto = A.sso && A.sso.auto != null ? A.sso.auto : 'embedded', p = providerList(A).filter(function (x) { return x.id === ((A.sso && A.sso.provider) || 'hub'); })[0];
+      if (!p || ssoRes || !(auto === true || (auto === 'embedded' && inFrame()))) return false;
+      var k = 'vx-sso-try', last = 0; try { last = +sessionStorage.getItem(k) || 0; sessionStorage.setItem(k, String(Date.now())); } catch (e) { return false; }
+      if (Date.now() - last < 30000) return false;
+      location.replace(ssoHref(A, p, true)); return true;
+    }
     wrap.hidden = true; park();
-    Promise.resolve(ad.session()).then(function (u) { if (u) enter(u); else show('login'); }, function () { show('login', T.network); });
+    Promise.resolve(ad.session()).then(function (u) {
+      if (u) { try { sessionStorage.removeItem('vx-sso-try'); } catch (e) {} enter(u); hubPost('user', { name: currentUser.name, email: currentUser.email }); return; }
+      if (silentSso()) return;
+      if (inFrame()) hub.loginRequired(); // the hub signs people in at the top level, then reloads this frame
+      show('login', ssoRes === 'fail' && !inFrame() ? T.ssoFailed : undefined);
+    }, function () { show('login', T.network); });
     return ctl;
   }
 
@@ -803,8 +905,8 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', autoConfig); else autoConfig();
 
   window.VerxeeUI = {
-    version: '2.3.1', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
+    version: '2.5.0', defaults: defaults, configure: configure, app: app, render: render, mount: mount, register: register, blocks: listBlocks,
     can: can, fetch: vxFetch, sanitize: sanitize, logout: logout, get user() { return currentUser; },
-    theme: theme, sidebar: sidebar, button: button, toast: toast, confirm: confirmDialog, modal: modal, popover: popover
+    hub: hub, theme: theme, sidebar: sidebar, button: button, toast: toast, confirm: confirmDialog, modal: modal, popover: popover
   };
 })();

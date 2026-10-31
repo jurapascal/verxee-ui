@@ -19,7 +19,8 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 | `css/fonts.css` + `fonts/` | Self-hosted Inter (works offline, CSP-friendly) |
 | `vendor/` | CoreUI 5.3.1 + Tabler Icons 3.31, self-hosted |
 | `dist/` | Built + minified CSS and JS (use these) |
-| `js/verxee-ui.js` | Runtime: `VerxeeUI.theme`, `toast()`, `confirm()`, sidebar |
+| `js/verxee-ui.js` | Runtime: `VerxeeUI.app()`, blocks, auth screen, hub bridge, `theme`, `toast()`, `confirm()`, `modal()` |
+| `server/php/VerxeeSso.php` | OpenID Connect sign-in for PHP apps (hub, Google) |
 | `docs/` | Documentation site (source in `docs-src/`) |
 
 ## Quick start
@@ -27,11 +28,11 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 Straight from GitHub via [jsDelivr](https://www.jsdelivr.com/) — no download, no build:
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.3.1/vendor/coreui/coreui.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.3.1/vendor/tabler-icons/css/tabler-icons.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.3.1/dist/verxee-ui.min.css">
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.3.1/vendor/coreui/coreui.bundle.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.3.1/dist/verxee-ui.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.5.0/vendor/coreui/coreui.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.5.0/vendor/tabler-icons/css/tabler-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.5.0/dist/verxee-ui.min.css">
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.5.0/vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/gh/jurapascal/verxee-ui@v2.5.0/dist/verxee-ui.min.js"></script>
 ```
 
 Set `<html data-coreui-theme="light">` and you are done. `css/verxee-ui.css` is fonts + tokens + components + layout in one file;
@@ -53,6 +54,8 @@ VerxeeUI.app({
 ```
 
 Sign-in screen, sign-out, 2FA step, session expiry, permissions and the same *blocks* in topbar, sidebar and page — see [Blocks](https://jurapascal.github.io/verxee-ui/docs/blocks.html), [Login & sessions](https://jurapascal.github.io/verxee-ui/docs/authentication.html) and [Security](https://jurapascal.github.io/verxee-ui/docs/security.html). The UI is secure by construction (sanitized HTML, CSP-safe, CSRF-aware), but authentication itself is enforced by **your server**; `examples/server.mjs` is a reference implementation.
+
+**One sign-in for many apps:** `app({ hub: { origin: 'https://alba-rosa.cz' }, auth: { providers: ['hub', 'google'] } })` — inside the hub the app signs in silently, outside it shows *Sign in with Alba Rosa Hub / Google*. Server side: `server/php/VerxeeSso.php` (OpenID Connect, no dependencies). See [Hub & single sign-on](https://jurapascal.github.io/verxee-ui/docs/sso.html).
 
 **Test roles without signing in:** `app({ rolePreview: { initial: 'admin', roles: { admin: { label: 'Admin', permissions: ['*'] }, viewer: { label: 'Viewer', permissions: ['orders.view'] } } } })` puts a role dropdown in the topbar — pick a role and the whole UI re-renders as that role. First versions of every app should use this; see [AGENTS.md](AGENTS.md).
 

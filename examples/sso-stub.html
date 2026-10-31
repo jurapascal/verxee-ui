@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>SSO stub</title>
+<!-- Demo stand-in for auth.php: a silent attempt (prompt=none) "fails" (not signed in at the hub), a click "succeeds". -->
+<script>
+  var q = new URLSearchParams(location.search), back = q.get('return') || '/';
+  if (back.charAt(0) !== '/' || back.charAt(1) === '/') back = '/';
+  var i = back.indexOf('#'), hash = i > -1 ? back.slice(i) : '', path = i > -1 ? back.slice(0, i) : back;
+  location.replace(path + (path.indexOf('?') > -1 ? '&' : '?') + 'vx_sso=' + (q.get('prompt') === 'none' ? 'fail' : 'ok') + hash);
+</script>

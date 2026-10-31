@@ -17,6 +17,8 @@ body { overflow-x: hidden; }
 .auth-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
 .auth-sub { color: var(--admin-text-secondary); margin-bottom: 20px; }
 .auth-foot { text-align: center; margin-top: 16px; color: var(--admin-text-secondary); font-size: 12px; }
+.vx-or { display: flex; align-items: center; gap: 10px; margin: 14px 0 6px; color: var(--admin-text-secondary); font-size: 12px; }
+.vx-or::before, .vx-or::after { content: ''; flex: 1; border-top: 1px solid var(--admin-border); }
 .otp-input { font-size: 22px !important; letter-spacing: .4em; text-align: center; height: 48px !important; font-variant-numeric: tabular-nums; }
 .recovery-codes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; background: var(--admin-surface-hover); border-radius: 10px; padding: 16px; }
 .qr-box { width: 200px; height: 200px; padding: 10px; background: #fff; border-radius: 12px; border: 1px solid var(--admin-border); }
@@ -127,3 +129,13 @@ body { overflow-x: hidden; }
 .sidebar-block .btn, .sidebar-block .input-group { width: 100%; }
 .sidebar > .sidebar-nav { flex: 0 0 auto; }
 .sidebar > .sidebar-footer { margin-top: auto; }
+
+/* ── Embedded in a hub (VerxeeUI.hub) — the hub owns brand, user menu and theme ── */
+html.vx-embedded[data-vx-topbar="compact"] .admin-topbar .brand,
+html.vx-embedded[data-vx-topbar="compact"] .admin-topbar [data-theme-toggle],
+html.vx-embedded[data-vx-topbar="compact"] .admin-topbar .vx-user,
+html.vx-embedded .admin-topbar .vx-hub-hide { display: none !important; }
+html.vx-embedded[data-vx-topbar="hidden"] .admin-topbar { display: none; }
+html.vx-embedded[data-vx-topbar="hidden"] .admin-wrapper { padding-top: 0; }
+html.vx-embedded[data-vx-topbar="hidden"] .sidebar { top: 0 !important; height: 100vh !important; }
+html.vx-embedded[data-vx-topbar="hidden"] .sidebar.show + .sidebar-backdrop { inset: 0; }

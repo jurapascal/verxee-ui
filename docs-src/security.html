@@ -27,6 +27,7 @@
   <li><strong>CSRF protection</strong> on every state-changing request (double-submit cookie or synchroniser token) — plus <code>SameSite</code>.</li>
   <li><strong>Authorise every request</strong> against the session's permissions; the UI's <code>can</code> filter is not access control.</li>
   <li><strong>Security headers</strong> on every response: a strict CSP, <code>X-Content-Type-Options: nosniff</code>, <code>frame-ancestors 'none'</code> (clickjacking), <code>Referrer-Policy</code>, HSTS over HTTPS.</li>
+  <li><strong>Apps inside a hub</strong> differ in two points: the session cookie is <code>SameSite=Lax</code> (sign-in returns from another site) and <code>frame-ancestors</code> lists the hub origin instead of <code>'none'</code>. See <a href="sso.html">Hub &amp; single sign-on</a>.</li>
   <li><strong>Use HTTPS only.</strong> Add 2FA for admin accounts (the UI supports the code step).</li>
   <li><strong>Escape output</strong> and validate input on the server as well.</li>
 </ol>

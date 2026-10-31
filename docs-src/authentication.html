@@ -55,6 +55,9 @@ auth: { urls: { … }, texts: { title: 'Přihlášení', identifier: 'Uživatel'
   <li><strong>Permissions</strong>: <code>can: 'orders.view'</code> on any block or sidebar item; <code>VerxeeUI.can('x')</code> in code.</li>
 </ul>
 
+<h2>Sign in with the hub or Google</h2>
+<p><code>auth.providers: ['hub', 'google']</code> adds single sign-on buttons above (or instead of, with <code>password: false</code>) the password form; inside a hub the app signs in silently. Server side is <code>server/php/VerxeeSso.php</code>. Full guide: <a href="sso.html">Hub &amp; single sign-on</a>.</p>
+
 <h2>Testing roles without signing in: <code>rolePreview</code></h2>
 <p>For first versions and prototypes: instead of a login, give <code>app()</code> a list of roles. A dropdown appears in the topbar; picking a role rebuilds the sidebar, topbar and page exactly as that role would see them (<code>can</code> is evaluated against the role's <code>permissions</code>). No server, no sign-in.</p>
 <pre><code>VerxeeUI.app({

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.0 — hub & single sign-on
+- **Hub bridge** `VerxeeUI.hub` / `app({ hub: { origin } })`: an app framed by a hub (e.g. alba-rosa.cz/hub) talks to it with origin-checked `postMessage` — `ready`, `user`, `title`, `route`, `badge`, `login-required`, `logout` up; `hello`/`theme`, `logout`, `navigate` down. Framed apps hide brand, theme toggle and user menu (`topbar: 'compact' | 'hidden' | 'keep'`, class `vx-hub-hide`). Works without `app()` for plain PHP pages.
+- **Sign-in providers**: `auth.providers: ['hub', 'google', {…}]` buttons, `auth.password: false` for SSO-only, `auth.ssoUrl`. Silent sign-in inside the hub (`prompt=none`, loop guard, `?vx_sso=ok|fail` result); in a frame Google is hidden and the hub signs people in at the top level.
+- **`server/php/VerxeeSso.php`**: dependency-free OpenID Connect client for PHP 8.1+ (hub, Google, any OIDC provider): PKCE S256, single-use state, nonce, RS256 id_token via JWKS with key rotation, issuer/aud/exp checks, verified e-mail, Workspace `hd`, allowlists, safe return paths, RP-initiated logout, session cookie helper incl. `SameSite=None; Partitioned` for cross-site frames. Tests: `php tests/sso/run.php` (fake provider, 14 flows).
+- `examples/php/auth.php` reference endpoint, `examples/hub-demo.html` + `hub-app.html`; docs page *Hub & single sign-on*.
+- Blocks: a plain string as `body` renders as a paragraph (was a runtime error). `VerxeeUI.version` was stuck at 2.3.1.
+
 ## 2.4.0 — role preview
 - `app({ rolePreview: { roles, initial } })`: no-login test mode — a topbar dropdown (`rolepreview` block) switches the acting role; sidebar, topbar and page rebuild with that role's permissions. `shell.role`, `shell.setRole()`, `verxee:rolechange` event. Test only, never for production.
 - `AGENTS.md`: instructions for AI agents building apps with Verxee UI (versioned delivery, first versions ship with role preview).

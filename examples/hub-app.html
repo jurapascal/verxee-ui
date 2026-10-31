@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-coreui-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orders — embedded app</title>
+  <link rel="stylesheet" href="../vendor/coreui/coreui.min.css">
+  <link rel="stylesheet" href="../vendor/tabler-icons/css/tabler-icons.min.css">
+  <link rel="stylesheet" href="../dist/verxee-ui.min.css">
+</head>
+<body>
+<main id="main"></main>
+<script defer src="../vendor/coreui/coreui.bundle.min.js"></script>
+<script defer src="../dist/verxee-ui.min.js"></script>
+<script defer>
+addEventListener('DOMContentLoaded', function () {
+  // Demo session: kept in sessionStorage so the page works without a server. A real app uses auth.urls (see examples/php/auth.php).
+  var demoUser = { name: 'Jane Admin', email: 'jane@alba-rosa.cz', permissions: ['*'] };
+  if (/[?&]vx_sso=ok/.test(location.search)) try { sessionStorage.setItem('demo-user', '1'); } catch (e) {}
+  VerxeeUI.app({
+    brand: { name: 'Orders', icon: 'shopping-cart' },
+    hub: { origin: [location.origin, 'http://localhost:8765', 'https://alba-rosa.cz'] }, // hubs allowed to frame and talk to this app
+    auth: {
+      session: function () { var on = false; try { on = !!sessionStorage.getItem('demo-user'); } catch (e) {} return Promise.resolve(on ? demoUser : null); },
+      logout: function () { try { sessionStorage.removeItem('demo-user'); } catch (e) {} return Promise.resolve(); },
+      providers: ['hub', 'google'],
+      password: false,
+      ssoUrl: 'sso-stub.html?provider={id}'   // real app: 'auth.php?provider={id}'
+    },
+    topbar: { right: [{ label: 'New order', icon: 'plus', variant: 'primary', size: 'sm', onClick: function () { VerxeeUI.hub.setBadge(3); VerxeeUI.toast('Badge sent to the hub'); } }, 'theme', 'user'] },
+    sidebar: [{ label: 'Orders', icon: 'list', href: '#/orders' }, { label: 'Customers', icon: 'users', href: '#/customers' }],
+    page: [{ type: 'heading', title: 'Orders' }, { type: 'card', body: 'Signed in through the hub. Brand, theme and user menu are hidden: the hub shows them.' }]
+  });
+});
+</script>
+</body>
+</html>
