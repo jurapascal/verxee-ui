@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.5.1 — fix
+- `js/hub-bridge.js`: standalone hub bridge for server-rendered apps without Verxee UI.
 - `VerxeeSso` sends a User-Agent: WEDOS answers server-to-server requests without one with 401/429, so discovery and the token exchange failed on that hosting.
 
 ## 2.5.0 — hub & single sign-on

@@ -45,7 +45,8 @@ VerxeeUI.hub.setTitle('Orders');      // shown in the hub's tab/title
 VerxeeUI.hub.setBadge(3);             // unread count next to the app in the hub
 VerxeeUI.hub.on('navigate', m =&gt; …); // any hub message
 VerxeeUI.hub.embedded;                // true once the hub answered</code></pre>
-<p>Silent sign-in for such apps is a server redirect: if there is no session and the request is a page load, redirect to <code>auth.php?provider=hub&amp;prompt=none&amp;return=…</code> once (remember the attempt in the session to avoid loops).</p>
+<p>Without Verxee UI at all, use the standalone <code>js/hub-bridge.js</code> (1&nbsp;kB): <code>&lt;script src="hub-bridge.js" data-hub="https://alba-rosa.cz" data-logout="sso.php?logout=1" defer&gt;&lt;/script&gt;</code>; add <code>data-login-required</code> on the sign-in page after a failed silent attempt. API: <code>window.VerxeeHub.setBadge(n)</code>, <code>.setTitle(t)</code>, <code>.post(type, data)</code>.</p>
+<p>Silent sign-in for such apps is a server redirect: if there is no session and the request is a page load inside a frame (header <code>Sec-Fetch-Dest: iframe</code>), redirect to <code>auth.php?provider=hub&amp;prompt=none&amp;return=…</code> once (remember the attempt in the session to avoid loops).</p>
 
 <h2>Message protocol</h2>
 <p>All messages are objects <code>{ vx: 1, type, … }</code> sent with an explicit target origin. Both sides check <code>event.origin</code> against their allowlist and <code>event.source</code> against the expected window; anything else is ignored.</p>
