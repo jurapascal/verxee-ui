@@ -95,4 +95,4 @@ Family rules, phases and gates: https://github.com/jurapascal/verxee-ui/blob/mai
 - Invariants the gates must check: <tenant helper q(), view-as read-only routes, …>
 ```
 
-To use the gates in an app repo with Claude Code, copy `.claude/agents/vx-*.md` into the app's `.claude/agents/` or into `~/.claude/agents/` (all projects).
+**Nothing to install.** The main agent sends the gates itself. In an app repo the `vx-*` agents are not registered, so for each gate read its definition (`~/Desktop/verxee-ui/.claude/agents/vx-<name>.md`, or the same file on GitHub) and start a general-purpose subagent with that file as its instructions plus the briefing (diff range, version goal, test command, app invariants). Start the gates of one change in a single message so they run in parallel. Where the `vx-*` agents are registered (inside verxee-ui), use them by name.
