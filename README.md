@@ -22,6 +22,7 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 | `js/verxee-ui.js` | Runtime: `VerxeeUI.app()`, blocks, auth screen, hub bridge, `theme`, `toast()`, `confirm()`, `modal()` |
 | `server/php/VerxeeSso.php` | OpenID Connect sign-in for PHP apps (hub, Google) |
 | `docs/` | Documentation site (source in `docs-src/`) |
+| `AGENTS.md`, `guide/`, `.claude/agents/` | How we build apps of the family: phases, releases and updates, two VPS per company, plugins and themes, review subagents (security, tests, UI, database, release, infrastructure) |
 
 ## Quick start
 
