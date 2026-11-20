@@ -458,7 +458,6 @@ final class VerxeeSso
         curl_setopt_array($ch, $o);
         $res = curl_exec($ch);
         $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-        curl_close($ch);
         $j = is_string($res) ? json_decode($res, true) : null;
         if ($res === false || $code === 0) throw new VerxeeSsoError('The sign-in server is not answering. Try again in a moment.', 'http');
         return [$code, is_array($j) ? $j : null];
