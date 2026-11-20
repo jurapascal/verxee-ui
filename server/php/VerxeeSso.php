@@ -16,6 +16,11 @@ declare(strict_types=1);
  *
  * Errors throw VerxeeSsoError; ->reason is machine-readable ('login_required' for a failed silent sign-in),
  * ->getMessage() is safe to show to people. See docs/sso.html.
+ *
+ * Alba Rosa Hub extras (1.1, hub v1.7+):
+ *   $id = $sso->passwordLogin('hub', $email, $password);    // the app's own sign-in form, checked against the hub password
+ *   $ev = $sso->provisioning('hub', $_POST['token']);        // the hub creates / switches off accounts (POST to your provision URL)
+ *   $gt = $sso->googleToken('hub', $id['sub'], ['calendar']); // Google access token of that person, from the hub
  */
 final class VerxeeSsoError extends RuntimeException
 {
@@ -27,7 +32,7 @@ final class VerxeeSsoError extends RuntimeException
 
 final class VerxeeSso
 {
-    public const VERSION = '1.0.1';
+    public const VERSION = '1.1.0';
 
     /** Known providers: only issuer + quirks; client_id/secret always come from your config. */
     private const PRESETS = [
@@ -140,16 +145,17 @@ final class VerxeeSso
         if ($code === '') throw new VerxeeSsoError('The provider returned no code.', 'code', $ret);
 
         $d = $this->discovery($p);
-        $post = ['grant_type' => 'authorization_code', 'code' => $code, 'redirect_uri' => $this->redirectUri, 'code_verifier' => (string) $flow['v']];
-        $secret = (string) ($p['client_secret'] ?? '');
-        $basic = null;
-        if ($secret !== '' && ($p['auth_method'] ?? 'basic') === 'basic') $basic = [(string) $p['client_id'], $secret];
-        else { $post['client_id'] = (string) $p['client_id']; if ($secret !== '') $post['client_secret'] = $secret; }
-        $tok = $this->http((string) $d['token_endpoint'], $post, $basic);
+        $post = ['grant_type' => 'authorization_code', 'code' => $code, 'redirect_uri' => $this->redirectUri, 'code_verifier' => (string) $flow['v']] + $this->clientPost($p);
+        $tok = $this->http((string) $d['token_endpoint'], $post, $this->clientBasic($p));
         $jwt = $tok['id_token'] ?? null;
         if (!is_string($jwt)) throw new VerxeeSsoError('The provider returned no id_token.', 'token', $ret);
 
-        $claims = $this->verify($p, $jwt, (string) $flow['n']);
+        return $this->identity($p, (string) $flow['p'], $this->verify($p, $jwt, (string) $flow['n']), $jwt, $ret);
+    }
+
+    /** Checks the claims of a verified id_token and builds the identity array. */
+    private function identity(array $p, string $provider, array $claims, string $jwt, string $ret): array
+    {
         $email = strtolower(trim((string) ($claims['email'] ?? '')));
         $verified = $claims['email_verified'] ?? false;
         if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) throw new VerxeeSsoError('The provider did not send an e-mail address.', 'email', $ret);
@@ -159,12 +165,105 @@ final class VerxeeSso
 
         $roles = $claims['roles'] ?? [];
         return [
-            'provider' => (string) $flow['p'], 'sub' => (string) $claims['sub'], 'email' => $email,
+            'provider' => $provider, 'sub' => (string) $claims['sub'], 'email' => $email,
             'name' => (string) ($claims['name'] ?? trim(($claims['given_name'] ?? '') . ' ' . ($claims['family_name'] ?? ''))),
             'picture' => (string) ($claims['picture'] ?? ''),
             'roles' => is_array($roles) ? array_values(array_filter($roles, 'is_string')) : [],
             'claims' => $claims, 'return' => $ret, 'id_token' => $jwt,
         ];
+    }
+
+    // ───────────────────────── Alba Rosa Hub extras ─────────────────────────
+
+    /**
+     * The app's own e-mail + password form, checked against the HUB password (one password everywhere, nothing copied).
+     * Returns the same identity array as finish() (return = ''). Throws VerxeeSsoError with ->reason:
+     *   'unknown_user' — not a person of the hub, or the hub does not let them into this app → you may check your own accounts
+     *   'bad_password' — wrong password (the hub counts it towards its rate limit)
+     *   'no_password'  — the person signs in to the hub with Google or a passkey only: send them to the hub (start())
+     *   'rate_limited' — too many attempts, wait 15 minutes
+     *   'http'         — the hub does not answer
+     * @return array{provider: string, sub: string, email: string, name: string, picture: string, roles: list<string>, claims: array<string, mixed>, return: string, id_token: string}
+     */
+    public function passwordLogin(string $provider, string $email, string $password): array
+    {
+        $p = $this->provider($provider);
+        $d = $this->discovery($p);
+        if (!in_array('password', (array) ($d['grant_types_supported'] ?? []), true)) throw new VerxeeSsoError('The provider does not check passwords for apps.', 'unsupported');
+        $nonce = self::rand();
+        [$code, $tok] = $this->httpRaw((string) $d['token_endpoint'], ['grant_type' => 'password', 'username' => strtolower(trim($email)), 'password' => $password, 'nonce' => $nonce] + $this->clientPost($p), $this->clientBasic($p));
+        if ($code !== 200 || !is_string($tok['id_token'] ?? null)) {
+            $why = preg_replace('/[^a-z_]/', '', (string) ($tok['error_description'] ?? ''));
+            $map = ['unknown_user' => 'This account cannot sign in to the app.', 'bad_password' => 'Wrong e-mail or password.', 'no_password' => 'This account has no password. Sign in through the hub.', 'rate_limited' => 'Too many attempts. Try again in 15 minutes.'];
+            if (isset($map[$why])) throw new VerxeeSsoError($map[$why], $why);
+            throw new VerxeeSsoError('The sign-in server is not answering. Try again in a moment.', 'http');
+        }
+        return $this->identity($p, $provider, $this->verify($p, $tok['id_token'], $nonce), $tok['id_token'], '');
+    }
+
+    /**
+     * An account event pushed by the hub (POST to your provisioning URL, field `token`). Verifies the signature (JWKS), issuer,
+     * audience, expiry, type and one-time use. Answer the hub with JSON {"ok": true, "account": "created|exists|updated|disabled"}.
+     *   event 'grant'  = the person may use the app now → create the account (or switch it on again); no password needed,
+     *                    sign-in goes through the hub (or passwordLogin()).
+     *   event 'revoke' = access was taken away in the hub → switch the account off (do not delete data).
+     * @return array{event: string, sub: string, email: string, emails: list<string>, name: string, actor: ?array, claims: array<string, mixed>}
+     */
+    public function provisioning(string $provider, string $token): array
+    {
+        $p = $this->provider($provider);
+        $h = json_decode(self::b64uDec(explode('.', $token)[0] ?? ''), true);
+        if (!is_array($h) || ($h['typ'] ?? '') !== 'hub-provision+jwt') throw new VerxeeSsoError('Not an account event of the hub.', 'token');
+        $c = $this->verify($p, $token, '');
+        $event = (string) ($c['hub_event'] ?? '');
+        if (!in_array($event, ['grant', 'revoke'], true)) throw new VerxeeSsoError('Unknown account event.', 'token');
+        $jti = (string) ($c['jti'] ?? '');
+        if ($jti === '' || !$this->once('prov-' . $p['issuer'] . '|' . $jti, (int) $c['exp'] + $this->leeway)) throw new VerxeeSsoError('This account event was already used.', 'replay');
+        $email = strtolower(trim((string) ($c['email'] ?? '')));
+        if ($email === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) throw new VerxeeSsoError('The event has no e-mail address.', 'email');
+        $emails = [];
+        foreach (array_merge([$email], (array) ($c['emails'] ?? [])) as $e) if (is_string($e) && filter_var($e, FILTER_VALIDATE_EMAIL)) $emails[strtolower($e)] = true;
+        return ['event' => $event, 'sub' => (string) $c['sub'], 'email' => $email, 'emails' => array_keys($emails), 'name' => (string) ($c['name'] ?? ''),
+                'actor' => is_array($c['hub_actor'] ?? null) ? $c['hub_actor'] : null, 'claims' => $c];
+    }
+
+    /**
+     * Google access token of one person (their `sub` from sign-in), handed out by the hub — the person connected Google once in
+     * the hub, the app never asks Google itself. $services: 'calendar', 'gmail', 'drive', 'contacts' (default: all the app is
+     * registered for in the hub). Throws VerxeeSsoError reason 'google_connect' when the person has to connect / allow Google
+     * first: send their browser (top level, not the iframe) to ->returnTo, the hub's page, which comes back to $return.
+     * Other reasons: 'access_denied', 'google_not_registered', 'google_error', 'http'. Cache the token until expires_in.
+     * @param list<string> $services
+     * @return array{access_token: string, expires_in: int, scope: string, services: list<string>, email: string}
+     */
+    public function googleToken(string $provider, string $sub, array $services = [], string $return = ''): array
+    {
+        $p = $this->provider($provider);
+        $d = $this->discovery($p);
+        $ep = $d['hub_google_token_endpoint'] ?? null;
+        if (!is_string($ep) || !$this->urlOk($ep)) throw new VerxeeSsoError('The provider does not hand out Google access.', 'unsupported');
+        [$code, $j] = $this->httpRaw($ep, array_filter(['sub' => $sub, 'services' => implode(',', $services), 'return' => $return]) + $this->clientPost($p), $this->clientBasic($p));
+        if ($code === 200 && is_string($j['access_token'] ?? null)) {
+            return ['access_token' => $j['access_token'], 'expires_in' => (int) ($j['expires_in'] ?? 0), 'scope' => (string) ($j['scope'] ?? ''),
+                    'services' => array_values((array) ($j['services'] ?? [])), 'email' => (string) ($j['email'] ?? '')];
+        }
+        $e = preg_replace('/[^a-z_]/', '', (string) ($j['error'] ?? ''));
+        $msg = is_string($j['error_description'] ?? null) ? $j['error_description'] : 'Google access through the hub failed.';
+        if (in_array($e, ['google_not_connected', 'google_scope_missing', 'google_consent_required'], true)) {
+            $url = (string) ($j['connect_url'] ?? '');
+            throw new VerxeeSsoError($msg, 'google_connect', $this->urlOk($url) ? $url : '');
+        }
+        throw new VerxeeSsoError($msg, $e !== '' ? $e : 'http');
+    }
+
+    /** The hub's page where a person connects Google / allows this app (for a "Napojit Google v hubu" button). */
+    public function googleConnectUrl(string $provider, array $services = [], string $return = ''): string
+    {
+        $p = $this->provider($provider);
+        $ep = (string) ($this->discovery($p)['hub_google_connect_endpoint'] ?? '');
+        if (!$this->urlOk($ep)) throw new VerxeeSsoError('The provider does not hand out Google access.', 'unsupported');
+        $q = array_filter(['client_id' => (string) $p['client_id'], 'services' => implode(',', $services), 'return' => $return]);
+        return $ep . (str_contains($ep, '?') ? '&' : '?') . http_build_query($q, '', '&', PHP_QUERY_RFC3986);
     }
 
     /** URL that also signs the person out at the provider (RP-initiated logout), or null if it has none. */
@@ -304,8 +403,48 @@ final class VerxeeSso
         return str_starts_with($u, 'https://') || ($this->allowHttp && str_starts_with($u, 'http://'));
     }
 
+    /** Client secret in the POST body when the provider wants client_secret_post (or there is no secret). */
+    private function clientPost(array $p): array
+    {
+        $secret = (string) ($p['client_secret'] ?? '');
+        if ($secret !== '' && ($p['auth_method'] ?? 'basic') === 'basic') return [];
+        return ['client_id' => (string) $p['client_id']] + ($secret !== '' ? ['client_secret' => $secret] : []);
+    }
+
+    /** @return ?array{0: string, 1: string} client_secret_basic credentials */
+    private function clientBasic(array $p): ?array
+    {
+        $secret = (string) ($p['client_secret'] ?? '');
+        return $secret !== '' && ($p['auth_method'] ?? 'basic') === 'basic' ? [(string) $p['client_id'], $secret] : null;
+    }
+
+    /** true the first time a key is seen (until $until), false afterwards — one-time use of pushed tokens. */
+    private function once(string $key, int $until): bool
+    {
+        $dir = $this->cacheDir . '/once';
+        if (!is_dir($dir)) @mkdir($dir, 0700, true);
+        if (random_int(1, 50) === 1) foreach (glob($dir . '/*') ?: [] as $f) if ((int) @file_get_contents($f) < time()) @unlink($f);
+        $f = $dir . '/' . hash('sha256', $key);
+        $h = @fopen($f, 'x');                   // atomic: only one request can create it
+        if ($h === false) return false;
+        fwrite($h, (string) $until);
+        fclose($h);
+        return true;
+    }
+
     /** @return array<string, mixed> */
     private function http(string $url, ?array $post = null, ?array $basic = null): array
+    {
+        [$code, $j] = $this->httpRaw($url, $post, $basic);
+        if ($code >= 400 || $j === null) {
+            error_log('Verxee SSO: ' . strtok($url, '?') . ' → HTTP ' . $code . (is_array($j) && isset($j['error']) ? ' ' . preg_replace('/[^a-z_]/', '', (string) $j['error']) : ''));
+            throw new VerxeeSsoError('The sign-in server is not answering. Try again in a moment.', 'http');
+        }
+        return $j;
+    }
+
+    /** @return array{0: int, 1: ?array<string, mixed>} HTTP status and JSON body (null when the answer was not JSON) */
+    private function httpRaw(string $url, ?array $post = null, ?array $basic = null): array
     {
         if (!$this->urlOk($url)) throw new VerxeeSsoError('Provider address must be https.', 'http');
         $ch = curl_init($url);
@@ -321,11 +460,8 @@ final class VerxeeSso
         $code = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         curl_close($ch);
         $j = is_string($res) ? json_decode($res, true) : null;
-        if (!is_array($j) || $code >= 400) {
-            error_log('Verxee SSO: ' . strtok($url, '?') . ' → HTTP ' . $code . (is_array($j) && isset($j['error']) ? ' ' . preg_replace('/[^a-z_]/', '', (string) $j['error']) : ''));
-            throw new VerxeeSsoError('The sign-in server is not answering. Try again in a moment.', 'http');
-        }
-        return $j;
+        if ($res === false || $code === 0) throw new VerxeeSsoError('The sign-in server is not answering. Try again in a moment.', 'http');
+        return [$code, is_array($j) ? $j : null];
     }
 
     /** Small file cache for discovery + JWKS (public data only). @return array<string, mixed> */

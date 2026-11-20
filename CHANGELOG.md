@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — VerxeeSso 1.1.0
+- `VerxeeSso::provisioning()`: verifies an account event pushed by Alba Rosa Hub 1.7 (`grant` / `revoke`, RS256 via JWKS, typ `hub-provision+jwt`, one-time `jti`).
+- `VerxeeSso::passwordLogin()`: the app's own e-mail + password form checked against the hub password (`grant_type=password`); reasons `unknown_user`, `bad_password`, `no_password`, `rate_limited`.
+- `VerxeeSso::googleToken()` / `googleConnectUrl()`: Google access tokens (calendar, gmail, drive, contacts) handed out by the hub; reason `google_connect` carries the hub's connect page in `returnTo`.
+
 ## 2.5.1 — fix
 - `js/hub-bridge.js`: standalone hub bridge for server-rendered apps without Verxee UI.
 - `VerxeeSso` sends a User-Agent: WEDOS answers server-to-server requests without one with 401/429, so discovery and the token exchange failed on that hosting.

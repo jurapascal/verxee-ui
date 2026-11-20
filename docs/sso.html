@@ -107,6 +107,21 @@ VerxeeSso::login($user);                               // new session id, then s
 header('Location: ' . VerxeeSso::withResult($id['return'], 'ok'), true, 303);</code></pre>
 <p>Checked for you: issuer (incl. discovery), <code>aud</code>/<code>azp</code>, RS256 signature by <code>kid</code> (re-fetches keys once on rotation), <code>exp</code>/<code>iat</code> with leeway, <code>nonce</code>, single-use <code>state</code> (10 min), PKCE S256, verified e-mail, Google Workspace <code>hd</code>, optional <code>allowed_domains</code>/<code>allowed_emails</code>, local-only return paths. <code>php tests/sso/run.php</code> runs the flows against a fake provider.</p>
 
+<h2>Accounts, the hub password and Google from the hub (VerxeeSso 1.1, hub 1.7+)</h2>
+<pre><code>// 1. The hub creates / switches off accounts: POST to your provisioning URL (e.g. sso.php?provision=1), field token
+$ev = $sso-&gt;provisioning('hub', $_POST['token']);   // signature (JWKS), iss, aud, exp, typ hub-provision+jwt, one-time jti
+// $ev['event'] 'grant' → create (or switch on) the account for $ev['emails'] / $ev['sub'];  'revoke' → switch it off
+echo json_encode(['ok' =&gt; true, 'account' =&gt; 'created']);          // created | exists | updated | disabled
+
+// 2. Same password as in the hub: your own sign-in form asks the hub (nothing is copied)
+try { $id = $sso-&gt;passwordLogin('hub', $_POST['email'], $_POST['password']); }   // same array as finish()
+catch (VerxeeSsoError $e) { /* unknown_user → check your own accounts; bad_password, no_password, rate_limited, http */ }
+
+// 3. Google from the hub: the person connected Google once in the hub
+try { $g = $sso-&gt;googleToken('hub', $user['hub_sub'], ['calendar']); }   // calendar | gmail | drive | contacts
+catch (VerxeeSsoError $e) { if ($e-&gt;reason === 'google_connect') header('Location: ' . $e-&gt;returnTo); }  // top level, not in the frame</code></pre>
+<p>The hub sends <code>grant</code> when someone is let into the app (shared, extra access, approved request) and <code>revoke</code> when that access is taken back or the person is switched off; undelivered events are retried for up to 12 hours. Answer within 6 s with 2xx JSON <code>{"ok": true}</code>. Google access tokens carry only the services the app is registered for in the hub and only with the person's consent; the refresh token never leaves the hub.</p>
+
 <h2>Cookies, headers and iframes</h2>
 <ul>
   <li><strong>Same site as the hub</strong> (<code>alba-rosa.cz/app</code> in <code>alba-rosa.cz/hub</code>): session cookie <code>SameSite=Lax</code> — the default of <code>sessionStart()</code>. Not <code>Strict</code>: the return from the provider is a cross-site navigation and a Strict cookie would not be sent, so <code>state</code> would be lost.</li>

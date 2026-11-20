@@ -20,7 +20,7 @@ It powers a family of admin apps (e-shop admin, planner, ERP/fulfilment, interna
 | `vendor/` | CoreUI 5.3.1 + Tabler Icons 3.31, self-hosted |
 | `dist/` | Built + minified CSS and JS (use these) |
 | `js/verxee-ui.js` | Runtime: `VerxeeUI.app()`, blocks, auth screen, hub bridge, `theme`, `toast()`, `confirm()`, `modal()` |
-| `server/php/VerxeeSso.php` | OpenID Connect sign-in for PHP apps (hub, Google) |
+| `server/php/VerxeeSso.php` | OpenID Connect sign-in for PHP apps (hub, Google); 1.1: accounts pushed by the hub, hub password check, Google tokens from the hub |
 | `docs/` | Documentation site (source in `docs-src/`) |
 | `AGENTS.md`, `guide/`, `.claude/agents/` | How we build apps of the family: phases, releases and updates, two VPS per company, plugins and themes, review subagents (security, tests, UI, database, release, infrastructure) |
 
